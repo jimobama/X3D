@@ -40,8 +40,8 @@ Transform3D.prototype.setScale=(function(vec3){
 Transform3D.prototype.getTransform=(function(){
     
      var translationMatrix =Matrix4f.initTranslate(this.__position);
-     var scaleMatrix =Matrix4f.initScale(this.__scale);
-     var rotationMatrix =Matrix4f.initRotation(this.__rotation);
+     var scaleMatrix =      Matrix4f.initScale(this.__scale);
+     var rotationMatrix =  Matrix4f.initRotation(this.__rotation);
     
-     return translationMatrix.mul(scaleMatrix);
+     return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));//
 });

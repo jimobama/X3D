@@ -7,6 +7,9 @@
 
 var Matrix4f =(function(){
     
+    
+    
+    
     this.__mat= new Array(4);
     for(var i=0; i < 4 ;i++)
     {
@@ -19,6 +22,8 @@ var Matrix4f =(function(){
     }
           
 });
+
+
 Matrix4f.prototype.identity=(function(){
     
    this.__mat[0][0] =1 ;this.__mat[0][1]  =0; this.__mat[0][2]  =0;this.__mat[0][3]  =0;
@@ -203,43 +208,72 @@ Matrix4f.initScale=(function(vec3f){
 });
 
 Matrix4f.initRotation=(function(vec3f){
-    var mat3fX =  new  Matrix4f();
-    var mat3fY  = new  Matrix4f();
-    var mat3fZ =  new  Matrix4f();
+   
+    
     //get the matrix data
     
     //Rotate the roll
-    var mat =mat3fZ.get();
-        var roll = (new Vector2f(vec3f.x,vec3f.y)).getAngle();
+       var mat3fZ = new  Matrix4f();
+        var matZ =mat3fZ.get();
+        var roll = Vector2f.toRadian(vec3f.z);
         
-        mat[0][0] =Math.cos(Vector2f.toRadian(vec3f.z)) ;mat[0][1]  =-Math.sin(Vector2f.toRadian(vec3f.z));  mat[0][2]  =0;        mat[0][3]  =0;
-        mat[1][0] =Math.sin(Vector2f.toRadian(vec3f.z)) ;mat[1][1]  = Math.cos(Vector2f.toRadian(vec3f.z));  mat[1][2]   =0;       mat[1][3]  =0;
-        mat[2][0] =0                                    ;mat[2][1]  =0;                                      mat[2][2]  =1        ;mat[2][3]  =0;
-        mat[3][0] =0                                    ;mat[3][1]  =0;                                      mat[3][2]  =0;        mat[3][3]  =1;
-        mat3fZ.set(mat);
+        matZ[0][0] =Math.cos(roll) ;matZ[0][1]  =-Math.sin(roll);  matZ[0][2]  =0;        matZ[0][3]  =0;
+        matZ[1][0] =Math.sin(roll) ;matZ[1][1]  = Math.cos(roll);  matZ[1][2]  =0;       matZ[1][3]   =0;
+        matZ[2][0] =0              ;matZ[2][1]  =0;                matZ[2][2]  =1        ;matZ[2][3]  =0;
+        matZ[3][0] =0              ;matZ[3][1]  =0;                matZ[3][2]  =0;        matZ[3][3]  =1;
+        mat3fZ.set(matZ);
+       
         
-      //Rotate the yaw
-        mat =mat3fY.get();
-        var yaw = (new Vector2f(vec3f.z,vec3f.x)).getAngle();
-        mat[0][0] =Math.cos(Vector2f.toRadian( vec3f.y));mat[0][1]  =0;   mat[0][2]   =-Math.sin(Vector2f.toRadian(vec3f.y));   mat[0][3]  =0;
-        mat[1][0] =0                                    ;mat[1][1]  = 1;  mat[1][2]   =0;                                       mat[1][3]  =0;
-        mat[2][0] =Math.sin(Vector2f.toRadian(vec3f.y)) ;mat[2][1]  =0;   mat[2][2]   =Math.cos(Vector2f.toRadian(vec3f.y));    mat[2][3]  =0;
-        mat[3][0] =0                                    ;mat[3][1]  =0;   mat[3][2]   =0;                                       mat[3][3]  =1;
-        mat3fY.set(mat);
+      //Rotate the yaw    
+        var mat3fY  = new  Matrix4f();
+        matY =mat3fY.get();
+        var yaw = Vector2f.toRadian(vec3f.y);
+      
+        matY[0][0] =Math.cos(yaw);  matY[0][1]   =0;  matY[0][2]   =-Math.sin(yaw);   matY[0][3]  =0;
+        matY[1][0] =0              ;matY[1][1]  = 1;  matY[1][2]   =0;                matY[1][3]  =0;
+        matY[2][0] =Math.sin(yaw)  ;matY[2][1]  =0;   matY[2][2]   =Math.cos(yaw);    matY[2][3]  =0;
+        matY[3][0] =0              ;matY[3][1]  =0;   matY[3][2]   =0;                matY[3][3]  =1;
+        mat3fY.set(matY);
         
      
        //Rotate the pitch
-        mat =mat3fX.get();
-        var pitch = (new Vector2f(vec3f.y,vec3f.z)).getAngle();
-        mat[0][0] =1 ;mat[0][1]  =0;                                      mat[0][2]   =0;                                       mat[0][3]  =0;
-        mat[1][0] =0 ;mat[1][1]  = Math.cos(Vector2f.toRadian(vec3f.x));  mat[1][2]   =-Math.sin(Vector2f.toRadian(vec3f.x));   mat[1][3]  =0;
-        mat[2][0] =0 ;mat[2][1]  = Math.sin(Vector2f.toRadian(vec3f.x)) ; mat[2][2]   = Math.cos(Vector2f.toRadian(vec3f.x));   mat[2][3]  =0;
-        mat[3][0] =0 ;mat[3][1]  =0;                                      mat[3][2]  =0;                                        mat[3][3]  =1;
-        mat3fX.set(mat);
-        
-        var rotation = mat3fX.mul(mat3fY.mul(mat3fZ));
-        //alert(rotation);
+        var mat3fX =  new  Matrix4f();
+        matX =mat3fX.get();
+        var pitch = Vector2f.toRadian(vec3f.x);
+        matX[0][0] =1 ;matX[0][1]  =0;                 matX[0][2]   =0;                  matX[0][3]  =0;
+        matX[1][0] =0 ;matX[1][1]  = Math.cos(pitch);  matX[1][2]   =-Math.sin(pitch);   matX[1][3]  =0;
+        matX[2][0] =0 ;matX[2][1]  = Math.sin(pitch) ; matX[2][2]   = Math.cos(pitch);   matX[2][3]  =0;
+        matX[3][0] =0 ;matX[3][1]  =0;                 matX[3][2]  =0;                   matX[3][3]  =1;
+        mat3fX.set(matX);
+      
+       var rotation =mat3fY.mul(mat3fX.mul(mat3fZ)) ;
+       
+       
     return rotation; 
+});
+
+Matrix4f.initPersp=(function(fov,ratio, near, far){
+    
+    var persp = new Matrix4f();
+     persp.identity();
+     
+     
+     var xDir = 0.3;
+     var yDir =0.3;
+     var zClose=-0.3;
+     var zFar=0.3;
+     
+     var mat= persp.get();
+        mat[0][0] =xDir    ;mat[0][1]  =0;       mat[0][2]  =0;        mat[0][3]  =0;
+        mat[1][0] =0       ;mat[1][1]  =yDir;    mat[1][2]  =0;        mat[1][3]  =0;
+        mat[2][0] =0       ;mat[2][1]  =0;       mat[2][2]  =zClose;   mat[2][3]  =0;
+        mat[3][0] =0       ;mat[3][1]  =0;       mat[3][2]  =zFar;     mat[3][3]  =1;
+        persp.set(mat);
+    
+    
+    
+    return persp;  
+    
 });
 Matrix4f.prototype.transpose=(function(){
     
