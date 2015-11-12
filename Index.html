@@ -1,0 +1,146 @@
+<!doctype html>
+<html id="t" i18n-values="dir:textdirection;lang:language">
+
+<head>
+<script  src='assets/js/app/vector2f.js' type="text/javascript"></script>
+<script  src='assets/js/app/vector3f.js' type="text/javascript"></script>
+<script  src='assets/js/app/quaterion.js' type="text/javascript"></script>
+<script  src='assets/js/app/mesh.js' type="text/javascript"></script>
+<script  src='assets/js/app/matrix2f.js' type="text/javascript"></script>
+<script  src='assets/js/app/matrix3f.js' type="text/javascript"></script>
+<script  src='assets/js/app/matrix4f.js' type="text/javascript"></script>
+<script src='assets/js/app/display.js' type="text/javascript"></script>
+<script  src='assets/js/app/shader.js' type="text/javascript"></script>
+<script  src='assets/js/app/material.js' type="text/javascript"></script>
+<script  src='assets/js/app/filerequest.js' type="text/javascript"></script>
+<script  src='assets/js/app/vertex.js' type="text/javascript"></script>
+<script  src='assets/js/app/texture.js' type="text/javascript"></script>
+<script  src='assets/js/app/renderutils.js' type="text/javascript"></script>
+<script  src='assets/js/app/screen.js' type="text/javascript"></script>
+<script  src='assets/js/app/transform3d.js' type="text/javascript"></script>
+<script  src='assets/js/app/camera2d.js' type="text/javascript"></script>
+<script  src='assets/js/app/model.js' type="text/javascript"></script>
+<script  src='assets/js/app/mouse.js' type="text/javascript"></script>
+<script  src='assets/js/app/keyboard.js' type="text/javascript"></script>
+<style>
+    
+    
+    .page-wrapper
+    {
+       height:400px;
+       width:600px;
+        margin:0 auto;
+    }
+ 
+</style>
+<script>
+  
+var display;
+var shader;
+var mesh;
+
+var texture=null;
+var  material;
+var callback= function(){};
+var _size=new Vector2f(600,800);
+var tran3f;
+var camara2d;
+var speed =0.05;
+var model;
+
+var onDraw=(function(delta)
+ {
+   
+    
+     RenderUtils.clear(display.getContext(),0.2,0.2,0.2,1.0);
+    
+     var t= new Vector3f(Math.sin(speed),Math.cos(speed ),1);
+     var s= new Vector3f(Math.sin(speed),Math.sin(speed ),1);
+      var r= new Vector3f(Math.sin(speed),Math.sin(speed ),Math.sin(speed));
+     tran3f.setPosition(t);
+     tran3f.setScale(s);
+     tran3f.setRotation(r);
+      
+     shader.setUniform1i("uSampler",texture.getIndex());
+     shader.setUniformMatrix4f("transform3D",tran3f.getTransform());
+     /*
+     shader.setUniformVector2f("scale",s);
+     shader.setUniformVector2f("translate",t);
+      shader.setUniformVector2f("rotate",r);
+      */
+    
+    
+    
+     shader.update(material);
+     mesh.draw();
+    
+     speed+=0.01;
+   
+     
+ });
+
+var start=(function(){   
+  
+    display= new Display("glcanvas");
+    display.initialGL();
+    display.resize(_size);
+    RenderUtils.initialize(display.getContext());
+  
+    shader = new Shader(display.getContext());
+    shader.init();
+    shader.createFromFile("vertex.glsl",shader.VERTEX_SHADER );
+    shader.createFromFile("fragment.glsl",shader.FRAGMENT_SHADER);
+    shader.compile();
+    shader.addUniform("uSampler");
+    shader.addUniform("transform3D");
+
+    tran3f= new Transform3D();
+    
+    camara2d= new Camera2D();
+    camara2d.seOrthographic(0,0,display.getWidth(), display.getHeight());
+    texture = Texture.load(display.getContext(),"carpet.png");
+    material= new Material(texture, new Vector3f(1.0,0.0,1.0));
+    model = new Model();
+    model.load("cude.obj");
+    tran3f.setScale(new Vector2f(0.2,0.2));
+   var vertices=[
+       new Vertex( new Vector3f(-0.50,  -0.50,  0.0),null, new Vector2f(0.0 ,0.0)),
+       new Vertex( new Vector3f(-0.50, 0.50,  0.0),null, new Vector2f( 0.0 , 1.0)),      
+       new Vertex( new Vector3f(0.50,  0.50, 0.0),null, new Vector2f(1.0 , 1.0)), 
+       new Vertex( new Vector3f(0.50, -0.50, 0.0),null, new Vector2f(1.0 , 0.0))   
+   ];
+   
+   var indices=[
+        0,1,2,
+        0,2,3
+   ];
+   
+   mesh = new Mesh(vertices,indices);
+   mesh.init(shader);  
+   display.update(onDraw);
+  
+  });
+  
+
+
+  
+
+</script>
+
+
+
+<script id="vertex-shader-id"  type="text/vertex-shader" src="assets/shaders/vertex.glsl"></script>
+<script id="fragment-shader-id"  type="text/vertex-shader" src="assets/shaders/fragment.glsl"></script>
+
+</head>
+
+
+<body onload="start()">
+    <div class='page-wrapper'>
+            <canvas id="glcanvas"> 
+
+            </canvas>
+    </div>
+</body>
+
+</html>
