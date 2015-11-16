@@ -125,7 +125,7 @@ Display.prototype.update=(function(onrender){
 
 Display.prototype.drawUpdate=(function(){
     
-     var currentTime =  Date.now();
+     var currentTime =  Time.getTime();
      var delta = currentTime - __lasttime;
      __lasttime = currentTime;
        //the on render method have the current elapse time
@@ -138,6 +138,8 @@ Display.prototype.drawUpdate=(function(){
        if(__renderCallBack){
         __renderCallBack(delta); 
        }
+       
+       Time.setDelta(delta);
     
     
 });

@@ -267,7 +267,10 @@ Shader.prototype.update=(function(material){
     {
         var texture = material.getTexture();
         var color   =material.getColor();
+        if(texture !=null){
+             
         texture.bind(this.getContext());
+      }
        
          
     }

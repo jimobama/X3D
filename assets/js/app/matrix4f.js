@@ -253,33 +253,57 @@ Matrix4f.initRotation=(function(vec3f){
 });
 
 Matrix4f.initPersp=(function(fov,ratio, near, far){
-    
+   
     var persp = new Matrix4f();
-     persp.identity();
-     
-     
-     var xDir = 0.3;
-     var yDir =0.3;
-     var zClose=-0.3;
-     var zFar=0.3;
-     
-     var mat= persp.get();
-        mat[0][0] =xDir    ;mat[0][1]  =0;       mat[0][2]  =0;        mat[0][3]  =0;
-        mat[1][0] =0       ;mat[1][1]  =yDir;    mat[1][2]  =0;        mat[1][3]  =0;
-        mat[2][0] =0       ;mat[2][1]  =0;       mat[2][2]  =zClose;   mat[2][3]  =0;
-        mat[3][0] =0       ;mat[3][1]  =0;       mat[3][2]  =zFar;     mat[3][3]  =1;
+    var halfTanFOV =  Math.tan(Vector2f.toRadian(fov/2));
+    var range = far - near;
+  
+   var mat= persp.get();
+       
+        mat[0][0] =1.0/(halfTanFOV *ratio ) ;mat[0][1]  =0;               mat[0][2]  =0;                      mat[0][3]  =0;
+        mat[1][0] =0                        ;mat[1][1]  =1.0/ halfTanFOV; mat[1][2]  =0;                      mat[1][3]  =0;
+        mat[2][0] =0                        ;mat[2][1]  =0;               mat[2][2]  =(-near - far)/ range;   mat[2][3]  =2 * far * near/ range;
+        mat[3][0] =0                        ;mat[3][1]  =0;               mat[3][2]  =1;                      mat[3][3]  =1;
         persp.set(mat);
-    
-    
     
     return persp;  
     
 });
+
+Matrix4f.lookAt=(function(position,target,up){
+    
+     var transform=null;
+     if(position instanceof Vector3f  && up instanceof Vector3f  && target instanceof Vector3f){  
+   
+     var zDir= position.minus(target) ;
+     zDir= zDir.normalize();
+     var rDir = up.cross(zDir).normalize();
+      var U = zDir.cross(rDir).normalize();
+     var mat3f=null;
+      mat3f= new Matrix4f();        
+      var mat= mat3f.get();    
+        //Translate matrix for 2d vector
+       mat[0][0] =rDir.x      ;mat[0][1]  =rDir.y;      mat[0][2]=rDir.z;      mat[0][3]  = 0;
+       mat[1][0] =U.x      ;mat[1][1]  =U.y;      mat[1][2]=U.z;      mat[1][3]  = 0;
+       mat[2][0] =zDir.x ;mat[2][1]  =zDir.y; mat[2][2]=zDir.z; mat[2][3]  = 0;
+       mat[3][0] =0      ;mat[3][1]  =0;      mat[3][2]=0;      mat[3][3]  = 1;
+       mat3f.set(mat);
+       
+      var translation= Matrix4f.initTranslate(new Vector3f(-position.x,-position.y,-position.z));
+       
+     transform =  mat3f.mul(translation); 
+       
+    }   
+    
+    
+    
+    return transform; 
+});
+
+
 Matrix4f.prototype.transpose=(function(){
     
    var newX = new Quaterion(this.get1f(0,0),this.get1f(1,0),this.get1f(2,0),this.get1f(3,0));
-   
- 
    var newY = new Quaterion(this.get1f(0,1),this.get1f(1,1),this.get1f(2,1),this.get1f(3,1));
    var newZ = new Quaterion(this.get1f(0,2),this.get1f(1,2),this.get1f(2,2),this.get1f(3,2));
    var newW = new Quaterion(this.get1f(0,3),this.get1f(1,3),this.get1f(2,3),this.get1f(3,3));

@@ -54,7 +54,15 @@ Vector3f.prototype.add=(function(vec3)
   return result;
    
 });
-
+Vector3f.prototype.mul=(function(scaler)
+{
+    
+   this.x = this.x * scaler;
+   this.y = this.y * scaler;
+   this.z = this.z * scaler;
+  return this;
+   
+});
 
 Vector3f.prototype.minus=(function(vec3)
 {
@@ -76,35 +84,37 @@ Vector3f.prototype.negate=(function()
 
 
 
-Vector3f.prototype.rotateX=(function(angle){
-    //To rotate x-axis will plug our y and z values as the x and y used the normal two 2d to make the rotation
+Vector3f.prototype.rotateX=(function(angle,axis){
+ 
+ 
+  var cos = Math.cos(Vector2f.toRadian(angle/2));
+  var sin = Math.sin(Vector2f.toRadian(angle/2));
+ 
+ var x = axis.x * sin;
+ var y = axis.y * sin;
+ var z = axis.z * sin;
+ var w= cos;
+ 
+ var rotation = new Quaterion(x,y,z,w);
+
+ var conjugate = rotation;
+ conjugate.conjugate();
+ var w = rotation.mul(this);
     
-   var  xAxis =  new Vector2f(this.y,this.z);
-   var  xRotation =xAxis.rotate(angle);
-   //convert to vector 3f with unit 
-   var  x3Rot= new  Vector3f(0, xRotation.x,  xRotation.y);
-   
-   this.y =   x3Rot.x;
-   this.z =  x3Rot.y;
-   return this;
-    
+ this.x=w.x;
+ this.y=w.y;
+ this.z=w.z;
+ 
+ return this;
 });
 
-Vector3f.prototype.rotateY=(function(angle){
-    //To rotate x-axis will plug our y and z values as the x and y used the normal two 2d to make the rotation
-    
-   var  yAxis =  new Vector2f(this.z,this.x);
-   var  yRotation =yAxis.rotate(angle);
-   //convert to vector 3f with unit 
-   var  y= new  Vector3f(yRotation.x, 0,  yRotation.y);
-   
-   this.x=y.x;
-   this.z= y.z;
+Vector3f.prototype.rotateY=(function(angle,axis){
+
   return this;
     
 });
 
-Vector3f.prototype.rotateZ=(function(angle){
+Vector3f.prototype.rotateZ=(function(angle,axis){
     //To rotate x-axis will plug our y and z values as the x and y used the normal two 2d to make the rotation    
    var  zAxis =  new Vector2f(this.x,this.y);
    var  zRotation =zAxis.rotate(angle);
