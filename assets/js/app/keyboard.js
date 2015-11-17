@@ -34,10 +34,10 @@ Keyboard.prototype.onKeyDown =(function(onKeyDownCallBack){
     
 });
 
+Keyboard.SPEED =0.005;
 
 Keyboard.prototype.onKeyUp =(function(onKeyUpCallBack){
-    
-  
+ 
    if(onKeyUpCallBack){
         
       window.addEventListener("keyup",(function(event){

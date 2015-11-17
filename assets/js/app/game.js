@@ -62,18 +62,22 @@ Game.prototype.__init__=(function(){
         0,2,3
    ];
     var  keyboard = display.getKeyboard();
-         
+         keyboard.SPEED =0.005;
           if(keyboard instanceof Keyboard)
           {
                
                 keyboard.onKeyDown(function(key,charCode,character){
                 
+                if(Keyboard.Keys.K_W===key){  
+                    
+                   
+                 }
                   
               });
           }
    
         
-   mesh = new Mesh(vertices, indices);
+   mesh = new Mesh( model.getVertices(),  model.getIndices());
    mesh.init(shader);  
    display.update(this.__run__);
     
@@ -84,7 +88,7 @@ Game.prototype.__run__ =(function(delta){
     
      RenderUtils.clear(display.getContext(),0.2,0.2,0.2,1.0);
      shader.setUniform1i("uSampler",texture.getIndex());
-     __camera.setPosition(new Vector3f(0,Math.cos( speed),3.0));
+     __camera.setPosition(new Vector3f(Math.cos(speed),Math.sin(speed),Math.cos(speed)+3.0));
   
      shader.setUniformMatrix4f("transform3D",tran3f.getPerspTransform());
    

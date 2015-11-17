@@ -8,20 +8,18 @@ var BasicShader=(function(glconext){
     // BasicShader.prototype.constructor(glconext);
     __vertexShaderPath   = "vertex.glsl";
     __fragmentShaderPath  ="fragment.glsl";
+    __shader =null;
     
-    this.__construct__=(function(self, glContext){        
-      for(var key in self){
-          
-          alert(key);
-      }
-       
-       
+    this.__call__=(function(self, glContext){   
+      self.__init__(glContext);
     })(this, glconext);
 });
 
 
-BasicShader.prototype.pro=89;
-BasicShader.prototype.add=(function(){});
+BasicShader.prototype.__init+(function(){
+    
+    alert("Hello World")
+});
 
 BasicShader.prototype.update=(function(material , transform){
    
