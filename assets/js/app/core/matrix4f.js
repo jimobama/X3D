@@ -280,16 +280,16 @@ Matrix4f.lookAt=(function(position,target,up){
      var rDir = up.cross(zDir).normalize();
       var U = zDir.cross(rDir).normalize();
      var mat3f=null;
-      mat3f= new Matrix4f();        
-      var mat= mat3f.get();    
+     mat3f= new Matrix4f();        
+     var mat= mat3f.get();    
         //Translate matrix for 2d vector
-       mat[0][0] =rDir.x      ;mat[0][1]  =rDir.y;      mat[0][2]=rDir.z;      mat[0][3]  = 0;
-       mat[1][0] =U.x      ;mat[1][1]  =U.y;      mat[1][2]=U.z;      mat[1][3]  = 0;
-       mat[2][0] =zDir.x ;mat[2][1]  =zDir.y; mat[2][2]=zDir.z; mat[2][3]  = 0;
-       mat[3][0] =0      ;mat[3][1]  =0;      mat[3][2]=0;      mat[3][3]  = 1;
+       mat[0][0] =rDir.x   ;mat[0][1]  =rDir.y;      mat[0][2]=rDir.z;      mat[0][3]  = 0;
+       mat[1][0] =U.x      ;mat[1][1]  =U.y;         mat[1][2]=U.z;         mat[1][3]  = 0;
+       mat[2][0] =zDir.x   ;mat[2][1]  =zDir.y;      mat[2][2]=zDir.z;      mat[2][3]  = 0;
+       mat[3][0] =0        ;mat[3][1]  =0;           mat[3][2]=0;           mat[3][3]  = 1;
        mat3f.set(mat);
        
-      var translation= Matrix4f.initTranslate(new Vector3f(-position.x,-position.y,-position.z));
+    var translation= Matrix4f.initTranslate(new Vector3f(-position.x,-position.y,-position.z));
        
      transform =  mat3f.mul(translation); 
        

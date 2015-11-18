@@ -18,7 +18,7 @@ var BasicShader=(function(glconext){
 
 BasicShader.prototype.__init+(function(){
     
-    alert("Hello World")
+    alert("Hello World");
 });
 
 BasicShader.prototype.update=(function(material , transform){

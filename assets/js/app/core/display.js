@@ -41,7 +41,9 @@ Display.prototype.initialGL=(function(){
     __mouse = new  Mouse(this.getView());
    __keyboard= new Keyboard(this.getView());
    this.setViewPort(this.getView().width,this.getView().height);  
-   
+
+
+ 
  
    return this;
    
@@ -119,27 +121,26 @@ Display.prototype.setViewPort=function(width, height)
 Display.prototype.update=(function(onrender){
    __lasttime=  Date.now();
    __renderCallBack=onrender;
+   //thread
    setInterval(this.drawUpdate,15);
-  
+   //this.drawUpdate();
 });
 
 Display.prototype.drawUpdate=(function(){
     
      var currentTime =  Time.getTime();
-     var delta = currentTime - __lasttime;
-     __lasttime = currentTime;
-       //the on render method have the current elapse time
-       if( __mouse.IsLocked){
-            __view.style.cursor="none";
-       }else{
-           __view.style.cursor="default";
-       }
-       
+   //  __mouse.update();
+     
+     if(__lasttime !=0) {
+          var delta = currentTime - __lasttime;
+          Time.setDelta(delta);
+     
        if(__renderCallBack){
         __renderCallBack(delta); 
        }
        
-       Time.setDelta(delta);
+    }
+     __lasttime = currentTime;
     
     
 });

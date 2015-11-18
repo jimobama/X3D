@@ -7,88 +7,53 @@
 
 var Keyboard=(function(view){
     
-    __view =view;
-   
+    var k__view ;
+    var k_onkeyListener;
+    this.__call__=(function(self, view){        
+        self.__construct(view);
+    })(this,view);
     
 });
 
+Keyboard.KEY_DOWN=0;
+Keyboard.KEY_UP=1;
 
-Keyboard.prototype.onKeyDown =(function(onKeyDownCallBack){
+Keyboard.prototype.__construct=(function(view)
+{
+
+    k__view=view;
+    k_onkeyListener =(function(action,key,code,character){});
     
-  
-   if(onKeyDownCallBack){
-        
-      window.addEventListener("keydown",(function(event){
-        
-      //var key=  event.which || event.keyCode ; 
-      var charCode = event.charCode || event.keyCode ;
-      var character= String.fromCharCode(charCode); 
-      var key=    character.toUpperCase().charCodeAt();
-      
-      onKeyDownCallBack(key,charCode,character);
-       }),true);
-       
-   }
-    
-    
+    if( k__view !==null)
+    {   
+         window.addEventListener("keydown",(function(event){
+                var charCode = event.charCode || event.keyCode ;
+                var character= String.fromCharCode(charCode); 
+                var key=    character.toUpperCase().charCodeAt();
+                k_onkeyListener(Keyboard.KEY_DOWN, key,charCode,character);
+         }));
+         
+          window.addEventListener("keyup",(function(event){          
+              //var key=  event.which || event.keyCode ; 
+                var charCode = event.charCode || event.keyCode ;
+                var character= String.fromCharCode(charCode); 
+                var key=    character.toUpperCase().charCodeAt();
+                k_onkeyListener(Keyboard.KEY_UP, key,charCode,character);
+          }));
+    }
     
 });
 
-Keyboard.SPEED =0.005;
-
-Keyboard.prototype.onKeyUp =(function(onKeyUpCallBack){
- 
-   if(onKeyUpCallBack){
-        
-      window.addEventListener("keyup",(function(event){
-        
-      //var key=  event.which || event.keyCode ; 
-      var charCode = event.charCode || event.keyCode ;
-      var character= String.fromCharCode(charCode); 
-      var key=    character.toUpperCase().charCodeAt();
-      
-      onKeyUpCallBack(key,charCode,character);
-       }),true);
-       
-   }
+Keyboard.prototype.setKeyboardListener =(function(callBack){
     
-    
+   k_onkeyListener= callBack;
     
 });
-
-
-
-Keyboard.prototype.onKeyPress =(function(onKeyUpCallBack){
-    
-  
-   if(onKeyUpCallBack){
-        
-      window.addEventListener("keypress",(function(event){
-        
-      //var key=  event.which || event.keyCode ; 
-      var charCode = event.charCode || event.keyCode ;
-      var character= String.fromCharCode(charCode); 
-      var key=    character.toUpperCase().charCodeAt();
-      
-      onKeyUpCallBack(key,charCode,character);
-       }),true);
-       
-   }
-    
-    
-    
-});
-
-
-
-
 
 Keyboard.Keys=(function(){
     
     this.NUM_0=0x0000;
     this.K_1 = 49;
-
-    
     
  });
  Keyboard.Keys.K_TAB   = 9;

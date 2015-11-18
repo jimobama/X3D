@@ -48,6 +48,13 @@ Transform3D.prototype.setPosition=(function(vec3){
     }
 });
 
+Transform3D.prototype.getPosition=(function(){
+   
+      return  t__position;
+    
+});
+
+
 Transform3D.prototype.setRotation=(function(vec3){
     
     if(vec3 instanceof Vector3f)
@@ -72,7 +79,6 @@ Transform3D.prototype.setPersp=(function(fov,width,height, near, far){
    Transform3D.ZFAR=far;
    Transform3D.ZNEAR=near;
     
-    
 });
 
 
@@ -81,8 +87,6 @@ Transform3D.prototype.getTransform=(function(){
      var translationMatrix =Matrix4f.initTranslate(t__position);
      var scaleMatrix =      Matrix4f.initScale(t__scale);
      var rotationMatrix =  Matrix4f.initRotation(t__rotation);  
-     
-    
      return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));//
 });
 

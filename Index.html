@@ -31,20 +31,40 @@
 <style>
     .page-wrapper
     {
-       height:400px;
-       width:600px;
+      overflow: hidden; 
+      text-align: center;
+    }
+    .center
+    {
         margin:0 auto;
     }
+    .page-wrapper .details
+    {
+       height:20px; 
+       background-color:#eeeeee;
+       margin:0 0 10px 0;
+        
+    }
 </style>
-
+<script>
+    
+    window.onload=(function(){
+        
+        new Game();
+        
+    })
+  
+</script>
 
 
 </head>
 
 
-<body onload="new Game();">
+<body>
     <div class='page-wrapper'>
-            <canvas id="glcanvas"> 
+        
+        <div class="details" ><label> Camera Translation : </label>  <span id="translation"> </span></div>
+            <canvas class="center" id="glcanvas"> 
 
             </canvas>
     </div>
