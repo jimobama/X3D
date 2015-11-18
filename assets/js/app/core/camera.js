@@ -21,7 +21,7 @@ var Camera=(function(position,forward, up){
  
 });
  Camera.yAxis =new Vector3f(0,1,0);
-Camera.SPEED=0.05;
+Camera.SPEED=0.01;
  
 Camera.prototype.__init__=(function(position,forward, up){
         c__position= (position instanceof Vector3f)?position:(new Vector3f(0,0,0)) ;         
@@ -68,31 +68,39 @@ Camera.prototype.getUp=(function(){
       
   });
   
+  Camera.prototype.getLeft=(function(){
+      return c__forward.cross(c__up);
+  });
+  
   Camera.prototype.enableKeyboard=(function(keyboard){
       
-     
+      
       if(keyboard instanceof Keyboard)
       {
+          var left = this.getLeft();
           keyboard.setKeyboardListener((function(action,key,code,character){
          
              if(action === Keyboard.KEY_DOWN){           
-               if(key=== Keyboard.Keys.ARROW_UP){
+               if(key=== Keyboard.Keys.ARROW_UP){                
+                  c__position = c__position.add(c__forward.mul(Camera.SPEED * Time.getDelta()));
+                 
                 
-                c__position = c__position.add(c__forward.mul(Camera.SPEED * Time.getDelta()));
-               console.log("Zoom In "+c__position)
-                
-               }else if(key=== Keyboard.Keys.ARROW_DOWN)
+               }
+               if(key=== Keyboard.Keys.ARROW_DOWN)
                {
                  c__position = c__position.minus(c__forward.mul(Camera.SPEED * Time.getDelta()));
-                  console.log("Zoom out "+c__position)
+                  
                    
                }
-               else if(key=== Keyboard.Keys.ARROW_LEFT)
+               if(key=== Keyboard.Keys.ARROW_LEFT)
                {
-                   c__position= c__position.add(c__forward.cross(c__up)).mul(Camera.SPEED * Time.getDelta()).normalize();
+                   c__position= c__position.add(left.mul(Camera.SPEED * Time.getDelta()));
+                   
+                    //console.log("Zoom In "+c__position)
                }
-               else if(key=== Keyboard.Keys.ARROW_RIGHT){
-                    c__position= c__position.minus(c__forward.cross(c__up)).mul(Camera.SPEED * Time.getDelta()).normalize();
+              if(key=== Keyboard.Keys.ARROW_RIGHT){
+                     c__position= c__position.minus(left.mul(Camera.SPEED * Time.getDelta()));
+                    //console.log("Zoom out "+c__position)
                    
                }
            
