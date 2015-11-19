@@ -135,28 +135,6 @@ Matrix3f.prototype.toString=(function(){
 });
 
 
-Matrix3f.value_ptr=(function(mat3f){
-     
-    var floatArray=[];
-   
-    if(mat3f instanceof Matrix3f)
-    {
-        //the matrix need to first transpose before opengl can accept it
-        mat3f.transpose();
-          
-        for(var i=0; i < 3; i++)
-        {
-            
-            for(var j=0; j< 3; j++)
-            {                
-                floatArray.push(mat3f.get1f(i,j));
-            }
-        }
-        
-    }
-    var float32Arr= new Float32Array(floatArray);  
-   return float32Arr;
-});
 
 Matrix3f.prototype.transpose=(function(){
     

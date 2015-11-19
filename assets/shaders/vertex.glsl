@@ -1,8 +1,18 @@
+
+
+#ifdef GL_FRAGMENT_PRECISION_HIGH
 precision highp float;
+#else
+precision mediump float;
+#endif
+
 attribute vec3  position;
 attribute vec2  textCoord;
-varying highp vec2 vTextureCoord;
+varying vec2 vTextureCoord;
 uniform  mat4 transform3D;
+
+
+
 
 
 

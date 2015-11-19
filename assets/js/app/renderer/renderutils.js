@@ -12,10 +12,12 @@ var RenderUtils=(function(){
 
 
 RenderUtils.clear=(function(gl, r,g,b,a){
-      gl.clearColor(r, g, b, a);
+   
+      gl.clearColor(r,g,b,a);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    
 });
+
+
 
 
 RenderUtils.getSupportedExtensions=(function(gl){
@@ -25,6 +27,9 @@ RenderUtils.getSupportedExtensions=(function(gl){
 
 RenderUtils.initialize=(function(gl){
     
+    gl.frontFace(gl.GL_CW);
    gl.enable(gl.DEPTH_TEST);
    gl.depthFunc(gl.LEQUAL);
+   
+   
 });

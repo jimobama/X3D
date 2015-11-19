@@ -28,9 +28,14 @@ Transform3D.ZFAR =1000.0;
 
 Transform3D.prototype.setCamera = (function(camera)
 {
- 
      t_camera = camera;
 });
+
+Transform3D.prototype.getCamera = (function(){
+     return t_camera;
+});
+
+
 Transform3D.prototype.__init__=(function(position,rotation,scale){
     
    t_camera = new Camera();
@@ -84,19 +89,16 @@ Transform3D.prototype.setPersp=(function(fov,width,height, near, far){
 
 Transform3D.prototype.getTransform=(function(){
     
-     var translationMatrix =Matrix4f.initTranslate(t__position);
-     var scaleMatrix =      Matrix4f.initScale(t__scale);
-     var rotationMatrix =  Matrix4f.initRotation(t__rotation);  
+     var translationMatrix =xgl.traslate(t__position);
+     var scaleMatrix =      xgl.scale3fv(t__scale);
+     var rotationMatrix =   xgl.rotation3fv(t__rotation);  
      return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));//
 });
 
 Transform3D.prototype.getPerspTransform =(function(){
     
     var __transformMatrix= this.getTransform(); 
-    var __projectionMatrix = Matrix4f.initPersp(Transform3D.FOV,Transform3D.WIDTH/Transform3D.HEIGHT,Transform3D.ZNEAR,Transform3D.ZFAR);
- 
-    var camTransformation=  t_camera.getTransform();
-  
-     
+    var __projectionMatrix = xgl.persp(Transform3D.FOV,Transform3D.WIDTH/Transform3D.HEIGHT,Transform3D.ZNEAR,Transform3D.ZFAR);
+    var camTransformation=  t_camera.getTransform();  
     return __projectionMatrix.mul(camTransformation.mul(__transformMatrix));
 });

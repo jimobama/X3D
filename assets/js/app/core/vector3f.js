@@ -63,6 +63,14 @@ Vector3f.prototype.mul=(function(scaler)
   return new Vector3f(x,y,z);
    
 });
+Vector3f.prototype.abs=(function(){
+    
+  this.x = Math.abs(this.x) ;
+  this.y=  Math.abs(this.y) ;
+  this.z = Math.abs(this.z);
+  return this;
+});
+
 
 Vector3f.prototype.minus=(function(vec3)
 {
@@ -85,14 +93,11 @@ Vector3f.prototype.negate=(function()
 
 
 
-Vector3f.prototype.rotateZ=(function(angle, axis){
-    //To rotate x-axis will plug our y and z values as the x and y used the normal two 2d to make the rotation    
-   var  zAxis =  new Vector2f(this.x,this.y);
-   var  zRotation =zAxis.rotate(angle);
-   //convert to vector 3f with unit 
-   var    z = new  Vector3f(zRotation, 1);
-  return z;
-    
+Vector3f.prototype.rotateX=(function(angle){
+    var v2d = new Vector2f(this.y,this.z);
+    var rotation2d = v2d.rotate(angle);
+    var result= new Vector3f(rotation2d,rotation2d.getAngle());
+    return result;
 });
 
 
@@ -139,7 +144,7 @@ Vector3f.prototype.dot=(function(vec3f){
 
 Vector3f.prototype.normalize=function()
 { 
-    var len=(this.length() !== 0)?this.length():1;   
+    var len=this.length();   
     var xAxis = this.x/len;
     var yAxis = this.y/len;
     var zAxis = this.z/len;

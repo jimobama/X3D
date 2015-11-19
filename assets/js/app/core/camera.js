@@ -25,7 +25,7 @@ Camera.SPEED=0.01;
  
 Camera.prototype.__init__=(function(position,forward, up){
         c__position= (position instanceof Vector3f)?position:(new Vector3f(0,0,0)) ;         
-        c__forward =(forward instanceof Vector3f)?forward:  (new Vector3f(0,0,-1)) ;
+        c__forward =(forward instanceof Vector3f)?forward:  (new Vector3f(0,0,1)) ;
         c__up= (up instanceof Vector3f)?up: Camera.yAxis ;
         c__target= new Vector3f(0,0,0);
         c__forward.normalize();
@@ -47,9 +47,7 @@ Camera.prototype.getUp=(function(){
      c__position = (pos instanceof Vector3f)?pos: c__position;
  });
  
-  Camera.prototype.move=(function(dir, amount){      
-      c__position = c__position.add(dir).mul(amount);
-  });
+
  
 
 
@@ -71,47 +69,54 @@ Camera.prototype.getUp=(function(){
   Camera.prototype.getLeft=(function(){
       return c__forward.cross(c__up);
   });
-  
-  Camera.prototype.enableKeyboard=(function(keyboard){
+  Camera.prototype.move=(function(dir, amount){      
+      c__position = c__position.add(dir.mul(amount));
+  });
+  Camera.prototype.setEnableKeyboard=(function(keyboard){
       
-      
-      if(keyboard instanceof Keyboard)
+       var amount =Camera.SPEED * Time.getDelta();
+      if(in_input.isKeyDown(Keyboard.Keys.K_W))
+       {
+          this.move(c__forward, amount );
+       }
+     if(in_input.isKeyDown(Keyboard.Keys.K_S))
       {
-          var left = this.getLeft();
-          keyboard.setKeyboardListener((function(action,key,code,character){
-         
-             if(action === Keyboard.KEY_DOWN){           
-               if(key=== Keyboard.Keys.ARROW_UP){                
-                  c__position = c__position.add(c__forward.mul(Camera.SPEED * Time.getDelta()));
-                 
-                
-               }
-               if(key=== Keyboard.Keys.ARROW_DOWN)
-               {
-                 c__position = c__position.minus(c__forward.mul(Camera.SPEED * Time.getDelta()));
-                  
-                   
-               }
-               if(key=== Keyboard.Keys.ARROW_LEFT)
-               {
-                   c__position= c__position.add(left.mul(Camera.SPEED * Time.getDelta()));
-                   
-                    //console.log("Zoom In "+c__position)
-               }
-              if(key=== Keyboard.Keys.ARROW_RIGHT){
-                     c__position= c__position.minus(left.mul(Camera.SPEED * Time.getDelta()));
-                    //console.log("Zoom out "+c__position)
-                   
-               }
-           
-           }
-         
-           }));
+       this.move(c__forward.negate(), amount );
+      }
+     if(in_input.isKeyDown(Keyboard.Keys.K_A))
+      {
+          this.move(this.getLeft(), amount );
+      } 
+     if(in_input.isKeyDown(Keyboard.Keys.K_D))
+      {
+        this.move(this.getLeft().negate(), amount );
+      
+      } 
+     var rotateAmount =Camera.SPEED * Time.getDelta();
+      
+      if(in_input.isKeyDown(Keyboard.Keys.ARROW_UP))
+      {
+          this.rotateX(rotateAmount,Camera.yAxis);
       }
       
       
+      
   });
-
+  
+  
+ Camera.prototype.rotateX=(function(angle,axis)
+ {
+     if(axis instanceof Vector3f)
+     {
+         var hAxis = Camera.yAxis.cross(c__forward);
+         hAxis= hAxis.normalize();
+        
+        
+         
+         
+     }
+     
+ });
    
  Camera.prototype.getTarget=(function(){
        
@@ -122,7 +127,7 @@ Camera.prototype.getUp=(function(){
       var pos = this.getPosition();
     
       
-      var view=  Matrix4f.lookAt( pos,pos.add(c__forward),this.getUp());
+      var view=  xgl.lookAt( pos,pos.add(c__forward),this.getUp());
     
       return view;// rotation.mul(translation);
        

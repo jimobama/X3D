@@ -9,24 +9,45 @@
 
 
  var Shader = (function(gl){   
-     this.__gl= gl;
+      var __gl;
      var __glProgram=null;
      var __listShader=null;
-     this.__uniforms ={};
+     var __uniforms ;
+     
+     this.__call__=(function(self,glContext){
+         
+         self.__construct(glContext);
+         
+     })(this,gl);
    
    
      
  });
- Shader.prototype.VERTEX_SHADER=0;
- Shader.prototype.FRAGMENT_SHADER=1;
- Shader.prototype.GEOMETRY_SHADER=2;
- Shader.prototype.PATH="assets/shaders/";
+ Shader.VERTEX_SHADER=0;
+ Shader.FRAGMENT_SHADER=1;
+ Shader.GEOMETRY_SHADER=2;
+ Shader.PATH="assets/shaders/";
+ 
+ Shader.prototype.__construct=(function(glContext){
+     
+     __gl=glContext;
+     __uniforms={};
+     
+     var gl= this.getContext();
+     if(gl instanceof WebGLRenderingContext)
+     {// if(gl instanceof )
+     __glProgram= gl.createProgram();
+      __listShader= new  Array();      
+    
+     }
+     else{
+        console.log("Couldnt create gl context cause invalid object passed");
+     }
+ });
+ 
  
  Shader.prototype.addUniform=(function(name){
-      
-      
       var gl = this.getContext();
-     
       var  uniformLocation = gl.getUniformLocation(this.getProgram(), name);
       if(uniformLocation ===null){
           
@@ -35,7 +56,7 @@
       }
       //add the   alert("ss d"+name);
         
-      this.__uniforms[name]= uniformLocation;
+      __uniforms[name]= uniformLocation;
    
    
       
@@ -45,19 +66,20 @@
  Shader.prototype.getAttributeLocation=function(attr){        
      
      var gl = this.getContext();      
-     var index= gl.getAttribLocation(this.getProgram(), attr);     
+     var index= gl.getAttribLocation(this.getProgram(), attr); 
+     
      return index;
- }
+ };
  Shader.prototype.setUniform1f=(function(name, value)
  {
      var gl = this.getContext();
-     gl.uniform1f( this.__uniforms[name], value);
+     gl.uniform1f(__uniforms[name], parseFloat(value));
  });
  
  Shader.prototype.setUniform1i=(function(name, value)
  {
       var gl = this.getContext();
-      gl.uniform1i( this.__uniforms[name], value); 
+      gl.uniform1i(__uniforms[name], value); 
  });
  
   Shader.prototype.setUniformMatrix4f=(function(name, matr)
@@ -65,7 +87,7 @@
      var gl = this.getContext();
      if(gl.uniformMatrix4fv && matr instanceof Matrix4f){
        var gl = this.getContext();
-       gl.uniformMatrix4fv(this.__uniforms[name],gl.FALSE, Matrix4f.value_ptr(matr));
+       gl.uniformMatrix4fv(__uniforms[name],gl.FALSE, xgl.value_ptr(matr));
    }
  });
  Shader.prototype.setUniformMatrix3f=(function(name,mat3f){
@@ -73,7 +95,7 @@
      
     var gl = this.getContext();
     if(gl.uniformMatrix3fv && mat3f instanceof Matrix3f){        
-      gl.uniformMatrix3fv(this.__uniforms[name], gl.FALSE, Matrix3f.value_ptr(mat3f));
+      gl.uniformMatrix3fv(__uniforms[name], gl.FALSE, xgl.value_ptr(mat3f));
        
     }
      
@@ -84,7 +106,7 @@ Shader.prototype.setUniformVector2f=(function(name, value)
  {
     if(value instanceof  Vector2f){
        var gl = this.getContext();
-       gl.uniform2f(this.__uniforms[name], value.x, value.y);
+       gl.uniform2f(__uniforms[name], parseFloat(value.x), parseFloat(value.y));
    }
  });
  
@@ -94,7 +116,7 @@ Shader.prototype.setUniformVector2f=(function(name, value)
     if(value  instanceof Vector3f)
     {
       var gl = this.getContext();
-     gl.uniform3f(this.__uniforms[name], value.x, value.x, value.z);
+     gl.uniform3f(__uniforms[name], parseFloat(value.x), parseFloat(value.x), parseFloat(value.z));
     }
  });
  
@@ -104,22 +126,9 @@ Shader.prototype.setUniformVector2f=(function(name, value)
      
  });
  
- 
- Shader.prototype.init=(function(){
-     var gl= this.getContext();
-     if(gl instanceof WebGLRenderingContext)
-     {// if(gl instanceof )
-     __glProgram= gl.createProgram();
-      __listShader= new  Array();      
-    
-     }
-     else{
-        Console.log("Couldnt create gl context cause invalid object passed");
-     }
-    
- });
+
  Shader.prototype.getScript=(function(filename){
-    var file = new FileRequest(this.PATH+filename);   
+    var file = new FileRequest(Shader.PATH+filename);   
     var source="";
     source= file.load(); 
 
@@ -151,7 +160,7 @@ Shader.prototype.setUniformVector2f=(function(name, value)
  
  
 Shader.prototype.getContext=function(){        
-    return this.__gl;
+    return __gl;
 }
 Shader.prototype.getType=(function(type)
 {
@@ -259,19 +268,8 @@ Shader.prototype.use=(function(){
     var gl = this.getContext();
     gl.useProgram(this.getProgram());
    
-})
+});
 
-Shader.prototype.update=(function(material){
-    this.use();
-    if(material instanceof Material)
-    {
-        var texture = material.getTexture();
-        var color   =material.getColor();
-        if(texture !=null){
-             
-        texture.bind(this.getContext());
-      }
-       
-         
-    }
+Shader.prototype.update=(function(material){  
+  
 });
