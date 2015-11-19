@@ -40,7 +40,7 @@ Game.prototype.__construct=(function(){
     texture = Texture.load(display.getContext(),"carpet.png");
     material= new Material(texture, new Vector3f(1,1.0,1.0));
     
-    var light = new DirectionLight( new BaseLight(new Vector3f(1,1,1),0.8), new Vector3f(1,1,1));
+    var light = new DirectionLight( new BaseLight(new Vector3f(1,0,0),0.8), new Vector3f(1,1,1));
     
     shader.addDirectionLight(light);
     shader.addAmbientLight(new Vector3f(0.1,0.1,0.1));
@@ -95,7 +95,7 @@ Game.prototype.__update__=(function(delta){
        }
       
     }));
-   tran3f.setRotation(new Vector3f(Math.sin(speed )*20,Math.cos(speed)*60,0));
+   tran3f.setRotation(new Vector3f(Math.sin(speed )*20,Math.cos(speed)*20,0));
    shader.update(material,tran3f);
    speed+=0.01; 
 });

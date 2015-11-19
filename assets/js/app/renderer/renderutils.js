@@ -27,9 +27,12 @@ RenderUtils.getSupportedExtensions=(function(gl){
 
 RenderUtils.initialize=(function(gl){
     
-    gl.frontFace(gl.GL_CW);
-   gl.enable(gl.DEPTH_TEST);
-   gl.depthFunc(gl.LEQUAL);
+    gl.frontFace(gl.CW);
+    gl.cullFace(gl.BACK);
+    gl.enable(gl.CULL_FACE);
+    gl.enable(gl.DEPTH_TEST);
+    gl.enable(gl.FRAMEBUFFER_SRGB);
+    gl.depthFunc(gl.LEQUAL);
    
    
 });
