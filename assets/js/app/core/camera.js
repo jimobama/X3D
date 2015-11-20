@@ -77,11 +77,11 @@ Camera.prototype.getUp=(function(){
        var amount =Camera.SPEED * Time.getDelta();
       if(in_input.isKeyDown(Keyboard.Keys.K_W))
        {
-          this.move(c__forward, amount );
+          this.move(this.getUp().negate(), amount );
        }
      if(in_input.isKeyDown(Keyboard.Keys.K_S))
       {
-       this.move(c__forward.negate(), amount );
+       this.move(this.getUp(), amount );
       }
      if(in_input.isKeyDown(Keyboard.Keys.K_A))
       {
@@ -92,13 +92,19 @@ Camera.prototype.getUp=(function(){
         this.move(this.getLeft().negate(), amount );
       
       } 
-     var rotateAmount =Camera.SPEED * Time.getDelta();
+  
       
-      if(in_input.isKeyDown(Keyboard.Keys.ARROW_UP))
-      {
-          this.rotateX(rotateAmount,Camera.yAxis);
-      }
-      
+       
+         if(in_input.isKeyDown(Keyboard.Keys.K_Z)){
+             this.move(c__forward.negate(), amount );
+          }
+         
+          if(in_input.isKeyDown(Keyboard.Keys.K_X)){
+               
+                this.move(c__forward, amount );
+            }
+        
+     
       
       
   });

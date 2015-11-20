@@ -78,7 +78,7 @@ Mesh.prototype.calcNormals=(function(vertices, indices){
        var vec2 = vertices[i2].getPosition().minus(vertices[i0].getPosition());
        var normal = (vec1.cross(vec2));
        normal=normal.normalize();
-       console.log(normal);
+      
        vertices[i0].setNormal(vertices[i0].getNormal().add(normal));
        vertices[i1].setNormal(vertices[i0].getNormal().add(normal));
        vertices[i2].setNormal(vertices[i0].getNormal().add(normal));

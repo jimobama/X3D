@@ -24,8 +24,8 @@ Material.prototype.__construct=(function(texture,color, specularIntensity, specu
 {
      __texture =   texture;
      __color   =   color;
-   __specularIntensity =(typeof specularIntensity !=="undefined")? specularIntensity:1.0 ;
-   __specularExponent =(typeof specularExponent !=="undefined")? specularExponent:64.0;
+   __specularIntensity =(typeof specularIntensity !=="undefined")? specularIntensity:2.0 ;
+   __specularExponent =(typeof specularExponent !=="undefined")? specularExponent:32.0;
    
     
 });

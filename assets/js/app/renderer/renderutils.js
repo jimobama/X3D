@@ -7,32 +7,39 @@
 
 var RenderUtils=(function(){
     
-    
 });
 
 
 RenderUtils.clear=(function(gl, r,g,b,a){
-   
       gl.clearColor(r,g,b,a);
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+     if (gl.clearDepth) gl.clearDepth(1.0); else gl.clearDepthf(1.0);
 });
-
-
-
-
 RenderUtils.getSupportedExtensions=(function(gl){
     return gl.getSupportedExtensions();
 });
 
 
 RenderUtils.initialize=(function(gl){
-    
     gl.frontFace(gl.CW);
-    gl.cullFace(gl.BACK);
-   // gl.enable(gl.CULL_FACE);
     gl.enable(gl.DEPTH_TEST);
-    //gl.enable(gl.FRAMEBUFFER_SRGB);
+    //gl.enable(gl.CULL_FACE);
+    gl.cullFace(gl.BACK);
+    
+    
+    //gl.enable(gl.DEPTH_CLAMP);
+   
+    gl.enable(gl.FRAMEBUFFER_SRGB);
     gl.depthFunc(gl.LEQUAL);
+    
+
    
-   
+});
+RenderUtils.isExtensitionEnable =(function(gl, extname)
+{
+    var e = gl.getExtension(extname);
+    if(!e){
+        return false;
+    }
+    return true;
 });

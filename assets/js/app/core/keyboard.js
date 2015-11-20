@@ -29,7 +29,8 @@ Keyboard.prototype.__construct=(function(view)
          window.addEventListener("keydown",(function(event){
                 var charCode = event.charCode || event.keyCode ;
                 var character= String.fromCharCode(charCode); 
-                var key=    character.toUpperCase().charCodeAt();
+                var key=    character.toUpperCase().charCodeAt(); 
+               
                 k_onkeyListener(Keyboard.KEY_DOWN, key,charCode,character);
          }));
          
@@ -58,6 +59,11 @@ Keyboard.Keys=(function(){
  });
  Keyboard.Keys.K_TAB   = 9;
  Keyboard.Keys.K_ENTER = 13;
+ 
+ 
+ Keyboard.Keys.K_CTRL= 17;
+ Keyboard.Keys.K_ALT= 18;
+ Keyboard.Keys.K_ALTGR= 17;
  //num keys
 Keyboard.Keys.K_NUM1 = 35;
 Keyboard.Keys.K_NUM2 = 40;
@@ -134,3 +140,7 @@ Keyboard.Keys.K_CLOSE_BRACE = 125;
 Keyboard.Keys.K_CLOSE_BRACKET = 93;
 Keyboard.Keys.K_AND = 124;
 Keyboard.Keys.K_BACKWARD_SLASH= 92;
+
+//the keypad minus
+Keyboard.Keys.K_PLUS= 75;
+Keyboard.Keys.K_MINUS= 75;

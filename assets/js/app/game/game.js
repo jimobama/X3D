@@ -40,26 +40,61 @@ Game.prototype.__construct=(function(){
     texture = Texture.load(display.getContext(),"carpet.png");
     material= new Material(texture, new Vector3f(1,1.0,1.0));
     
-    var light = new DirectionLight( new BaseLight(new Vector3f(1,0,0),0.8), new Vector3f(1,1,1));
+    var pointLights =[
+        
+        new PointLight(new BaseLight(new Vector3f(1,0,0),0.8), new Attenuation(0,0,1), new Vector3f(-2,1,3.0)),
+        new PointLight(new BaseLight(new Vector3f(0,1,0),0.8), new Attenuation(0,0,1), new Vector3f(-2,1,3.0))
+       
+    ];
     
-    shader.addDirectionLight(light);
     shader.addAmbientLight(new Vector3f(0.1,0.1,0.1));
+    //shader.setPointLights(pointLights);
+    shader.addDirectionLight(new DirectionLight( new BaseLight(new Vector3f(1,1,1),0.2), new Vector3f(1,1,1)));
+   
     
     model = new Model();
     model.load("cude.obj");
- 
-     
-   
     var vertices=[
-       new Vertex( new Vector3f(-1.0,  -1.0,  0.0),null, new Vector2f(0.0 ,0.0)),
-       new Vertex( new Vector3f(-1.0, 1.0,  0.0),null, new Vector2f( 0.0 , 1.0)),      
-       new Vertex( new Vector3f(1.0,  1.0, 0.0),null, new Vector2f(1.0 , 1.0)), 
-       new Vertex( new Vector3f(1.0, -1.0, 0.0),null, new Vector2f(1.0 , 0.0))   
+        //front
+       new Vertex( new Vector3f( -1.0, -1.0,  1.0),null, new Vector2f(0.0 ,0.0)),
+       new Vertex( new Vector3f( 1.0, -1.0,  1.0),null, new Vector2f( 0.0 , 1.0)),      
+       new Vertex( new Vector3f(1.0,  1.0,  1.0),null, new Vector2f(1.0 , 1.0)), 
+       new Vertex( new Vector3f(-1.0,  1.0,  1.0),null, new Vector2f(1.0 , 0.0)),   
+       //back
+       new Vertex( new Vector3f(-1.0, -1.0, -1.0),null, new Vector2f(0.0 ,0.0)),
+       new Vertex( new Vector3f(-1.0,  1.0, -1.0),null, new Vector2f( 0.0 , 1.0)),      
+       new Vertex( new Vector3f( 1.0,  1.0, -1.0),null, new Vector2f(1.0 , 1.0)), 
+       new Vertex( new Vector3f(1.0, -1.0, -1.0),null, new Vector2f(1.0 , 0.0))  , 
+       //top
+        new Vertex( new Vector3f( -1.0,  1.0, -1.0),null, new Vector2f(0.0 ,0.0)),
+       new Vertex( new Vector3f(- -1.0,  1.0,  1.0),null, new Vector2f( 0.0 , 1.0)),      
+       new Vertex( new Vector3f(1.0,  1.0,  1.0),null, new Vector2f(1.0 , 1.0)), 
+       new Vertex( new Vector3f(1.0,  1.0, -1.0),null, new Vector2f(1.0 , 0.0))  , 
+       //bottom
+        new Vertex( new Vector3f(-1.0, -1.0, -1.0),null, new Vector2f(0.0 ,0.0)),
+       new Vertex( new Vector3f( 1.0, -1.0, -1.0),null, new Vector2f( 0.0 , 1.0)),      
+       new Vertex( new Vector3f(1.0, -1.0,  1.0),null, new Vector2f(1.0 , 1.0)), 
+       new Vertex( new Vector3f(-1.0, -1.0,  1.0),null, new Vector2f(1.0 , 0.0))   ,
+       //right
+       new Vertex( new Vector3f(1.0, -1.0, -1.0),null, new Vector2f(0.0 ,0.0)),
+       new Vertex( new Vector3f(1.0,  1.0, -1.0),null, new Vector2f( 0.0 , 1.0)),      
+       new Vertex( new Vector3f(1.0,  1.0,  1.0),null, new Vector2f(1.0 , 1.0)), 
+       new Vertex( new Vector3f(1.0, -1.0,  1.0),null, new Vector2f(1.0 , 0.0))   ,
+       //left
+       new Vertex( new Vector3f(-1.0, -1.0, -1.0),null, new Vector2f(0.0 ,0.0)),
+       new Vertex( new Vector3f(-1.0, -1.0,  1.0),null, new Vector2f( 0.0 , 1.0)),      
+       new Vertex( new Vector3f(-1.0,  1.0,  1.0),null, new Vector2f(1.0 , 1.0)), 
+       new Vertex( new Vector3f(-1.0,  1.0, -1.0),null, new Vector2f(1.0 , 0.0))
+       
    ];
    
    var indices=[
-        0,1,2,
-        0,2,3
+         0, 1, 2,      0, 2, 3,    // Front face
+         4, 5, 6,      4, 6, 7,    // Back face
+         8, 9, 10,     8, 10, 11,  // Top face
+         12, 13, 14,   12, 14, 15, // Bottom face
+         16, 17, 18,   16, 18, 19, // Right face
+         20, 21, 22,   20, 22, 23  // Left face
    ];
    
  
@@ -70,6 +105,9 @@ Game.prototype.__construct=(function(){
 
    display.update(this.__run__);
 });
+
+
+
 Game.prototype.__update__=(function(delta){
     
     __camera.setEnableKeyboard(keyboard);
