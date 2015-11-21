@@ -38,19 +38,9 @@ Game.prototype.__construct=(function(){
     __camera= new Camera();
     tran3f.setCamera(__camera);
     texture = Texture.load(display.getContext(),"carpet.png");
-    material= new Material(texture, new Vector3f(1,1.0,1.0));
+    material= new Material(texture, new Vector3f(0,0.0,0.0));
     
-    var pointLights =[
-        
-        new PointLight(new BaseLight(new Vector3f(1,0,0),0.8), new Attenuation(0,0,1), new Vector3f(-2,1,3.0)),
-        new PointLight(new BaseLight(new Vector3f(0,1,0),0.8), new Attenuation(0,0,1), new Vector3f(-2,1,3.0))
-       
-    ];
-    
-    shader.addAmbientLight(new Vector3f(0.1,0.1,0.1));
-    //shader.setPointLights(pointLights);
-    shader.addDirectionLight(new DirectionLight( new BaseLight(new Vector3f(1,1,1),0.2), new Vector3f(1,1,1)));
-   
+ 
     
     model = new Model();
     model.load("cude.obj");
@@ -97,7 +87,17 @@ Game.prototype.__construct=(function(){
          20, 21, 22,   20, 22, 23  // Left face
    ];
    
- 
+   
+      var pl1=   new PointLight(new BaseLight(new Vector3f(0.0,0,1),0.5), new Attenuation(0.1,0.1,1), new Vector3f(-2,1,3.0));
+      var pl2=  new PointLight(new BaseLight(new Vector3f(1,0,0.0),0.5), new Attenuation(0.1,0.1,1), new Vector3f(-1,-1,3.0));
+     
+     
+
+    var pointLights=[pl1,pl2];
+    shader.addAmbientLight(new Vector3f(0.1,0.1,0.1));
+    shader.setPointLights(pointLights);
+   shader.addDirectionLight(new DirectionLight( new BaseLight(new Vector3f(1,1,1),0.2), new Vector3f(1,1,1)));
+   
    keyboard = display.getKeyboard();
    in_input = new Input(display);
    g__mouse= display.getMouse()  ;
@@ -131,7 +131,6 @@ Game.prototype.__update__=(function(delta){
            v3= v3.rotateX(30);
           
        }
-      
     }));
    tran3f.setRotation(new Vector3f(Math.sin(speed )*20,Math.cos(speed)*20,0));
    shader.update(material,tran3f);
