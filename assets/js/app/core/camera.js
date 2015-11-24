@@ -44,7 +44,7 @@ Camera.prototype.getUp=(function(){
  });
  
  Camera.prototype.setPosition=(function(pos){     
-     c__position = (pos instanceof Vector3f)?pos: c__position;
+     c__position = (pos instanceof Vectora3f)?pos: c__position;
  });
  
 
@@ -66,7 +66,7 @@ Camera.prototype.getUp=(function(){
       
   });
   
-  Camera.prototype.getLeft=(function(){
+  Camera.prototype.getRight=(function(){
       return c__forward.cross(c__up);
   });
   Camera.prototype.move=(function(dir, amount){      
@@ -85,11 +85,11 @@ Camera.prototype.getUp=(function(){
       }
      if(in_input.isKeyDown(Keyboard.Keys.K_A))
       {
-          this.move(this.getLeft(), amount );
+          this.move(this.getRight().negate(), amount );
       } 
      if(in_input.isKeyDown(Keyboard.Keys.K_D))
       {
-        this.move(this.getLeft().negate(), amount );
+        this.move(this.getRight(), amount );
       
       } 
   

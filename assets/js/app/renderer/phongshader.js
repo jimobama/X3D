@@ -63,6 +63,7 @@ PhongShader.prototype.__initialize=(function(glContext){
        this.addUniform("texture");
        this.addUniform(attribute+".specularIntensity");
        this.addUniform(attribute+".specularExponent");
+       this.addUniform(attribute+".ambientColor");
  });
  
 
@@ -74,7 +75,9 @@ PhongShader.prototype.__initialize=(function(glContext){
      if(material instanceof Material){  
          
        var texture = material.getTexture();
-       this.setUniformVector3f(attribute+".color", material.getColor());      
+       this.setUniformVector3f(attribute+".color", material.getColor());  
+       this.setUniformVector3f(attribute+".ambientColor", material.getAmbientColor()); 
+     
        this.setUniform1f(attribute+".specularIntensity",material.getSpecularIntensity());
        this.setUniform1f(attribute+".specularExponent",material.getSpecularExponent());
      if(texture !==null){
@@ -118,9 +121,9 @@ PhongShader.prototype.__initialize=(function(glContext){
         
        if(pointLight instanceof PointLight )
        {
-           
+         
            this.setUniformBaseLight(attribute+".baseLight",pointLight.getBaseLight());
-           this.setUniformAttenuation(attribute+".attenuation", pointLight.getAttenuation());
+           this.setUniformAttenuation(attribute+".attenu", pointLight.getAttenuation());
            this.setUniformVector3f(attribute+".position", pointLight.getPosition());
        }
         
@@ -150,7 +153,7 @@ PhongShader.prototype.__initialize=(function(glContext){
         
          this.addUniform(attribute+".position");
          this.addUniformBaseLight(attribute+".baseLight");
-         this.addUniformAttenuation(attribute+".attenuation");
+         this.addUniformAttenuation(attribute+".attenu");
     });
     
   
@@ -165,12 +168,14 @@ PhongShader.prototype.__initialize=(function(glContext){
  });
  
   PhongShader.prototype.setUniformBaseLight=(function(attribute,baseLight){
-     
+    
      if(baseLight instanceof BaseLight)
      {
-        
+         
          this.setUniformVector3f(attribute+".color",baseLight.getColor());
          this.setUniform1f(attribute+".intensity",baseLight.getIntensity());
+         
+       
      }
      
      
@@ -207,9 +212,9 @@ PhongShader.prototype.update=(function(material,transform){
    }
    
    if(__pointLights instanceof Array){
-      for(var i=0; i < PhongShader.MAX_POINT_LIGHT; i++){
+      for(var i = 0; i < PhongShader.MAX_POINT_LIGHT; i++){
           this.setUniformPointLight("pointLights["+i+"]", __pointLights[i]);
-         
+     
       }
     }
    

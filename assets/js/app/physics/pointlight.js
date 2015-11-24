@@ -7,9 +7,9 @@
 
 var PointLight =(function(baseLight, attenuation, position){
    
-   var p_baseLight;
-   var  p__attenu;
-   var  p__position;
+  this.__baseLight;
+  this.__attenu;
+  this.__position;
    
    this.__call__=(function(self,baseLight,attenuation, position){
        self.__construct(baseLight,attenuation, position);
@@ -19,21 +19,19 @@ var PointLight =(function(baseLight, attenuation, position){
 
 
 PointLight.prototype.__construct=(function(baseLight,attenuation, position){
-    
-    
-      p__attenu=(attenuation instanceof Attenuation )?attenuation:null;
-      p__position =(position instanceof Vector3f )?position:null;
-      p_baseLight= (baseLight instanceof BaseLight)?baseLight:null; ;
+      this.__attenu= (attenuation instanceof Attenuation )?attenuation:null;
+      this.__position =(position instanceof Vector3f )?position:null;
+      this.__baseLight= (baseLight instanceof BaseLight)?baseLight:null;
       
      
 });
 PointLight.prototype.getBaseLight=(function(){
-     return  p_baseLight;
+     return  this.__baseLight;
 });
 PointLight.prototype.getAttenuation=(function(){
-     return  p__attenu;
+     return  this.__attenu;
 });
 PointLight.prototype.getPosition=(function(){
-      return p__position;
+      return this.__position;
 });
 

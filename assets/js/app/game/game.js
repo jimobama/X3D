@@ -6,7 +6,7 @@
 
 var in_input=null;
 var Game =(function(){
-
+   var   smesh2;
     var display;
     var shader;
     var mesh;
@@ -38,12 +38,11 @@ Game.prototype.__construct=(function(){
     __camera= new Camera();
     tran3f.setCamera(__camera);
     texture = Texture.load(display.getContext(),"carpet.png");
-    material= new Material(texture, new Vector3f(0,0.0,0.0));
-    
+    material= new Material(texture, new Vector3f(1,1.0,1.0));
+ 
  
     
-    model = new Model();
-    model.load("cude.obj");
+   
     var vertices=[
         //front
        new Vertex( new Vector3f( -1.0, -1.0,  1.0),null, new Vector2f(0.0 ,0.0)),
@@ -88,22 +87,31 @@ Game.prototype.__construct=(function(){
    ];
    
    
-      var pl1=   new PointLight(new BaseLight(new Vector3f(0.0,0,1),0.5), new Attenuation(0.1,0.1,1), new Vector3f(-2,1,3.0));
-      var pl2=  new PointLight(new BaseLight(new Vector3f(1,0,0.0),0.5), new Attenuation(0.1,0.1,1), new Vector3f(-1,-1,3.0));
-     
+      var pl1=   new PointLight(new BaseLight(new Vector3f(0.0,0,1),0.8), new Attenuation(0.1,0.1,1), new Vector3f(-2,1,3.0));
+      var pl2=  new PointLight(new BaseLight(new Vector3f(1,0,0.0),0.8), new Attenuation(0.1,0.1,1), new Vector3f(-1,1,3.0));
+    
      
 
-    var pointLights=[pl1,pl2];
-    shader.addAmbientLight(new Vector3f(0.1,0.1,0.1));
-    shader.setPointLights(pointLights);
-   shader.addDirectionLight(new DirectionLight( new BaseLight(new Vector3f(1,1,1),0.2), new Vector3f(1,1,1)));
+    var pointLights=[pl1,pl2];   
+     material.setAmbientColor(new Vector3f(0.1,0.1,0.1));
+   //  shader.setPointLights(pointLights);
+    shader.addDirectionLight(new DirectionLight( new BaseLight(new Vector3f(1,1,1),0.2), new Vector3f(1,1,1)));
    
    keyboard = display.getKeyboard();
    in_input = new Input(display);
    g__mouse= display.getMouse()  ;
    mesh = new Mesh(shader,vertices,indices,true);
+   model = new Model();
+   model.load("cude.obj");
+   //smesh2 = new Mesh(shader,model.getVertices(),model.getIndices(),true);
+ 
+ 
+ 
+ var normal = new Vector3f(0,1,0);
 
-   display.update(this.__run__);
+
+ display.update(this.__run__);
+  
 });
 
 
@@ -111,7 +119,7 @@ Game.prototype.__construct=(function(){
 Game.prototype.__update__=(function(delta){
     
     __camera.setEnableKeyboard(keyboard);
-       
+     
     g__mouse.setMouseEvent((function( button , action, x, y){
      
        if(button===Mouse.BUTTON1 && action== Mouse.KEY_PRESSED)
@@ -132,18 +140,22 @@ Game.prototype.__update__=(function(delta){
           
        }
     }));
-   tran3f.setRotation(new Vector3f(Math.sin(speed )*20,Math.cos(speed)*20,0));
-   shader.update(material,tran3f);
-   speed+=0.01; 
+ 
+  
 });
 
 
 Game.prototype.__draw__=(function(){
     
-    var camPos= new Vector3f(__camera.getPosition().x,__camera.getPosition().y,__camera.getPosition().z);
-    camPos=  camPos.mul(1/2045).abs();
-    RenderUtils.clear(display.getContext(),camPos.x,camPos.y,camPos.z,1); 
+    RenderUtils.clear(display.getContext(),0.2,0.2,0.2,1); 
+    for(var i=0; i < 2; i++){
+    tran3f.setRotation(new Vector3f(Math.sin(speed )*360,Math.cos(speed)*360,Math.cos(speed)*360));
+    tran3f.setPosition(new Vector3f(Math.sin(i+speed) ,Math.tan(i+speed), i+-3));
+    shader.update(material,tran3f);
     mesh.draw();
+    speed+=0.001;
+    }
+
 });
 Game.prototype.__run__ =(function(delta){
     

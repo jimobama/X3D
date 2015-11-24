@@ -7,12 +7,11 @@
 
 var BaseLight =(function(color,intensity){
     
-    var __color;
-    var __intensity;
+    this.__color=null;
+    this.__intensity=0;
     
-     this.__call__=(function(self,acolor,aintensity){
-        
-        self.__construct(acolor,aintensity);
+     this.__call__=(function(self,color,intensity){
+        self.__construct(color,intensity);
         
     })(this,color,intensity);
     
@@ -20,19 +19,20 @@ var BaseLight =(function(color,intensity){
 
 
 BaseLight.prototype.__construct=(function(color,intensity){
-    __color = (color instanceof Vector3f)?color:new Vector3f(0,0,0);
-    __intensity = (typeof intensity  !== 'undefined')? intensity:0.0; 
+  
+    this.__color = (color instanceof Vector3f)?color:new Vector3f(0,0,0);
+    this.__intensity = (typeof intensity  !== 'undefined')? intensity:0.0; 
     
 });
 
 BaseLight.prototype.getColor =(function(){
    
-    return __color;
+    return this.__color;
     
 });
 
 
 BaseLight.prototype.getIntensity =(function(){
     
-    return __intensity;
+    return this.__intensity;
 });

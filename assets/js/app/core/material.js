@@ -9,6 +9,7 @@ var Material =(function(texture, color,specularIntensity, speculatExponent)
 {
     var __texture ;
     var __color;
+    var __ambientColor;
     var __specularIntensity;
     var __specularExponent;
     
@@ -20,10 +21,19 @@ var Material =(function(texture, color,specularIntensity, speculatExponent)
     
 });
 
+Material.prototype.setAmbientColor =(function(ambient){    
+    if(ambient instanceof Vector3f)
+     __ambientColor =ambient;
+});
+
+Material.prototype.getAmbientColor =(function(){    
+    return __ambientColor ;
+});
 Material.prototype.__construct=(function(texture,color, specularIntensity, specularExponent)
 {
      __texture =   texture;
      __color   =   color;
+    __ambientColor= new Vector3f(0.2,0.2,0.2);
    __specularIntensity =(typeof specularIntensity !=="undefined")? specularIntensity:2.0 ;
    __specularExponent =(typeof specularExponent !=="undefined")? specularExponent:32.0;
    

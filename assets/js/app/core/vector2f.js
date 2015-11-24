@@ -6,12 +6,21 @@
 
 
 var Vector2f=(function(x, y){
-    this.x=(typeof x !== 'undefined')?x:0;
-    this.y=(typeof y !== 'undefined')?y:0;;
+   this.x;
+   this.y;
+    this.__call__=(function(self, x,y){
+        self.__construct(x,y);
+    })(this,x,y);
+    
+    
  });
- 
+Vector2f.prototype.__construct=(function(x,y){
+    this.x=(typeof x !== 'undefined')?x:0;
+    this.y=(typeof y !== 'undefined')?y:0;
+    
+});
 Vector2f.prototype.length=(function(){     
-     return (Math.sqrt((this.x*this.x, this.y * this.y)));
+     return (Math.sqrt((this.x*this.x + this.y * this.y)));
  });
  Vector2f.prototype.normalize=(function(){
     
@@ -25,7 +34,7 @@ Vector2f.prototype.length=(function(){
       var result =null;
       if(vec instanceof Vector2f )
       {
-          result= new Vector2f(this.x + vec.x, this.y + this.y);
+          result= new Vector2f( (this.x + vec.x), (vec.y + this.y));
           
       }
       return result;

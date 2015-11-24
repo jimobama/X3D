@@ -16,13 +16,13 @@ var Mesh=(function(shader,vertices, indices,allowCalNormals)
      
     this.__vertices   ;
     this.__indices  ;    
-    var  __shader=  null;  
-    var __allowCalNormals=false;
+    this.__shader=  null;  
+ 
     //buffers
-    var __vbo=null;
-    var  __vboNormals=null;
-    var __vboCoords=null;
-    var __vboIndices=null;
+    this.__vbo;
+    this.__vboNormals=null;
+    this.__vboCoords=null;
+    this.__vboIndices=null;
  
    this.__call__=(function(self,ashader,avertices, aindices,allow){
        
@@ -34,7 +34,7 @@ var Mesh=(function(shader,vertices, indices,allowCalNormals)
 });
 Mesh.prototype.__construct=(function(ashader,vertices, indices,allow){
     this.initialBuffers(ashader);
-  
+   
    
     if(allow)
     {
@@ -47,27 +47,27 @@ Mesh.prototype.__construct=(function(ashader,vertices, indices,allow){
     
 });
 Mesh.prototype.initialBuffers=(function(ashader){
-   __shader =ashader;
+  this.__shader =ashader;
     var gl = this.getShader().getContext();      
     //create the buffer array objects
-     __vbo = gl.createBuffer();
-     gl.bindBuffer(gl.ARRAY_BUFFER, __vbo);
-       __vboNormals =gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER,   __vboNormals);
+     this.__vbo = gl.createBuffer();
+     gl.bindBuffer(gl.ARRAY_BUFFER, this.__vbo);
+      this. __vboNormals =gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER,this.__vboNormals);
      
-       __vboCoords =gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER,  __vboCoords);
+       this.__vboCoords =gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER,  this.__vboCoords);
       
     
       
  
     
-     __vboIndices =gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,__vboIndices);
+    this.__vboIndices =gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,this.__vboIndices);
     
 });
 Mesh.prototype.calcNormals=(function(vertices, indices){
-    
+    if(indices.length < 3) return ;
     for(var i=0; i < indices.length; i+=3)
     {
         var i0= indices[i];
@@ -147,24 +147,23 @@ Mesh.prototype.toFloatArray=(function(list)
 
 
 Mesh.prototype.getShader=(function(){
-    return __shader;
+    return this.__shader;
 });
 
 Mesh.prototype.initMesh=(function(){
-   if(__shader instanceof Shader)   {
+   if(this.__shader instanceof Shader)   {
    
       if(this.__vertices instanceof Array) {          
      
-        position=[];
-        coords=[];
-        normals=[];
+       var position=[];
+       var  coords=[];
+       var  normals=[];
             
        for(var i=0; i < this.__vertices.length; i++){
             
            var vertex = this.__vertices[i];
            if( vertex instanceof  Vertex)
            {
-              
               //push position
               position.push(vertex.getPosition().x);   
               position.push(vertex.getPosition().y);
@@ -184,14 +183,14 @@ Mesh.prototype.initMesh=(function(){
       // position=this.__vertices;
      
              
-       this.setVertexAttribute2f("textCoord",coords,  __vboCoords);
-       this.setVertexAttribute3f("normalCoords",normals,  __vboNormals);
-       this.setVertexAttribute3f("position",position, __vbo);
+       this.setVertexAttribute2f("textCoord",coords,  this.__vboCoords);
+       this.setVertexAttribute3f("normalCoords",normals,this.__vboNormals);
+       this.setVertexAttribute3f("position",position, this.__vbo);
       
        
        //set the element buffer for drawing
-         var gl = __shader.getContext();
-         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,__vboIndices);
+         var gl = this.__shader.getContext();
+         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,this.__vboIndices);
          gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,  new Uint16Array(this.__indices),  gl.STATIC_DRAW);
               
       
@@ -204,12 +203,18 @@ Mesh.prototype.initMesh=(function(){
 });
 
 
-Mesh.prototype.draw=(function(){    
+Mesh.prototype.draw=(function(){
+    if(this.__indices.length < 3) return ;
      var shader = this.getShader();
      shader.use();
      var gl = shader.getContext(); 
-     gl.bindBuffer(gl.ARRAY_BUFFER, __vbo); 
-     gl.bindBuffer(gl.ARRAY_BUFFER, __vboNormals); 
+    /*
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.__vbo); 
+     gl.bindBuffer(gl.ARRAY_BUFFER, this.__vboCoords); 
+     gl.bindBuffer(gl.ARRAY_BUFFER, this.__vboNormals);
+     */
+     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.__vboIndices); 
+        
     // gl.drawArrays(gl.TRIANGLES, 0,this.__vertices.length);     
      //alert(shader.getProgram());
      gl.drawElements(gl.TRIANGLES, this.__indices.length, gl.UNSIGNED_SHORT, 0);

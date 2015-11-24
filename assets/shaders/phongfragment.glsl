@@ -36,7 +36,7 @@ struct PointLight
 {
 	
 	BaseLight baseLight;
-	Attenuation attenuation;
+	Attenuation attenu;
 	vec3 position;
 	
 };
@@ -45,27 +45,42 @@ struct Material
 {
 	
 	vec3 color;
+	vec3 ambientColor;
 	float specularIntensity;
     float specularExponent;
 	
 };
 
 
+float  getDiffuseIntenistyColor(vec3 normal, vec3 direction){
+	
+	float cos = dot(normal,direction);
+	return  max(cos,0.0);
+	
+}
 
+vec3 getLightDirection(vec3 positionOfLight, vec3 wordPos)
+{
+	vec3 direction = positionOfLight - wordPos;
+	return direction;
+	
+}
 
 
 //calculate the Light basic
 vec4 calcLight(BaseLight light, vec3 direction , vec3 normal, Material material)
 {
-  float diffusedFactor = dot(normal,-direction) ;
+  float intensity =getDiffuseIntenistyColor(normal,direction);
+  
+  
   vec4  diffusedColor =  vec4(0,0,0,0);
   vec4 specularColor =vec4(0,0,0,0);
-   
-  if( diffusedFactor > 0.0 )
+  
+  if( intensity  > 0.0 )
   {
-      diffusedColor = vec4(light.color,1) * light.intensity * diffusedFactor;
+      diffusedColor = vec4(light.color,1) * intensity * light.intensity;
 	  vec3 directionToEye = normalize(camPosition - worldPos0);
-	  vec3 reflection = normalize(reflect(-direction,normal));
+	  vec3 reflection = normalize(reflect(direction,normal));
 	  
 	  float specularFactor = dot(reflection ,directionToEye);
 	  specularFactor= pow(specularFactor,material.specularExponent);
@@ -88,13 +103,13 @@ vec4 calcDirectionLight (DirectionLight directionLight, vec3 normal,Material mat
 vec4 calPointLight (PointLight light, vec3 normal,Material material)
 {
 	
-	vec3 lightDirection = worldPos0 - light.position;
-	float distanceToPoint = length(lightDirection);
+	vec3 lightDirection = light.position - worldPos0;
+	float distanceToPoint = length(-lightDirection);
 	lightDirection= normalize(lightDirection);
 	vec4 color = calcLight(light.baseLight,lightDirection,normal, material);
 	//calculate the attenuation
-	float attenuation = light.attenuation.constant  +  distanceToPoint
-	                    * light.attenuation.linear + light.attenuation.exponent * distanceToPoint * distanceToPoint + 0.00001;
+	float attenuation = light.attenu.constant  +  distanceToPoint
+	                    * light.attenu.linear + light.attenu.exponent * distanceToPoint * distanceToPoint + 0.00001;
 						
 	return  color / attenuation;					
 }
@@ -122,14 +137,13 @@ varying  vec2 vTextureCoord;
 void main() {
 
 
-
-     vec4 totalLight = vec4(ambientLight,1) ;
+     vec3 d= ambientLight;
+     vec4 totalLight = vec4(material.ambientColor,1) ;
 	 vec4  fragment_color =  vec4(material.color,1);
 	 vec4 test=vec4(0,0,0,0);
      vec4 textureMaterial =texture2D(texture,vTextureCoord);
 	 //check if the texturematerial is null
-	 if(textureMaterial !=vec4(0,0,0,1)){
-		 
+	 if(textureMaterial !=vec4(0,0,0,1) && textureMaterial !=vec4(0,0,0,0) ){		 
 	   textureMaterial +=  fragment_color ;	
 	   fragment_color = textureMaterial;
      }	 
@@ -137,11 +151,11 @@ void main() {
 	 
 	 for(int i=0; i < MAX_POINT_LIGHT ; i++ )
 	 {
-		test += calPointLight(pointLights[i],normal0,material);
+		totalLight += calPointLight(pointLights[i],normal0,material);
 	 }
 	 
-	 if(test != vec4(0,0,0,1))
-		gl_FragColor = textureMaterial * totalLight; //fragment_color  ;	
+	
+	gl_FragColor = fragment_color * totalLight; //fragment_color  ;	
 	
    
   }

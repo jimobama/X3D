@@ -28,15 +28,32 @@ var Vector3f = (function(x,y,z)
  * 
  * @returns {Number}
  */
+Vector3f.angleBetween=(function(v1,v2){
+    
+     var angle =0.0;
+     
+    if((v1 instanceof Vector3f) && (v2 instanceof Vector3f))
+    {
+       
+        var len0 = v1.length();
+         
+        var len1 = v2.length(); 
+       
+        var dotValue = v1.dot(v2);
+      
+        var cos =dotValue/(len0 * len1);
+        
+        angle =Vector2f.toDegree(Math.acos(cos));
+    }
+   return angle; 
+});
 Vector3f.prototype.length=(function()
 { 
-   
-   var zagma = (this.x * this.x) + (this.y * this.y) + (this.z * this.z);
-   
- 
-    return (Math.sqrt(zagma));
+    return (Math.sqrt((this.x * this.x) + (this.y * this.y) + (this.z * this.z)));
    
 });
+
+
 
 /*
  * 
@@ -117,9 +134,9 @@ Vector3f.prototype.cross=(function(vec3f){
    
     if(vec3f instanceof Vector3f)
     {
-        var xR = this.y * vec3f.z - this.z * vec3f.y;
-        var yR = this.z *vec3f.x - this.x * vec3f.z;
-        var zR = this.x * vec3f.y - this.y * vec3f.x;
+        var xR = this.y * vec3f.z + this.z * vec3f.y;
+        var yR = this.z *vec3f.x + this.x * vec3f.z;
+        var zR = this.x * vec3f.y + this.y * vec3f.x;
         result= new Vector3f(xR,yR,zR);
         
     }
