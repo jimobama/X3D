@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 
-
-var PhongShader =(function(glcontext){
+PhongShader =(function(glcontext){
     var __ambientLight;
     var __directionLight;
     var __pointLights;
@@ -14,9 +13,13 @@ var PhongShader =(function(glcontext){
     })(this,glcontext);
     
 });
+//extends the function from Shader
+Object.__extends__(PhongShader,Shader);
 PhongShader.MAX_POINT_LIGHT=4;
+/*
 PhongShader.prototype=Object.create(Shader.prototype);
 PhongShader.prototype.constructor =Shader;
+*/
 
 PhongShader.prototype.__initialize=(function(glContext){
     

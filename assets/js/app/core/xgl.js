@@ -3,6 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+Object.__extends__ =(function(child, byparent){
+    
+    child.prototype=Object.create(byparent.prototype);
+    child.prototype.constructor =byparent;
+    
+});
 
 Object.prototype.__construct =(function(){    
  

@@ -4,17 +4,6 @@ precision highp float;
 precision mediump float;
 #endif
 
-struct Material{
-   vec3 color;
-   sampler2D texture;
-
-};
-
-struct Light 
-{
-   vec3 position;
-   float intensity;
-};
 
 
 

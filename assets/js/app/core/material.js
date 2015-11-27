@@ -7,11 +7,11 @@
 
 var Material =(function(texture, color,specularIntensity, speculatExponent)
 {
-    var __texture ;
-    var __color;
-    var __ambientColor;
-    var __specularIntensity;
-    var __specularExponent;
+     this.__texture ;
+     this.__color;
+     this.__ambientColor;
+     this.__specularIntensity;
+     this.__specularExponent;
     
     this.__call__=(function(self,atexture,acolor, aspecularIntensity, aspeculatExponent)
     {
@@ -23,33 +23,33 @@ var Material =(function(texture, color,specularIntensity, speculatExponent)
 
 Material.prototype.setAmbientColor =(function(ambient){    
     if(ambient instanceof Vector3f)
-     __ambientColor =ambient;
+      this.__ambientColor =ambient;
 });
 
 Material.prototype.getAmbientColor =(function(){    
-    return __ambientColor ;
+    return  this.__ambientColor ;
 });
 Material.prototype.__construct=(function(texture,color, specularIntensity, specularExponent)
 {
-     __texture =   texture;
-     __color   =   color;
-    __ambientColor= new Vector3f(0.2,0.2,0.2);
-   __specularIntensity =(typeof specularIntensity !=="undefined")? specularIntensity:2.0 ;
-   __specularExponent =(typeof specularExponent !=="undefined")? specularExponent:32.0;
+      this.__texture =   texture;
+      this.__color   =   color;
+     this.__ambientColor= new Vector3f(0.2,0.2,0.2);
+    this.__specularIntensity =(typeof specularIntensity !=="undefined")? specularIntensity:2.0 ;
+    this.__specularExponent =(typeof specularExponent !=="undefined")? specularExponent:32.0;
    
     
 });
 Material.prototype.getSpecularIntensity=(function(){    
-    return __specularIntensity;
+    return  this.__specularIntensity;
 });
 
 
 Material.prototype.getSpecularExponent=(function(){    
-    return __specularExponent;
+    return  this.__specularExponent;
 });
 Material.prototype.getColor=(function(){    
-    return __color;
+    return  this.__color;
 });
 Material.prototype.getTexture=(function(){   
- return __texture;
+ return  this.__texture;
 });

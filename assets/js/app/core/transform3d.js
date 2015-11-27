@@ -6,10 +6,10 @@
 
 
 var Transform3D =(function(position,rotation,scale){
-    var t__position;
-    var t__rotation ;
-    var t__scale ;
-    var t_camera;
+    this.__position;
+    this.__rotation ;
+    this.__scale ;
+    this._camera;
     
     
     this.__call__=(function(self,position,rotation,scale){
@@ -28,20 +28,20 @@ Transform3D.ZFAR =1000.0;
 
 Transform3D.prototype.setCamera = (function(camera)
 {
-     t_camera = camera;
+     this._camera = camera;
 });
 
 Transform3D.prototype.getCamera = (function(){
-     return t_camera;
+     return this._camera;
 });
 
 
 Transform3D.prototype.__init__=(function(position,rotation,scale){
     
-   t_camera = new Camera();
-   t__position= (position instanceof Vector3f)?position:(new Vector3f());
-   t__rotation = (rotation instanceof Vector3f)?rotation:(new Vector3f());
-   t__scale = (scale instanceof Vector3f)?scale:(new Vector3f(1,1,1));
+   this._camera = new Camera();
+   this.__position= (position instanceof Vector3f)?position:(new Vector3f());
+   this.__rotation = (rotation instanceof Vector3f)?rotation:(new Vector3f());
+   this.__scale = (scale instanceof Vector3f)?scale:(new Vector3f(1,1,1));
 
     
 });
@@ -49,13 +49,13 @@ Transform3D.prototype.setPosition=(function(vec3){
     
     if(vec3 instanceof Vector3f)
     {
-       t__position=vec3;
+       this.__position=vec3;
     }
 });
 
 Transform3D.prototype.getPosition=(function(){
    
-      return  t__position;
+      return  this.__position;
     
 });
 
@@ -64,7 +64,7 @@ Transform3D.prototype.setRotation=(function(vec3){
     
     if(vec3 instanceof Vector3f)
     {
-       t__rotation=vec3;
+       this.__rotation=vec3;
     }
 });
 
@@ -72,7 +72,7 @@ Transform3D.prototype.setScale=(function(vec3){
     
     if(vec3 instanceof Vector3f)
     {
-       t__scale=vec3;
+       this.__scale=vec3;
         
     }
 });
@@ -86,19 +86,32 @@ Transform3D.prototype.setPersp=(function(fov,width,height, near, far){
     
 });
 
-
+Transform3D.prototype.setParentTransformation=(function(parent)
+{
+    alert("Helo")
+    
+});
 Transform3D.prototype.getTransform=(function(){
     
-     var translationMatrix =xgl.traslate(t__position);
-     var scaleMatrix =      xgl.scale3fv(t__scale);
-     var rotationMatrix =   xgl.rotation3fv(t__rotation);  
+     var translationMatrix =xgl.traslate(this.__position);
+     var scaleMatrix =      xgl.scale3fv(this.__scale);
+     var rotationMatrix =   xgl.rotation3fv(this.__rotation);  
      return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));//
 });
+Transform3D.prototype.getPersp=(function()
+{
+ var __projectionMatrix = xgl.persp(Transform3D.FOV,Transform3D.WIDTH/Transform3D.HEIGHT,Transform3D.ZNEAR,Transform3D.ZFAR);
+ 
+ return  __projectionMatrix;
+});
+
 
 Transform3D.prototype.getPerspTransform =(function(){
     
     var __transformMatrix= this.getTransform(); 
-    var __projectionMatrix = xgl.persp(Transform3D.FOV,Transform3D.WIDTH/Transform3D.HEIGHT,Transform3D.ZNEAR,Transform3D.ZFAR);
-    var camTransformation=  t_camera.getTransform();  
+    var __projectionMatrix = this.getPersp();
+    var camTransformation=  this._camera.getTransform();  
+    
+    
     return __projectionMatrix.mul(camTransformation.mul(__transformMatrix));
 });

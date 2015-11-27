@@ -103,8 +103,8 @@ vec4 calcDirectionLight (DirectionLight directionLight, vec3 normal,Material mat
 vec4 calPointLight (PointLight light, vec3 normal,Material material)
 {
 	
-	vec3 lightDirection = light.position - worldPos0;
-	float distanceToPoint = length(-lightDirection);
+	vec3 lightDirection = getLightDirection(light.position,worldPos0 );
+	float distanceToPoint = length(lightDirection);
 	lightDirection= normalize(lightDirection);
 	vec4 color = calcLight(light.baseLight,lightDirection,normal, material);
 	//calculate the attenuation

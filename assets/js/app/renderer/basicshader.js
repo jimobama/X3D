@@ -3,6 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+
+
 var BasicShader=(function(glcontext){
    
     this.__call__=(function(self, glContext){
@@ -11,6 +14,7 @@ var BasicShader=(function(glcontext){
     
 });
 //inheritance
+
 BasicShader.prototype=Object.create(Shader.prototype);
 BasicShader.prototype.constructor =Shader;
 

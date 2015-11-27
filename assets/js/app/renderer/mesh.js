@@ -1,8 +1,5 @@
 
 
-
-
-
 /*
  * 
  * @param {type} vertex
@@ -76,13 +73,11 @@ Mesh.prototype.calcNormals=(function(vertices, indices){
         
        var vec1 = vertices[i1].getPosition().minus(vertices[i0].getPosition());
        var vec2 = vertices[i2].getPosition().minus(vertices[i0].getPosition());
-       var normal = (vec1.cross(vec2));
+       var normal = (vec2.cross(vec1));
        normal=normal.normalize();
-      
        vertices[i0].setNormal(vertices[i0].getNormal().add(normal));
        vertices[i1].setNormal(vertices[i0].getNormal().add(normal));
        vertices[i2].setNormal(vertices[i0].getNormal().add(normal));
-       
        
     }
     
@@ -136,12 +131,8 @@ Mesh.prototype.setVertexAttribute2f=(function(attribute,list,vbo)
       
 });
 
-
-
-
 Mesh.prototype.toFloatArray=(function(list)
-{
-      
+{   
     return (new  Float32Array(list));
 });
 
@@ -181,13 +172,9 @@ Mesh.prototype.initMesh=(function(){
            }
        }
       // position=this.__vertices;
-     
-             
        this.setVertexAttribute2f("textCoord",coords,  this.__vboCoords);
        this.setVertexAttribute3f("normalCoords",normals,this.__vboNormals);
        this.setVertexAttribute3f("position",position, this.__vbo);
-      
-       
        //set the element buffer for drawing
          var gl = this.__shader.getContext();
          gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,this.__vboIndices);
