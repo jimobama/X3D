@@ -29,7 +29,8 @@
 <script  src='assets/js/app/renderer/renderutils.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/xcomponent.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/xobject.js' type="text/javascript"></script>
-
+<script  src='assets/js/app/renderer/enginecontroller.js' type="text/javascript"></script>
+<script  src='assets/js/app/renderer/xrenderer.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/meshcomponent.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/model.js' type="text/javascript"></script>
  
@@ -63,9 +64,8 @@
 <script>
     
     window.onload=(function(){
-        
-        new Game();
-        
+      var game =  new Game("glcanvas");
+      game.start();
     })
   
 </script>

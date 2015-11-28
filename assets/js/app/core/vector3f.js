@@ -13,7 +13,21 @@
  */
 var Vector3f = (function(x,y,z)
 {
-    if(x instanceof Vector2f){
+   this.__call__=(function(self,ax,ay,az){
+       
+       self.__construct(ax,ay,az);
+       
+   })(this,x,y,z);
+    
+});
+
+Vector3f.prototype.__construct=(function(x,y,z){
+    this.set(x,y,z);
+});
+
+Vector3f.prototype.set=(function(x,y,z){
+    
+     if(x instanceof Vector2f){
         this.x=(typeof x.x !== 'undefined')?x.x:0;
         this.y=(typeof x.y !== 'undefined')?x.y:0;;
         this.z=(typeof z !== 'undefined')?z:1;
@@ -22,6 +36,7 @@ var Vector3f = (function(x,y,z)
         this.y=(typeof y !== 'undefined')?y:0;;
         this.z=(typeof z !== 'undefined')?z:0;
     }
+    
     
 });
 /*
@@ -47,6 +62,7 @@ Vector3f.angleBetween=(function(v1,v2){
     }
    return angle; 
 });
+
 Vector3f.prototype.length=(function()
 { 
     return (Math.sqrt((this.x * this.x) + (this.y * this.y) + (this.z * this.z)));
@@ -159,7 +175,7 @@ Vector3f.prototype.dot=(function(vec3f){
 
 
 
-Vector3f.prototype.normalize=function()
+Vector3f.prototype.normalize=(function()
 { 
     var len=this.length();   
     var xAxis = this.x/len;
@@ -167,7 +183,21 @@ Vector3f.prototype.normalize=function()
     var zAxis = this.z/len;
     var result=  new  Vector3f( xAxis,yAxis, zAxis);
     return result;
-}
+});
+
+Vector3f.prototype.equals=(function(vec3){
+    
+    var isequal=false;
+    if(vec3 instanceof Vector3f)
+    {
+       if(vec3.x===this.x && vec3.y===this.y && this.z===vec3.z) 
+       {
+           isequal=true;
+       }
+    }
+    return isequal;
+    
+});
 Vector3f.prototype.toString=(function(){
     
     return ("[x = "+this.x+" y = "+this.y+" z= "+this.z+"]");

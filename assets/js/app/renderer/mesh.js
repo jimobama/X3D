@@ -106,8 +106,6 @@ Mesh.prototype.setVertexAttribute3f=(function(attribute,list,vbo)
       gl.enableVertexAttribArray(index);  
       }
     }
-    
-      
 });
 
 Mesh.prototype.setVertexAttribute2f=(function(attribute,list,vbo)
@@ -116,7 +114,6 @@ Mesh.prototype.setVertexAttribute2f=(function(attribute,list,vbo)
     shader.use();
     var gl =shader.getContext();
     gl.bindBuffer(gl.ARRAY_BUFFER,vbo);
-   
     if(list instanceof Array){         
       gl.bufferData(gl.ARRAY_BUFFER, this.toFloatArray(list),  gl.STATIC_DRAW);
       var index = shader.getAttributeLocation(attribute);
@@ -172,7 +169,7 @@ Mesh.prototype.initMesh=(function(){
            }
        }
       // position=this.__vertices;
-       this.setVertexAttribute2f("textCoord",coords,  this.__vboCoords);
+        this.setVertexAttribute2f("textCoord",coords,  this.__vboCoords);
        this.setVertexAttribute3f("normalCoords",normals,this.__vboNormals);
        this.setVertexAttribute3f("position",position, this.__vbo);
        //set the element buffer for drawing
@@ -196,7 +193,7 @@ Mesh.prototype.draw=(function(){
      shader.use();
      var gl = shader.getContext(); 
     /*
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.__vbo); 
+    gl.bindBuffer(gl.ARRAY_BUFFER, this.__vbo); 
      gl.bindBuffer(gl.ARRAY_BUFFER, this.__vboCoords); 
      gl.bindBuffer(gl.ARRAY_BUFFER, this.__vboNormals);
      */

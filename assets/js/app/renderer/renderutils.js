@@ -26,9 +26,7 @@ RenderUtils.initialize=(function(gl){
     gl.enable(gl.CULL_FACE);
     gl.cullFace(gl.BACK);
     gl.depthMask(gl.TRUE);
-    
     gl.enable(gl.DEPTH_CLAMP);
-   
     //gl.enable(gl.FRAMEBUFFER_SRGB);
     gl.depthFunc(gl.LEQUAL);
     

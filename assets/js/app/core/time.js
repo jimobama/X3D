@@ -6,7 +6,7 @@
 
 
 var Time = (function(){
-   __delta = 0.0;  
+   var __delta = 0.0;  
     
     
 });
@@ -19,7 +19,7 @@ Time.getTime=(function(){
 Time.setDelta=(function(delta)
 {
     
-     __delta=delta;
+     __delta = delta;
      
      
 });
@@ -28,7 +28,7 @@ Time.setDelta=(function(delta)
 Time.getDelta=(function()
 {
     
-     return __delta;
+     return 12;
      
      
 });

@@ -6,7 +6,7 @@ var Display =(function(canvasID){
     this.__id=canvasID;
     var __view=null;
     var __gl=null;
-    var __lasttime=0;
+   
     var  __mouse;
     var __keyboard;
   
@@ -41,10 +41,6 @@ Display.prototype.initialGL=(function(){
     __mouse = new  Mouse(this.getView());
    __keyboard= new Keyboard(this.getView());
    this.setViewPort(this.getView().width,this.getView().height);  
-
-
- 
- 
    return this;
    
 });
@@ -119,30 +115,7 @@ Display.prototype.setViewPort=function(width, height)
 
 
 Display.prototype.update=(function(onrender){
-   __lasttime=  Date.now();
-   __renderCallBack=onrender;
-   //thread
-   setInterval(this.drawUpdate,15);
-   //this.drawUpdate();
-});
 
-Display.prototype.drawUpdate=(function(){
-    
-     var currentTime =  Time.getTime();
-   //  __mouse.update();
-     
-     if(__lasttime !=0) {
-          var delta = currentTime - __lasttime;
-          Time.setDelta(delta);
-     
-       if(__renderCallBack){
-        __renderCallBack(delta); 
-       }
-       
-    }
-     __lasttime = currentTime;
-    
-    
 });
 
 

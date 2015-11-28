@@ -19,7 +19,7 @@ BasicShader.prototype=Object.create(Shader.prototype);
 BasicShader.prototype.constructor =Shader;
 
  BasicShader.prototype.__initialize=(function(glContext){
-     
+    
      if(glContext !==null){
         Shader.call(this,glContext);
         this.createFromFile("vertex.glsl",Shader.VERTEX_SHADER );
@@ -33,17 +33,26 @@ BasicShader.prototype.constructor =Shader;
      }
  });
 
- BasicShader.prototype.update=(function(material,transform){
+ BasicShader.prototype.update=(function(xcomponent){
+  
+  if(xcomponent ===null) return ;
    
-   this.setUniformMatrix4f("transform3D",transform.getPerspTransform()); 
-   var texture = material.getTexture(); 
-   this.setUniformVector3f("color",material.getColor());
-   if(texture !==null){
+      this.setUniformMatrix4f("transform3D",xcomponent.getTransform().getPerspTransform());
+   
+ 
+   if(xcomponent.getMaterial()!=null)
+   {
+      this.setUniformVector3f("color",xcomponent.getMaterial().getColor());  
+      var texture =xcomponent.getMaterial().getTexture();     
+      if(texture !==null){
        this.setUniform1i("texture",texture.getIndex());
        texture.bind(this.getContext());
-    }else{
-        Texture.unbind(this.getContext());
-    }
-   
+      }else{
+           Texture.unbind(this.getContext());
+      }
+     
+   }
+ 
+ 
  });
 

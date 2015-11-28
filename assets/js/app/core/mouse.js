@@ -3,12 +3,12 @@
 
  var Mouse =(function(view){
   
-    var  m__view ;
-    var m__grap;
-    var  m__position;
-    var  m_mouse_events;
-    var m_mouse_move;
-    var  m__isLocked;
+     var  m__view ;
+     var m__grap;
+     var  m__position;
+     var  m_mouse_events;
+     var m_mouse_move;
+     var  m__isLocked;
   
     
      this.__call__=(function(self,view){         
@@ -37,7 +37,7 @@
   Mouse.prototype.getGrap=(function(){
       return m__grap;
   });
- Mouse.prototype.setGrap=(function(abool){
+ Mouse.prototype.isGrap=(function(abool){
      m__grap =abool;
   });
   
@@ -88,15 +88,12 @@
      m_mouse_events = callback;     
  });
 Mouse.prototype.setMouseMove=(function(mouseMove){
-    
-    m_mouse_move=mouseMove;
-    
+    m_mouse_move=mouseMove;    
 });
 
  Mouse.prototype.getPosition=(function(){
      return m__position;
  });
- 
   Mouse.prototype.lock =(function(){
     
        m__view.style.cursor="none";       

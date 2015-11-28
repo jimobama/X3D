@@ -8,9 +8,9 @@
 var Input =(function(display){
     
     var __display;
-    in__mouse =null;
-    in__keyboard=null;
-    var in__keys;
+    this.in__mouse =null;
+    this.in__keyboard=null;
+    this.in__keys=null;
     this.__call__=(function(self,display){
         
         self.__construct(display);
@@ -19,38 +19,44 @@ var Input =(function(display){
     
     
 });
-
+ Input.prototype.getMouse=(function(){     
+     return  this.in__mouse;
+ });
+ 
  Input.prototype.__construct=(function(display){
+     this.in__keys= new Array(254);
      
-     __display=display;
-     in__keys= new Array(254);
+     this.__display=display;
      for(var i=0; i< 254; i++){
-         in__keys[i]=false;
+         this.in__keys[i]=false;
      }
-     if(__display instanceof Display)
+     if(this.__display instanceof Display)
      {
-         in__mouse=__display.getMouse();
-          in__keyboard =__display.getKeyboard();
-          this.__handle();
-        
+          this.in__mouse=this.__display.getMouse();
+          this.in__keyboard =this.__display.getKeyboard();
+          this.__handle();        
      }
  });
+ 
+ 
+ 
   Input.prototype.__handle=(function()
   {
-      if( in__keyboard instanceof Keyboard)
+      var inputTracker =  this.in__keys;
+      if( this.in__keyboard instanceof Keyboard)
       { 
-          in__keyboard.setKeyboardListener((function(action,akey,code,character)
+          this.in__keyboard.setKeyboardListener((function(action,akey,code,character)
           {
                 if(action===Keyboard.KEY_DOWN){
-                    in__keys[akey]=true;
+                    inputTracker [akey]=true;
                     
                 }else if(action===Keyboard.KEY_UP){
-                     in__keys[akey]=false;
+                    inputTracker [akey]=false;
                      
                 }
           }));
       }
   });
   Input.prototype.isKeyDown=(function(key){      
-       return in__keys[key];
+       return this.in__keys[key];
   });

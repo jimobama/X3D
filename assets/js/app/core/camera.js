@@ -51,12 +51,7 @@ Camera.prototype.getUp=(function(){
       this.__position = (pos instanceof Vectora3f)?pos: this.__position;
  });
  
-
- 
-
-
-   
-  Camera.prototype.rotateX=(function(angle){
+Camera.prototype.rotateX=(function(angle){
       
       var xAxis = Camera.yAxis.cross(this.__forward);
        xAxis.normalize();
@@ -80,8 +75,35 @@ Camera.prototype.getUp=(function(){
       this.IsKeyboardEnable=(abool !==true)?false:true;
   });
   
+  Camera.prototype.setEnableMouse=(function(abool){
+      this.IsMouseEnable=(abool !==true)?false:true;
+  });
   
+  Camera.prototype.IsMouseEnable=false;
   Camera.prototype.IsKeyboardEnable=false;
+  
+   Camera.prototype.mouseController=(function(){
+       
+       if(this.__input ===null) return ;
+       var mouse = this.__input.getMouse();
+       
+       if(mouse!==null && this.IsMouseEnable)
+       {
+          mouse.setMouseEvent(function(button,action,xpos,ypos)
+          {
+              if(action==Mouse.KEY_PRESSED)
+                 mouse.isGrap(true);
+               else
+                   mouse.isGrap(false);
+              
+              
+          });
+           
+       }
+       
+   });
+  
+  
  Camera.prototype.keyboardController=(function(){
      
          if(this.__input === null)return ;
@@ -132,6 +154,7 @@ Camera.prototype.getUp=(function(){
    });
  Camera.prototype.getTransform=(function(){
       this.keyboardController();
+      this.mouseController();
       var pos = this.getPosition();
       var view=  xgl.lookAt( pos,pos.add(this.__forward),this.getUp());
       return view;

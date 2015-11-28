@@ -270,6 +270,8 @@ Shader.prototype.use=(function(){
    
 });
 
-Shader.prototype.update=(function(material){  
+Shader.prototype.update=(function(camera, xcomponent){  
+  
+   
   
 });

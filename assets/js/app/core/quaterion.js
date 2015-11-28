@@ -22,7 +22,7 @@ Quaterion.prototype.add=(function(quat){
     
     if(quat instanceof Quaterion)
     {
-        var x= this.x + quat.x;
+        var x=  this.x + quat.x;
         var y = this.y + quat.y;
         var z = this.z + quat.z;
         var w = this.w + quat.w;
@@ -36,7 +36,7 @@ Quaterion.prototype.add=(function(quat){
 Quaterion.prototype.normalize=(function(){
      
    var len= this.length();
-   var x= this.x  / len;
+   var x=  this.x  / len;
    var y = this.y / len;
    var z = this.x /len;
    var w = this.x / len;
@@ -57,7 +57,7 @@ Quaterion.prototype.mul=(function(scaler){
     {
          var r= scaler;
           
-         w= this.w * r.w - this.x * r.x - this.y * r.y - this.z * r.z;
+         w=  this.w * r.w - this.x * r.x - this.y * r.y - this.z * r.z;
 	 x = this.x * r.w + this.w * r.x + this.y * r.z - this.z * r.y;
 	 y = this.y * r.w + this.w * r.y + this.z * r.x - this.x * r.z;
 	 z = this.z * r.w + this.w * r.z + this.x * r.y - this.y * r.x;
@@ -81,7 +81,12 @@ Quaterion.prototype.mul=(function(scaler){
     return new Quaterion(x,y,z,w);
     
 });
-
+Quaterion.prototype.cross=(function(quat)
+{
+    
+    
+    return null;
+});
 Quaterion.prototype.dot=(function(quat){
      if(quat instanceof Quaterion)
     {
@@ -95,14 +100,14 @@ Quaterion.prototype.inverse=(function(quat){
     
     if(quat instanceof Quaterion)
     {
-        var x= this.x + quat.x;
+        var x=  this.x + quat.x;
         var y = this.y + quat.y;
         var z = this.z + quat.z;
         var w = this.w + quat.w;
         return new Quaterion(x,y,z,w);    
          
     }
-    return new Quaterion();
+    return null;
     
 });
 

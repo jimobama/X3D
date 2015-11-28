@@ -9,12 +9,14 @@ var Transform3D =(function(position,rotation,scale){
     this.__position;
     this.__rotation ;
     this.__scale ;
-    this._camera;
+    var __camera;
+    this.__parentMatrix;
+ 
     
     
     this.__call__=(function(self,position,rotation,scale){
         
-        self.__init__(position,rotation,scale);
+        self.__construct(position,rotation,scale);
      
        
     })(this,position,rotation,scale);
@@ -28,21 +30,45 @@ Transform3D.ZFAR =1000.0;
 
 Transform3D.prototype.setCamera = (function(camera)
 {
-     this._camera = camera;
+     __camera = camera;
 });
 
-Transform3D.prototype.getCamera = (function(){
-     return this._camera;
-});
-
-
-Transform3D.prototype.__init__=(function(position,rotation,scale){
+/*check if the parents transformation has changes
+Transform3D.prototype.hasChange=(function(){
+       var trigger =false;
+       if(this.__parentT===null) return trigger;
+       
+        if(this.__oldPos===null)
+        {
+           this.__oldPos=new Vector3f();
+           this.__oldRotation=new Vector3f();
+           this.__oldScale =new Vector3f();
+        }
+        
+        if(!this.__position.equals(this.__parentT.getPosition())
+          || !this.__rotation.equals(this.__parentT.getRotation())
+          || !this.__scale.equals(this.__parentT.getScale()))
+        {
+           trigger=true;
+        }
+    return trigger ;
+    });
     
-   this._camera = new Camera();
-   this.__position= (position instanceof Vector3f)?position:(new Vector3f());
+   */ 
+Transform3D.prototype.getCamera = (function(){
+     return  __camera;
+});
+
+
+Transform3D.prototype.__construct=(function(position,rotation,scale){
+    
+   __camera = new Camera();
+   this.__position= (position instanceof Vector3f)?position:(new Vector3f(0,0,-3));
    this.__rotation = (rotation instanceof Vector3f)?rotation:(new Vector3f());
    this.__scale = (scale instanceof Vector3f)?scale:(new Vector3f(1,1,1));
 
+    this.__parentMatrix= new Matrix4f();
+    this.__parentMatrix.identity();
     
 });
 Transform3D.prototype.setPosition=(function(vec3){
@@ -68,6 +94,11 @@ Transform3D.prototype.setRotation=(function(vec3){
     }
 });
 
+
+Transform3D.prototype.getRotation=(function(){
+      return  this.__rotation;
+});
+
 Transform3D.prototype.setScale=(function(vec3){
     
     if(vec3 instanceof Vector3f)
@@ -76,6 +107,13 @@ Transform3D.prototype.setScale=(function(vec3){
         
     }
 });
+
+
+Transform3D.prototype.getScale=(function(){
+    
+      return this.__scale;
+  
+});
 Transform3D.prototype.setPersp=(function(fov,width,height, near, far){
     
    Transform3D.FOV=fov;
@@ -83,20 +121,16 @@ Transform3D.prototype.setPersp=(function(fov,width,height, near, far){
    Transform3D.WIDTH=width;
    Transform3D.ZFAR=far;
    Transform3D.ZNEAR=near;
-    
 });
 
-Transform3D.prototype.setParentTransformation=(function(parent)
-{
-    alert("Helo")
+
+Transform3D.prototype.getModel=(function(){
     
-});
-Transform3D.prototype.getTransform=(function(){
-    
-     var translationMatrix =xgl.traslate(this.__position);
-     var scaleMatrix =      xgl.scale3fv(this.__scale);
-     var rotationMatrix =   xgl.rotation3fv(this.__rotation);  
-     return translationMatrix.mul(rotationMatrix.mul(scaleMatrix));//
+      var translationMatrix =xgl.traslate(this.__position);
+      var scaleMatrix =      xgl.scale3fv(this.__scale);
+      var rotationMatrix =   xgl.rotation3fv(this.__rotation); 
+      
+      return this.__parentMatrix.mul(translationMatrix.mul(rotationMatrix.mul(scaleMatrix)));//
 });
 Transform3D.prototype.getPersp=(function()
 {
@@ -104,14 +138,20 @@ Transform3D.prototype.getPersp=(function()
  
  return  __projectionMatrix;
 });
-
+Transform3D.prototype.setParentTranformMatrix4f=(function(matrix4f){
+    
+    if(matrix4f instanceof Matrix4f)
+    {
+        this.__parentMatrix=matrix4f;
+    }
+});
 
 Transform3D.prototype.getPerspTransform =(function(){
     
-    var __transformMatrix= this.getTransform(); 
+    var __transformMatrix= this.getModel(); 
+   
     var __projectionMatrix = this.getPersp();
-    var camTransformation=  this._camera.getTransform();  
-    
-    
+    var camTransformation=  __camera.getTransform();
+     
     return __projectionMatrix.mul(camTransformation.mul(__transformMatrix));
 });

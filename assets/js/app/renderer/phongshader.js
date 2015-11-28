@@ -196,12 +196,12 @@ PhongShader.prototype.__initialize=(function(glContext){
  });
  
 
-PhongShader.prototype.update=(function(material,transform){
+PhongShader.prototype.update=(function(object){
    this.use();
-   this.setUniformMatrix4f("projection",transform.getPerspTransform()); 
-   this.setUniformMatrix4f("transform",transform.getTransform()); 
-   this.setUniformVector3f("camPosition",transform.getCamera().getPosition());
-   this.setUniformMaterial("material",material);
+   this.setUniformMatrix4f("projection",object.getTransform().getPerspTransform()); 
+   this.setUniformMatrix4f("transform",object.getTransform().getModel()); 
+   this.setUniformVector3f("camPosition",object.getTransform().getCamera().getPosition());
+   this.setUniformMaterial("material",object.getMaterial());
  
     
    if(__ambientLight!==null){
