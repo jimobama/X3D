@@ -28,18 +28,23 @@ BasicShader.prototype.constructor =Shader;
         this.addUniform("texture");
         this.addUniform("color");
         this.addUniform("transform3D");
-      
+        this.addUniform("prespMatrix");
+        this.addUniform("camaraMatrix");
      
      }
  });
 
  BasicShader.prototype.update=(function(xcomponent){
-  
+    
   if(xcomponent ===null) return ;
-   
-      this.setUniformMatrix4f("transform3D",xcomponent.getTransform().getPerspTransform());
-   
- 
+  
+      this.setUniformMatrix4f("transform3D",xcomponent.getTransform().getModel());
+      if(xcomponent.getParent()!==null){
+        this.setUniformMatrix4f("prespMatrix",xcomponent.getParent().getController().getCamera().getPersp());
+        this.setUniformMatrix4f("camaraMatrix",xcomponent.getParent().getController().getCamera().getTransform());
+      }
+    
+  
    if(xcomponent.getMaterial()!=null)
    {
       this.setUniformVector3f("color",xcomponent.getMaterial().getColor());  

@@ -12,12 +12,9 @@ var Game =(function(canvasId){
     })(this,canvasId);
    
 });
-
-Object.__extends__(Game,XObject);
-
  Game.prototype.__construct =(function(canvasId){
     XObject.prototype.__construct();
-    controller =  EngineController.createInstance(canvasId,600,400);                      
+    controller =  XController.createInstance(canvasId,600,400);                      
     root = new XObject();
     
     
@@ -64,21 +61,33 @@ Object.__extends__(Game,XObject);
          16, 17, 18,   16, 18, 19, // Right face
          20, 21, 22,   20, 22, 23  // Left face
    ];
-    var carpet1= new Material(Texture.load(Game.getController().getDisplay().getContext(),"gpu1.png"), new Vector3f(1.0 ,0 ,0.0));
+    var carpet1= new Material(Texture.load(Game.getController().getSystem().getDisplay().getContext(),
+                                "carpet.png"), new Vector3f(1.0 ,0 ,0.0));
    
-     var shader  = new BasicShader(Game.getController().getDisplay().getContext());
-     var trasnform = new Transform3D(new Vector3f(0,0,0));
-     trasnform.setCamera(Game.getController().getCamera());
-     trasnform.setPersp(70.0,Game.getController().getDisplay().getWidth(), Game.getController().getDisplay().getHeight(), 0.01, 1000.0);
+     var shader  = new BasicShader(Game.getController().getSystem().getDisplay().getContext());
+    
+ 
+     Game.getController().getCamera().setPersp(70.0,Game.getController().getSystem().getDisplay().getWidth(),
+     Game.getController().getSystem().getDisplay().getHeight(), 0.01, 1000.0);
+   
+     
      var mesh = new Mesh(shader ,vertices, indices,true);
      var meshComponent = new MeshComponent(mesh,carpet1);
      cudeObject.addComponent(meshComponent);
+     root.addComponent(meshComponent);
     
+    cudeObject.setTransform(new Transform3D(new Vector3f(1,-2,-3)));
     root.addObject(cudeObject);
-    root.setTransform(trasnform);
+   
+    root.setTransform(new Transform3D(new Vector3f(0,2,0)));
+   
     Game.getController().getCamera().setEnableKeyboard(true);
     root.setShader(shader );
+  
+    root.setController(Game.getController());
     //cudeObject.setShader(new PhongShader(Game.getController().getDisplay().getContext()));
+    
+     
 });
 
  Game.getRootObject=(function(){     
@@ -88,15 +97,8 @@ Object.__extends__(Game,XObject);
      return controller;
  });
  Game.prototype.start=(function(){
-  
-    
     var controller = Game.getController();
-    
     setInterval((function(){
-        
         controller.getRenderer().render(Game.getRootObject());
-      
     }),5);
-    
-   
  });

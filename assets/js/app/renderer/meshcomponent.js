@@ -29,8 +29,8 @@ MeshComponent.prototype.update=(function(elapse){
 
 
 MeshComponent.prototype.render=(function(){ 
-    
-   
-       this.getParent().getShader().update(this);
-       this.__mesh.draw();
+  
+ 
+   this.getParent().getShader().update(this);
+   this.__mesh.draw();
 });

@@ -20,8 +20,13 @@ var Camera=(function(position,forward, up){
   
  
 });
- Camera.yAxis =new Vector3f(0,1,0);
- Camera.SPEED=0.01;
+Camera.yAxis =new Vector3f(0,1,0);
+Camera.SPEED=0.01;
+Camera.FOV =70.0;
+Camera.WIDTH=0.0;
+Camera.HEIGHT =0.0;
+Camera.ZNEAR =0.10;
+Camera.ZFAR =1000.0;
  
 Camera.prototype.__construct=(function(position,forward, up){
         this.__position= (position instanceof Vector3f)?position:(new Vector3f(0,0,0)) ;         
@@ -34,6 +39,17 @@ Camera.prototype.__construct=(function(position,forward, up){
         
         
     });
+    
+Camera.prototype.setPersp=(function(fov,width,height, near, far){
+    
+   Camera.FOV=fov;
+   Camera.HEIGHT=height;
+   Camera.WIDTH=width;
+   Camera.ZFAR=far;
+   Camera.ZNEAR=near;
+});
+
+
 Camera.prototype.setInput=(function(sysInput)
 { 
     this.__input =sysInput;
@@ -152,6 +168,12 @@ Camera.prototype.rotateX=(function(angle){
        return this.__target;
        
    });
+ Camera.prototype.getPersp=(function(){
+ var __projectionMatrix = xgl.persp( Camera.FOV, Camera.WIDTH/ Camera.HEIGHT, Camera.ZNEAR, Camera.ZFAR);
+ return  __projectionMatrix;
+ });
+ 
+ 
  Camera.prototype.getTransform=(function(){
       this.keyboardController();
       this.mouseController();
@@ -159,3 +181,4 @@ Camera.prototype.rotateX=(function(angle){
       var view=  xgl.lookAt( pos,pos.add(this.__forward),this.getUp());
       return view;
   });
+  
