@@ -74,17 +74,19 @@ var Game =(function(canvasId){
      var mesh = new Mesh(shader ,vertices, indices,true);
      var meshComponent = new MeshComponent(mesh,carpet1);
      var meshComponent2 = new MeshComponent(mesh,carpet1);
+      var meshComponent3 = new MeshComponent(mesh,carpet1);
     var cudeObject = new XObject();
     cudeObject.addComponent(meshComponent);
     cudeObject.setTransform(new Transform3D(new Vector3f(1,-2,-3)));
     root.addObject(cudeObject);
     
+
     var cudeObject2 = new XObject();
     cudeObject2.addComponent(meshComponent2);
-   // cudeObject2.setTransform(new Transform3D(new Vector3f(1,-2,-3)));
-    
+    cudeObject2.setTransform(new Transform3D(new Vector3f(1,2,-3)));
+    root.addObject(cudeObject2);
    
-    root.addComponent(meshComponent);
+    root.addComponent(meshComponent3);
     root.setTransform(new Transform3D(new Vector3f(1,2,0)));
    
     Game.getController().getCamera().setEnableKeyboard(true);
@@ -104,7 +106,10 @@ var Game =(function(canvasId){
  });
  Game.prototype.start=(function(){
     var controller = Game.getController();
+     var speed =0.001;
     setInterval((function(){
+        Game.getRootObject().getTransform().setRotation(new Vector3f(Math.sin(speed)* 360,Math.cos(speed)* 360,Math.cos(speed)* 360));
         controller.getRenderer().render(Game.getRootObject());
+        speed+=0.001;
     }),5);
  });
