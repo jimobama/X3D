@@ -18,7 +18,7 @@ var Game =(function(canvasId){
     root = new XObject();
     
     
-    var cudeObject = new XObject();
+    
     var vertices=[
         //front
        new Vertex( new Vector3f( -1.0, -1.0,  1.0),null, new Vector2f(0.0 ,0.0)),
@@ -73,17 +73,23 @@ var Game =(function(canvasId){
      
      var mesh = new Mesh(shader ,vertices, indices,true);
      var meshComponent = new MeshComponent(mesh,carpet1);
-     cudeObject.addComponent(meshComponent);
-     root.addComponent(meshComponent);
-    
+     var meshComponent2 = new MeshComponent(mesh,carpet1);
+    var cudeObject = new XObject();
+    cudeObject.addComponent(meshComponent);
     cudeObject.setTransform(new Transform3D(new Vector3f(1,-2,-3)));
     root.addObject(cudeObject);
+    
+    var cudeObject2 = new XObject();
+    cudeObject2.addComponent(meshComponent2);
+   // cudeObject2.setTransform(new Transform3D(new Vector3f(1,-2,-3)));
+    
    
-    root.setTransform(new Transform3D(new Vector3f(0,2,0)));
+    root.addComponent(meshComponent);
+    root.setTransform(new Transform3D(new Vector3f(1,2,0)));
    
     Game.getController().getCamera().setEnableKeyboard(true);
     root.setShader(shader );
-  
+   
     root.setController(Game.getController());
     //cudeObject.setShader(new PhongShader(Game.getController().getDisplay().getContext()));
     
