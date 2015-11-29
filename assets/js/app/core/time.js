@@ -28,7 +28,7 @@ Time.setDelta=(function(delta)
 Time.getDelta=(function()
 {
     
-     return 12;
+     return __delta;
      
      
 });

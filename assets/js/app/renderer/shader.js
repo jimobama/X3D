@@ -5,58 +5,90 @@
  */
 
 
-
-
-
- var Shader = (function(gl){   
-      var __gl;
-     var __glProgram=null;
-     var __listShader=null;
-     var __uniforms ;
+ var Shader = (function(){  
      
-     this.__call__=(function(self,glContext){
-         
-         self.__construct(glContext);
-         
-     })(this,gl);
-   
-   
+     this.__gl;
+     this.__program;
+     this.__listShader;
+     this.__uniforms ;
      
+     this.__call__=(function(self){
+         
+         self.__construct();
+         
+     })(this);
+    
  });
  Shader.VERTEX_SHADER=0;
  Shader.FRAGMENT_SHADER=1;
  Shader.GEOMETRY_SHADER=2;
  Shader.PATH="assets/shaders/";
- 
- Shader.prototype.__construct=(function(glContext){
-     
-     __gl=glContext;
-     __uniforms={};
-     
-     var gl= this.getContext();
-     if(gl instanceof WebGLRenderingContext)
+
+ Shader.prototype.__construct=(function(){     
+     this.__gl = XController.getInstance().getSystem().getDisplay().getContext();   
+     this.__listShader= new Array();
+     this.__uniforms = new  Array();
+        this.__program=null;
+     if(this.__gl !==null)
      {// if(gl instanceof )
-     __glProgram= gl.createProgram();
-      __listShader= new  Array();      
-    
+     this.__program= this.__gl.createProgram();
      }
      else{
-        console.log("Couldnt create gl context cause invalid object passed");
+        console.log("Invalid argument passed , expecting a WebGLRenderingContext object");
      }
  });
- 
- 
+ Shader.prototype.addUniformMaterial=(function(attr){
+       this.addUniform("tex");
+       this.addUniform(attr+".color");
+ });
+ Shader.prototype.setUniformMaterial=(function(attr,material){
+        if(material instanceof Material)
+        {
+           this.setUniformVector3f(attr+".color",material.getColor());
+            var texture = material.getTexture();
+            if(texture !==null){
+             this.setUniform1i("tex",texture.getIndex());
+             texture.bind(this.getContext());
+             }
+            else{
+             Texture.unbind(this.getContext());
+            }
+           
+        }else{
+           Texture.unbind(this.getContext());
+          
+        }
+ }); 
+
+ Shader.prototype.addUniformTransform=(function(attr){
+     
+      this.addUniform(attr+".worldMatrix");
+      this.addUniform(attr+".camMatrix");
+      this.addUniform(attr+".viewMatrix");
+ });
+  Shader.prototype.setUniformTransform=(function(attr, xcomponent)
+  {
+      if(xcomponent instanceof XDrawable){
+        this.setUniformMatrix4f(attr+".worldMatrix",xcomponent.getTransform().getModel());
+        this.setUniformMatrix4f(attr+".camMatrix",xcomponent.getParent().getController().getCamera().getTransform());
+        this.setUniformMatrix4f(attr+".viewMatrix",xcomponent.getParent().getController().getCamera().getPersp());
+      }
+      
+  });
+
+
  Shader.prototype.addUniform=(function(name){
       var gl = this.getContext();
+      if(gl===null)return ;
       var  uniformLocation = gl.getUniformLocation(this.getProgram(), name);
       if(uniformLocation ===null){
           
-          alert(name +" could not be found in the shader program as uniforms");
+         console.log(name +" could not be found in the shader program as uniforms");
           return ;
       }
       //add the   alert("ss d"+name);
         
-      __uniforms[name]= uniformLocation;
+      this.__uniforms[name]= uniformLocation;
    
    
       
@@ -73,13 +105,13 @@
  Shader.prototype.setUniform1f=(function(name, value)
  {
      var gl = this.getContext();
-     gl.uniform1f(__uniforms[name], parseFloat(value));
+     gl.uniform1f(this.__uniforms[name], parseFloat(value));
  });
  
  Shader.prototype.setUniform1i=(function(name, value)
  {
       var gl = this.getContext();
-      gl.uniform1i(__uniforms[name], value); 
+      gl.uniform1i(this.__uniforms[name], value); 
  });
  
   Shader.prototype.setUniformMatrix4f=(function(name, matr)
@@ -87,7 +119,8 @@
      var gl = this.getContext();
      if(gl.uniformMatrix4fv && matr instanceof Matrix4f){
        var gl = this.getContext();
-       gl.uniformMatrix4fv(__uniforms[name],gl.FALSE, xgl.value_ptr(matr));
+       gl.uniformMatrix4fv(this.__uniforms[name],gl.FALSE, xgl.value_ptr(matr));
+       
    }
  });
  Shader.prototype.setUniformMatrix3f=(function(name,mat3f){
@@ -95,7 +128,7 @@
      
     var gl = this.getContext();
     if(gl.uniformMatrix3fv && mat3f instanceof Matrix3f){        
-      gl.uniformMatrix3fv(__uniforms[name], gl.FALSE, xgl.value_ptr(mat3f));
+      gl.uniformMatrix3fv(this.__uniforms[name], gl.FALSE, xgl.value_ptr(mat3f));
        
     }
      
@@ -106,7 +139,7 @@ Shader.prototype.setUniformVector2f=(function(name, value)
  {
     if(value instanceof  Vector2f){
        var gl = this.getContext();
-       gl.uniform2f(__uniforms[name], parseFloat(value.x), parseFloat(value.y));
+       gl.uniform2f(this.__uniforms[name], parseFloat(value.x), parseFloat(value.y));
    }
  });
  
@@ -116,13 +149,13 @@ Shader.prototype.setUniformVector2f=(function(name, value)
     if(value  instanceof Vector3f)
     {
       var gl = this.getContext();
-     gl.uniform3f(__uniforms[name], parseFloat(value.x), parseFloat(value.x), parseFloat(value.z));
+     gl.uniform3f(this.__uniforms[name], parseFloat(value.x), parseFloat(value.x), parseFloat(value.z));
     }
  });
  
  
  Shader.prototype.getProgram=(function(){     
-     return __glProgram;
+     return this.__program;
      
  });
  
@@ -159,13 +192,14 @@ Shader.prototype.setUniformVector2f=(function(name, value)
  });
  
  
-Shader.prototype.getContext=function(){        
-    return __gl;
-}
+Shader.prototype.getContext=(function(){        
+    return this.__gl;
+});
 Shader.prototype.getType=(function(type)
 {
-  var  shaderType;
- var gl =this.getContext();
+  var  shaderType=-1;
+  var gl =this.getContext();
+  if(gl===null) return shaderType;
   switch(type)
     {
        case 0:{
@@ -187,11 +221,13 @@ Shader.prototype.getType=(function(type)
         
 });
 Shader.prototype.create=(function(type,source)
-{
-    
-  var shaderType= this.getType(type); 
+{ 
+   var shaderType= this.getType(type); 
+   if(shaderType ===-1) return ;
+   
    var gl = this.getContext();
    var shader = gl.createShader(shaderType);
+   
    if(shader !==null){
        
      gl.shaderSource(shader,source);
@@ -199,13 +235,15 @@ Shader.prototype.create=(function(type,source)
   
      if(!this.isSuccess(shader,gl.COMPILE_STATUS,false))
      {
-         alert("Shader Error:  "+gl.getShaderInfoLog(shader));
+         console.log("Shader Error:  "+gl.getShaderInfoLog(shader));
          return ;
      }
      //add the shader to the shader lis
       
-      __listShader.push(shader);
+      this.__listShader.push(shader);
+    
   }
+
 });
 
 Shader.prototype.createFromScript=(function(id,type)
@@ -216,33 +254,28 @@ Shader.prototype.createFromScript=(function(id,type)
 
 Shader.prototype.createFromFile=(function(filename,type)
 {
-   
    var thSource=this.getScript(filename); 
    this.create(type,thSource);  
 });
 //Compile the program
 Shader.prototype.compile=(function(){    
     var gl = this.getContext();
-    
-    //alert("Number of Shaders "+__listShader.count());
-    
-    
-    for(var i=0; i < __listShader.length; i++)
+      //alert("Number of Shaders "+__listShader.count());
+    for(var i=0; i < this.__listShader.length; i++)
     {
-        var shaderId=__listShader[i];
+        var shaderId=this.__listShader[i];
         gl.attachShader(this.getProgram(),shaderId);      
     }
-    
-    
+   
     gl.linkProgram(this.getProgram());
     if(!this.isSuccess(this.getProgram(), gl.LINK_STATUS,true)){
         //could link program
-        alert("Unable to initialised the shader program \n "+gl.getProgramInfoLog(this.getProgram()));  
+       console.log("Unable to initialised the shader program \n "+gl.getProgramInfoLog(this.getProgram()));  
         return false;
     }
     gl.validateProgram(this.getProgram());
     if(!this.isSuccess(this.getProgram(),gl.LINK_STATUS,true)){
-         alert("Invalid shader program \n "+gl.getProgramInfoLog(this.getProgram()));     
+        console.log("Invalid shader program \n "+gl.getProgramInfoLog(this.getProgram()));     
          return false;
     }
     return true;
@@ -262,16 +295,30 @@ Shader.prototype.isSuccess=(function(shader, type, isProgram){
         
     }
    return status;
-})
-Shader.prototype.use=(function(){
-    
-    var gl = this.getContext();
-    gl.useProgram(this.getProgram());
-   
 });
 
-Shader.prototype.update=(function(camera, xcomponent){  
-  
-   
-  
+Shader.prototype.setProgram=(function(program){
+    
+    if(program instanceof  WebGLProgram)
+    {
+       this.__program= program;
+    }
+    //if(program instanceof )
+    
+});
+
+Shader.prototype.use=(function(){
+     var gl = this.getContext();
+     gl.useProgram(this.getProgram());
+});
+
+Shader.prototype.update=(function(xcomponent){  
+   this.use();
+    
+   if(xcomponent ===null) return ;
+     if(xcomponent.getMesh() !==null){
+      xcomponent.getMesh().draw();
+      
+  }
+
 });

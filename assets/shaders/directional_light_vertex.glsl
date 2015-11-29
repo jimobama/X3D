@@ -19,7 +19,8 @@ struct  Transform
 };
 
 
-uniform  Transform trans;
+uniform  Transform transform;
+
 
 
 
@@ -27,8 +28,8 @@ uniform  Transform trans;
 
 
  void main() {
-     Transform a= trans;
-    gl_Position =trans.viewMatrix * trans.camMatrix * trans.worldMatrix * vec4(position ,1) ;
+    
+    gl_Position =transform.viewMatrix * transform.camMatrix * transform.worldMatrix * vec4(position ,1) ;
     vTextureCoord=textCoord;
        
 }

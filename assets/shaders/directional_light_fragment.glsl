@@ -10,22 +10,21 @@ struct Material
 };
 
 
-
-
 varying  vec2 vTextureCoord;
 uniform  Material material;
 uniform sampler2D tex;
-
+uniform vec3 ambientLight;
 
 void main() {
-    
+     vec4 totalLight = vec4(ambientLight,1);
+	 
      vec4 textureMaterial =texture2D(tex,vTextureCoord);
-	 vec4  fragment_color =  vec4(material.color,1);
+	 vec4  fragColor =  vec4(material.color,1);
 	 if(textureMaterial !=vec4(0,0,0,1)){
-	   fragment_color =  textureMaterial  * fragment_color;	
+	   
+	   fragColor += textureMaterial;
      }	 
-	
-	 gl_FragColor = fragment_color  ;	
+	 gl_FragColor = fragColor * totalLight  ;	
 	
    
   }

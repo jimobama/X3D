@@ -6,19 +6,18 @@
 
 
 var MeshComponent= (function(mesh,material){
-    this.__mesh;
     this.__call__=(function(self, mesh,material , shader){        
         self.__construct(mesh,material);
         
     })(this, mesh,material);
 });
 
-Object.__extends__(MeshComponent,XComponent);
-
+Object.__extends__(MeshComponent,XDrawable);
 
 MeshComponent.prototype.__construct=(function(mesh,material)
 {
-    this.__mesh= (mesh instanceof Mesh)?mesh:null;
+   XDrawable.prototype.__construct();
+    this.setMesh(mesh);
     this.setMaterial(material);
    
 });
@@ -29,8 +28,7 @@ MeshComponent.prototype.update=(function(elapse){
 
 
 MeshComponent.prototype.render=(function(){ 
-  
- 
-   this.getParent().getShader().update(this);
-   this.__mesh.draw();
+  if(this.hasShader()){
+   this.getShader().update(this);
+  }
 });

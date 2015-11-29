@@ -4,30 +4,27 @@
  * and open the template in the editor.
  */
 
-PhongShader =(function(glcontext){
+PhongShader =(function(){
     var __ambientLight;
     var __directionLight;
     var __pointLights;
-    this.__call__=(function(self, glContext){
-      self.__initialize(glContext);
-    })(this,glcontext);
+    this.__call__=(function(self){
+      self.__construct();
+    })(this);
     
 });
 //extends the function from Shader
 Object.__extends__(PhongShader,Shader);
 PhongShader.MAX_POINT_LIGHT=4;
-/*
-PhongShader.prototype=Object.create(Shader.prototype);
-PhongShader.prototype.constructor =Shader;
-*/
 
-PhongShader.prototype.__initialize=(function(glContext){
-    
-     if(glContext !==null){
-         __ambientLight= null;
-         __directionLight= null;
-        __pointLights=null;
-        Shader.call(this,glContext);
+
+PhongShader.prototype.__construct=(function(){
+      Shader.prototype.__construct();
+     
+       __ambientLight= null;
+       __directionLight= null;
+      __pointLights=null;
+      
         this.createFromFile("phongvertex.glsl",Shader.VERTEX_SHADER );
         this.createFromFile("phongfragment.glsl",Shader.FRAGMENT_SHADER);
         this.compile();
@@ -47,8 +44,7 @@ PhongShader.prototype.__initialize=(function(glContext){
             this.addUniformPointLight("pointLights["+i+"]");
             
           }
-     
-     }
+    
  });
  
  PhongShader.prototype.addAmbientLight =(function(light){     
@@ -198,6 +194,8 @@ PhongShader.prototype.__initialize=(function(glContext){
 
 PhongShader.prototype.update=(function(object){
    this.use();
+ 
+   
    this.setUniformMatrix4f("projection",object.getTransform().getPerspTransform()); 
    this.setUniformMatrix4f("transform",object.getTransform().getModel()); 
    this.setUniformVector3f("camPosition",object.getTransform().getCamera().getPosition());

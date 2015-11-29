@@ -21,7 +21,7 @@ var Camera=(function(position,forward, up){
  
 });
 Camera.yAxis =new Vector3f(0,1,0);
-Camera.SPEED=0.01;
+Camera.SPEED=0.05;
 Camera.FOV =70.0;
 Camera.WIDTH=0.0;
 Camera.HEIGHT =0.0;
@@ -64,7 +64,7 @@ Camera.prototype.getUp=(function(){
  });
  
  Camera.prototype.setPosition=(function(pos){     
-      this.__position = (pos instanceof Vectora3f)?pos: this.__position;
+      this.__position = (pos instanceof Vector3f)?pos: this.__position;
  });
  
 Camera.prototype.rotateX=(function(angle){
@@ -128,19 +128,19 @@ Camera.prototype.rotateX=(function(angle){
               var amount =Camera.SPEED * Time.getDelta();
                if(this.__input.isKeyDown(Keyboard.Keys.K_W))
                 {
-                   this.move(this.getUp().negate(), amount );
+                   this.move(this.getUp(), amount );
                 }
               if(this.__input.isKeyDown(Keyboard.Keys.K_S))
                {
-                this.move(this.getUp(), amount );
+                this.move(this.getUp().negate(), amount );
                }
               if(this.__input.isKeyDown(Keyboard.Keys.K_A))
                {
-                   this.move(this.getRight().negate(), amount );
+                   this.move(this.getRight(), amount );
                } 
               if(this.__input.isKeyDown(Keyboard.Keys.K_D))
                {
-                 this.move(this.getRight(), amount );
+                 this.move(this.getRight().negate(), amount );
 
                } 
                

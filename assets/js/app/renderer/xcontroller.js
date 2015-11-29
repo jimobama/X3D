@@ -29,7 +29,7 @@ XController.getInstance=(function(){
 XController.prototype.__construct=(function(canvasid,w,h){
      this.__xsystem= new XSystem(canvasid);
      this.__camera= new Camera();
-     this.renderer= new XRenderer(this);
+     this.__renderer= new XRenderer(this);
      this.getCamera().setInput(this.getSystem().getInput());
      this.getSystem().getDisplay().resize(new Vector2f(w,h));
      RenderUtils.initialize(this.getSystem().getDisplay().getContext());  
@@ -47,7 +47,7 @@ XController.prototype.getSystem=(function(){
 
 XController.prototype.getRenderer=(function()
 {
-    return this.renderer;
+    return this.__renderer;
 });
 
 XController.prototype.getCamera=(function(){

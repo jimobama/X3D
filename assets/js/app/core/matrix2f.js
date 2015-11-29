@@ -169,13 +169,7 @@ Matrix2f.value_ptr=(function(mat2f){
     return new Float32Array(floatArray);
 });
 
-/*
- * 
- */
-Matrix2f.prototype.determinant=(function(){    
-    var det= this.getX().x * this.getY().y - this.getX().y *this.getY().x;
-    return det;    
-});
+
 
 
 Matrix2f.rotate=(function (angle){

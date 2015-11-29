@@ -44,8 +44,9 @@ Mesh.prototype.__construct=(function(ashader,vertices, indices,allow){
     
 });
 Mesh.prototype.initialBuffers=(function(ashader){
-  this.__shader =ashader;
-    var gl = this.getShader().getContext();      
+   this.__shader =ashader;
+  
+    var gl =this.__shader.getContext();      
     //create the buffer array objects
      this.__vbo = gl.createBuffer();
      gl.bindBuffer(gl.ARRAY_BUFFER, this.__vbo);
@@ -61,6 +62,8 @@ Mesh.prototype.initialBuffers=(function(ashader){
     
     this.__vboIndices =gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,this.__vboIndices);
+    
+   
     
 });
 Mesh.prototype.calcNormals=(function(vertices, indices){
@@ -92,8 +95,8 @@ Mesh.prototype.setVertexAttribute3f=(function(attribute,list,vbo)
 {
     var shader = this.getShader();
     shader.use();
-    var gl =shader.getContext();
-    
+     
+    var gl =shader.getContext();    
     gl.bindBuffer(gl.ARRAY_BUFFER,vbo);
    
     if(list instanceof Array){   
@@ -190,8 +193,9 @@ Mesh.prototype.initMesh=(function(){
 Mesh.prototype.draw=(function(){
     if(this.__indices.length < 3) return ;
      var shader = this.getShader();
-     shader.use();
+   
      var gl = shader.getContext(); 
+     shader.use();
     /*
     gl.bindBuffer(gl.ARRAY_BUFFER, this.__vbo); 
      gl.bindBuffer(gl.ARRAY_BUFFER, this.__vboCoords); 

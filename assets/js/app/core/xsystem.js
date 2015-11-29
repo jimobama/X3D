@@ -21,7 +21,6 @@ var XSystem =(function(canvasId){
 XSystem.prototype.__construct =(function(canvasId){
     if(canvasId===null){console.log("Canvas id not found");return ;};
     this.__display = new Display(canvasId);
-    this.__display.initialGL();
     this.__input = new Input(this.__display);
    
 });

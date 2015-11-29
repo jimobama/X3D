@@ -28,14 +28,13 @@
 <script  src='assets/js/app/renderer/basicshader.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/phongshader.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/renderutils.js' type="text/javascript"></script>
-<script  src='assets/js/app/renderer/xcomponent.js' type="text/javascript"></script>
+<script  src='assets/js/app/renderer/xdrawable.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/xobject.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/xcontroller.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/xrenderer.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/meshcomponent.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/model.js' type="text/javascript"></script>
- 
-
+<script  src='assets/js/app/renderer/ambientlightshader.js' type="text/javascript"></script> 
  <script  src='assets/js/app/physics/baselight.js' type="text/javascript"></script>
  <script  src='assets/js/app/physics/directionlight.js' type="text/javascript"></script>
   <script  src='assets/js/app/physics/pointlight.js' type="text/javascript"></script>
@@ -63,11 +62,43 @@
     }
 </style>
 <script>
+    var uwlgame;
+    var controller;
+    var lasttime= Time.getTime();
     
     window.onload=(function(){
-      var game =  new Game("glcanvas");
-      game.start();
-    })
+     
+       uwlgame = new XObject();
+       controller = XController.createInstance("glcanvas", 600,400);
+       var shader = new BasicShader();
+       var model = new Model();
+        model.load("cude.obj");
+       var  texture = Texture.load(controller.getSystem().getDisplay().getContext(),"carpet.png");
+      
+      controller.getCamera().setPersp(70.0,controller.getSystem().getDisplay().getWidth(),
+      controller.getSystem().getDisplay().getHeight(), 0.01, 1000.0);
+      controller.getCamera().setEnableKeyboard(true);
+      controller.getCamera().setEnableMouse(true);
+       var material = new Material(texture, new Vector3f(1,1,1));
+       var mesh = new MeshComponent(new Mesh(shader, model.getVertices(),model.getIndices()),material);
+       
+        uwlgame.addComponent(mesh);
+        uwlgame.setController(controller);
+        uwlgame.setShader(shader);
+         //  uwlgame.setTransform(new Transform3D(new Vector3f(1,2,0)));
+         setInterval(draw, 15);
+        
+    });
+    
+    
+    function draw(){
+        var current=Time.getTime();
+        var delta = current-lasttime;
+        Time.setDelta(delta );
+        lasttime=current;
+        controller.getRenderer().render(uwlgame);
+      
+    }
   
 </script>
 
@@ -78,7 +109,7 @@
 <body>
     <div class='page-wrapper'>
         
-        <div class="details" ><label> Camera Translation : </label>  <span id="translation"> </span></div>
+        
             <canvas class="center" id="glcanvas"> 
 
             </canvas>

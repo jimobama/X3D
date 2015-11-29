@@ -3,47 +3,49 @@
 
 var Display =(function(canvasID){  
     
-    this.__id=canvasID;
-    var __view=null;
-    var __gl=null;
-   
-    var  __mouse;
-    var __keyboard;
+    
+    this.__view;
+    this.__gl;
+    this.__mouse;
+    this.__keyboard;
+    this.__call__=(function(self, canvasId){        
+        self.__construct(canvasId);
+    })(this,canvasID);
   
+});
+Display.prototype.__construct=(function(canvasId){
+    
+    this.__view=null;
+    this.__gl=null;
+    this.__mouse=null;
+    this.__keyboard=null;
+    
+   this.__view= document.getElementById(canvasId); 
+   if(this.__view ===null)return ;
+   this.__createContext();
+   this.__mouse = new  Mouse(this.getView());
+   this.__keyboard= new Keyboard(this.getView());
+   this.setViewPort(this.getView().width,this.getView().height);
 });
 
 Display.prototype.getContext=(function(){
     
-    return __gl;
+    return this.__gl;
 });
 
-Display.prototype.getId=(function(){
-    
-    return this.__id;
-    
-});
+
 Display.prototype.getView=(function(){
-    return __view;    
+    return this.__view;    
 });
  Display.prototype.getKeyboard=(function(){
     
-    return __keyboard;
+    return this.__keyboard;
 });
 
 Display.prototype.getMouse=(function(){
-  return   __mouse;
+  return   this.__mouse;
 });
 
-
-Display.prototype.initialGL=(function(){
-   __view= document.getElementById(this.getId()); 
-   this.createContext();
-    __mouse = new  Mouse(this.getView());
-   __keyboard= new Keyboard(this.getView());
-   this.setViewPort(this.getView().width,this.getView().height);  
-   return this;
-   
-});
 
 Display.prototype.setViewPort=function(width, height)
 {
@@ -87,35 +89,27 @@ Display.prototype.setViewPort=function(width, height)
      
  });
 
- Display.prototype.createContext=function(){
-
+ Display.prototype.__createContext=function(){
      var view = this.getView();
-    
      if(view !=null){
-        
             try {
                 
               // Try to grab the standard context. If it fails, fallback to experimental.
-             __gl = view.getContext("webgl") || view.getContext("experimental-webgl");
+             this.__gl = view.getContext("webgl") || view.getContext("experimental-webgl");
             
             }
             catch(e) {}
 
             // If we don't have a GL context, give up now
-            if (!__gl) {
-              alert("Unable to initialize WebGL. Your browser may not support it.");
-            __gl = null;
+            if (!this.__gl) {
+              console.log("Unable to initialize WebGL. Your browser may not support it.");
+            this.__gl = null;
             }
   
      } 
-     
       return this;
  };
  
 
-
-Display.prototype.update=(function(onrender){
-
-});
 
 
