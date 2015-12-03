@@ -5,7 +5,6 @@ var Display =(function(canvasID){
     
     
     this.__view;
-    this.__gl;
     this.__mouse;
     this.__keyboard;
     this.__call__=(function(self, canvasId){        
@@ -13,24 +12,40 @@ var Display =(function(canvasID){
     })(this,canvasID);
   
 });
+Display.Id="";
+Display.__instance=null;
+Display.getInstance=(function(){
+    
+    if(Display.__instance===null){
+        Display.__instance= Display.create(Display.Id);
+    }
+  return Display.__instance;
+    
+});
+
+Display.create=(function(canvas){
+    Display.__instance=new Display(canvas);
+    return Display.__instance;
+});
+
+
+
+
 Display.prototype.__construct=(function(canvasId){
     
-    this.__view=null;
-    this.__gl=null;
+  
     this.__mouse=null;
     this.__keyboard=null;
-    
-   this.__view= document.getElementById(canvasId); 
-   if(this.__view ===null)return ;
+    this.__view= document.getElementById(canvasId); 
    this.__createContext();
    this.__mouse = new  Mouse(this.getView());
    this.__keyboard= new Keyboard(this.getView());
-   this.setViewPort(this.getView().width,this.getView().height);
+    this.setViewPort(this.getView().width,this.getView().height);
 });
 
 Display.prototype.getContext=(function(){
     
-    return this.__gl;
+    return  window.gl;
 });
 
 
@@ -95,15 +110,15 @@ Display.prototype.setViewPort=function(width, height)
             try {
                 
               // Try to grab the standard context. If it fails, fallback to experimental.
-             this.__gl = view.getContext("webgl") || view.getContext("experimental-webgl");
+            window.gl = view.getContext("webgl") || view.getContext("experimental-webgl");
             
             }
             catch(e) {}
 
             // If we don't have a GL context, give up now
-            if (!this.__gl) {
+            if (! window.gl) {
               console.log("Unable to initialize WebGL. Your browser may not support it.");
-            this.__gl = null;
+             window.gl = null;
             }
   
      } 

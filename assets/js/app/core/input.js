@@ -4,38 +4,46 @@
  * and open the template in the editor.
  */
 
-
-var Input =(function(display){
-    
-    var __display;
+var Input =(function(){
     this.in__mouse =null;
     this.in__keyboard=null;
     this.in__keys=null;
-    this.__call__=(function(self,display){
+    this.__call__=(function(self){
         
-        self.__construct(display);
+        self.__construct();
         
-    })(this,display);
+    })(this);
     
     
 });
+
+ Input.__instance=null;
+ 
+  Input.getInstance=(function(){
+      if( Input.__instance===null)
+      {
+           Input.__instance= new Input();
+      }
+      
+     return  Input.__instance; 
+  });
+  
+  
  Input.prototype.getMouse=(function(){     
      return  this.in__mouse;
  });
  
- Input.prototype.__construct=(function(display){
+ Input.prototype.__construct=(function(){
      this.in__keys= new Array(254);
      
-     this.__display=display;
+    
      for(var i=0; i< 254; i++){
          this.in__keys[i]=false;
      }
-     if(this.__display instanceof Display)
-     {
-          this.in__mouse=this.__display.getMouse();
-          this.in__keyboard =this.__display.getKeyboard();
+          this.in__mouse=    Display.getInstance().getMouse();
+          this.in__keyboard =Display.getInstance().getKeyboard();
           this.__handle();        
-     }
+     
  });
  
  
