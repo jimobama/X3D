@@ -6,9 +6,7 @@
 
 
 var XSystem =(function(canvasId){
-    
-    this.__input;
-    this.__display;
+   
     
     this.__call__=(function(self,canvasId){
         self.__construct(canvasId);
@@ -20,19 +18,18 @@ var XSystem =(function(canvasId){
 
 XSystem.prototype.__construct =(function(canvasId){
     if(canvasId===null){console.log("Canvas id not found");return ;};
-    this.__display = new Display(canvasId);
-    this.__input = new Input(this.__display);
+    Display.Id=canvasId;
    
 });
 
 XSystem.prototype.getDisplay=(function()
 {
-     return this.__display;
+     return Display.getInstance();
 });
 
 XSystem.prototype.getInput=(function()
 {
-     return this.__input;
+     return Input.getInstance();
 });
 
 
