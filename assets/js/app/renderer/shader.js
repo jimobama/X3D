@@ -7,7 +7,7 @@
 
  var Shader = (function(){  
      
-     this.__gl;
+    
      this.__program;
      this.__listShader;
      this.__uniforms ;
@@ -24,19 +24,14 @@
  Shader.GEOMETRY_SHADER=2;
  Shader.PATH="assets/shaders/";
 
- Shader.prototype.__construct=(function(){     
-     this.__gl = XController.getInstance().getSystem().getDisplay().getContext();   
+Shader.prototype.init=(function(){
+     var gl = this.getContext(); 
+     this.__program=null;
      this.__listShader= new Array();
-     this.__uniforms = new  Array();
-        this.__program=null;
-     if(this.__gl !==null)
-     {// if(gl instanceof )
-     this.__program= this.__gl.createProgram();
-     }
-     else{
-        console.log("Invalid argument passed , expecting a WebGLRenderingContext object");
-     }
- });
+     this.__uniforms = new  Array(); 
+     this.__program= gl.createProgram();
+    
+});
  Shader.prototype.addUniformMaterial=(function(attr){
        this.addUniform("tex");
        this.addUniform(attr+".color");
@@ -93,7 +88,12 @@
    
       
  });
- 
+  Shader.prototype.setAttributeLocation=(function(attr, index){
+      
+       var gl=this.getContext();
+       gl.bindAttribLocation(this.getProgram(),index, attr);
+      
+  });
  /*Set attribute location*/
  Shader.prototype.getAttributeLocation=function(attr){        
      
@@ -193,7 +193,7 @@ Shader.prototype.setUniformVector2f=(function(name, value)
  
  
 Shader.prototype.getContext=(function(){        
-    return this.__gl;
+    return window.gl;
 });
 Shader.prototype.getType=(function(type)
 {
@@ -308,7 +308,7 @@ Shader.prototype.setProgram=(function(program){
 });
 
 Shader.prototype.use=(function(){
-     var gl = this.getContext();
+    var gl = XController.getInstance().getSystem().getDisplay().getContext();
      gl.useProgram(this.getProgram());
 });
 
