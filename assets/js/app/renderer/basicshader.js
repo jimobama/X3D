@@ -17,7 +17,7 @@ var BasicShader=(function(){
 Object.__extends__(BasicShader,Shader);
 
  BasicShader.prototype.__construct=(function(){
-    Shader.prototype.__construct();
+    this.__super.__construct();
     this.createFromFile("vertex.glsl",Shader.VERTEX_SHADER );
     this.createFromFile("fragment.glsl",Shader.FRAGMENT_SHADER);
     this.compile();
@@ -29,12 +29,12 @@ Object.__extends__(BasicShader,Shader);
   
 
  BasicShader.prototype.update=(function(xcomponent){
-  
+  this.use();
   if(xcomponent ===null) return ;
      this.setUniformTransform("trans",xcomponent);
      this.setUniformMaterial("material",xcomponent.getMaterial() );
     Shader.prototype.update(xcomponent);
-   
+ 
   
  });
 

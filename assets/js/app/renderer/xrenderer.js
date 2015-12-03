@@ -10,6 +10,13 @@ var XRenderer =(function(controller){
        self.__construct(controller);
    })(this,controller);
 });
+XRenderer .__instance=null;
+XRenderer.getInstance=(function(controller){
+    if(XRenderer .__instance===null)
+    XRenderer .__instance= new XRenderer(controller);
+
+   return XRenderer.__instance;
+});
 XRenderer.prototype.__construct=(function(controller){    
    this.controller=(controller instanceof XController)?controller:null;
    this.effects = new XObject();
@@ -26,8 +33,8 @@ XRenderer.prototype.render=(function(object){
         console.log("Could not render the model without an engine controller");
         return ;
    }
-  var gl = this.getController().getSystem().getDisplay().getContext();
-  RenderUtils.clear(gl,0.1,0.1,0.1,1);
+  var gl = window.gl;
+  RenderUtils.clear(0.1,0.1,0.1,1);
   object.renderAll();
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);

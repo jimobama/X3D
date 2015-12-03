@@ -80,12 +80,12 @@
       controller.getCamera().setEnableKeyboard(true);
       controller.getCamera().setEnableMouse(true);
        var material = new Material(texture, new Vector3f(1,1,1));
-       var mesh = new MeshComponent(new Mesh(shader, model.getVertices(),model.getIndices()),material);
+       var mesh = new MeshComponent(new Mesh( model.getVertices(),model.getIndices()),material);
        
         uwlgame.addComponent(mesh);
         uwlgame.setController(controller);
         uwlgame.setShader(shader);
-         //  uwlgame.setTransform(new Transform3D(new Vector3f(1,2,0)));
+        uwlgame.setTransform(new Transform3D(new Vector3f(1,2,0)));
          setInterval(draw, 15);
         
     });

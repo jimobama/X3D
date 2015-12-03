@@ -6,8 +6,8 @@
 Object.__extends__ =(function(child, byparent){
     
     child.prototype=Object.create(byparent.prototype);
-    child.prototype.constructor =byparent;
-    
+    child.prototype.__super =byparent.prototype;
+    child.prototype.__super.__construct=byparent.prototype.__construct;
 });
 
 Object.prototype.__construct =(function(){    

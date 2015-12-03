@@ -16,7 +16,7 @@ Object.__extends__(MeshComponent,XDrawable);
 
 MeshComponent.prototype.__construct=(function(mesh,material)
 {
-    this.__super.__construct();
+    XDrawable.prototype.__construct();
     this.setMesh(mesh);
     this.setMaterial(material);
    

@@ -24,7 +24,7 @@
  Shader.GEOMETRY_SHADER=2;
  Shader.PATH="assets/shaders/";
 
-Shader.prototype.init=(function(){
+Shader.prototype.__construct=(function(){
      var gl = this.getContext(); 
      this.__program=null;
      this.__listShader= new Array();

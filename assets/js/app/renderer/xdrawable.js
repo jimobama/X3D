@@ -90,6 +90,9 @@ XDrawable.prototype.update=(function(timelapse){
 });
 XDrawable.prototype.render=(function(){  
     
-   
+   if(this.hasShader())
+   {
+       this.getShader().update(this);
+   }
 });
 
