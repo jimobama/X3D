@@ -6,7 +6,7 @@
 
 var XDrawable =(function(){  
     
-    this.__shader;
+   
     this.__parent;
     this.__transform;
     this.__material;
@@ -20,14 +20,12 @@ XDrawable.prototype.__construct=(function()
 {
     this.__parent =null;
     this.__material=null;
-    this.__shader=null;
+ 
     this.__transform = new Transform3D();
     
    
 });
-XDrawable .prototype.setShader=(function(shader){
-    this.__shader =(shader instanceof Object)?shader:null;
-});
+
 XDrawable .prototype.setMesh =(function(model){
      this.__model = (model instanceof Mesh)? model:null;
 });
@@ -35,12 +33,7 @@ XDrawable .prototype.setMesh =(function(model){
 XDrawable.prototype.getMesh =(function(){
     return this.__model;
 });
-XDrawable.prototype.getShader=(function(){
-    return this.__shader ;
-});
-XDrawable.prototype.hasShader=(function(){    
-    return this.getShader()!==null;
-});
+
 
 XDrawable.prototype.setParent=(function(parent){
    this.__parent =(parent instanceof XObject)?parent:null;
@@ -52,8 +45,6 @@ XDrawable.prototype.setTransform=(function(t)
      
     
 });
-
-
 XDrawable.prototype.getTransform=(function(){
    
     var parent= null;
@@ -87,11 +78,11 @@ XDrawable.prototype.input=(function(){
 XDrawable.prototype.update=(function(timelapse){  
    
 });
-XDrawable.prototype.render=(function(){  
+XDrawable.prototype.render=(function(shader){  
     
-   if(this.hasShader())
+   if(shader!==null && shader.update)
    {
-       this.getShader().update(this);
+       shader.update(this);
    }
 });
 
