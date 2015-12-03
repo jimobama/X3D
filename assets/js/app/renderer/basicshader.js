@@ -7,34 +7,34 @@
 
 
 var BasicShader=(function(){
-   
+    this.shader =null
     this.__call__=(function(self){
       self.__construct();
     })(this);
     
 });
-//inheritance
-Object.__extends__(BasicShader,Shader);
+
 
  BasicShader.prototype.__construct=(function(){
-    this.__super.__construct();
-    this.createFromFile("vertex.glsl",Shader.VERTEX_SHADER );
-    this.createFromFile("fragment.glsl",Shader.FRAGMENT_SHADER);
-    this.compile();
-    this.addUniformTransform("trans");
-    this.addUniformMaterial("material");
+    this.shader= new Shader();
+    this.shader.createFromFile("vertex.glsl",Shader.VERTEX_SHADER );
+    this.shader.createFromFile("fragment.glsl",Shader.FRAGMENT_SHADER);
+    this.shader.compile();
+    this.shader.addUniformTransform("trans");
+    this.shader.addUniformMaterial("material");
   
  });
-
-  
+ 
+  BasicShader.prototype.getShader=(function(){
+      return  this.shader;
+  });
 
  BasicShader.prototype.update=(function(xcomponent){
-  this.use();
+   this.shader.use();
   if(xcomponent ===null) return ;
-     this.setUniformTransform("trans",xcomponent);
-     this.setUniformMaterial("material",xcomponent.getMaterial() );
-    Shader.prototype.update(xcomponent);
- 
+    this.shader.setUniformTransform("trans",xcomponent);
+    this.shader.setUniformMaterial("material",xcomponent.getMaterial() );
+    this.shader.update(xcomponent);
   
  });
 

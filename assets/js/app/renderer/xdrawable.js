@@ -26,8 +26,7 @@ XDrawable.prototype.__construct=(function()
    
 });
 XDrawable .prototype.setShader=(function(shader){
-    this.__shader =(shader instanceof Shader)?shader:null;
-    
+    this.__shader =(shader instanceof Object)?shader:null;
 });
 XDrawable .prototype.setMesh =(function(model){
      this.__model = (model instanceof Mesh)? model:null;

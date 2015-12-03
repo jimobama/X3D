@@ -191,5 +191,5 @@ Mesh.prototype.draw=(function(){
     // gl.drawArrays(gl.TRIANGLES, 0,this.__vertices.length);     
      //alert(shader.getProgram());
      gl.drawElements(gl.TRIANGLES, this.__indices.length, gl.UNSIGNED_SHORT, 0);
-    
+  
     });

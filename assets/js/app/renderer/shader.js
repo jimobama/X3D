@@ -8,9 +8,9 @@
  var Shader = (function(){  
      
     
-     this.__program;
-     this.__listShader;
-     this.__uniforms ;
+     this.__program=null;
+     this.__listShader=null;
+     this.__uniforms =null;
      
      this.__call__=(function(self){
          
@@ -25,12 +25,14 @@
  Shader.PATH="assets/shaders/";
 
 Shader.prototype.__construct=(function(){
+  this.initGL();
+});
+
+Shader.prototype.initGL=(function(){
      var gl = this.getContext(); 
-     this.__program=null;
-     this.__listShader= new Array();
-     this.__uniforms = new  Array(); 
      this.__program= gl.createProgram();
-    
+       this.__listShader= new Array();
+    this.__uniforms = new  Array(); 
 });
  Shader.prototype.addUniformMaterial=(function(attr){
        this.addUniform("tex");
@@ -264,6 +266,7 @@ Shader.prototype.compile=(function(){
     for(var i=0; i < this.__listShader.length; i++)
     {
         var shaderId=this.__listShader[i];
+        
         gl.attachShader(this.getProgram(),shaderId);      
     }
    
@@ -307,14 +310,14 @@ Shader.prototype.setProgram=(function(program){
     
 });
 
+
 Shader.prototype.use=(function(){
     var gl = XController.getInstance().getSystem().getDisplay().getContext();
      gl.useProgram(this.getProgram());
 });
-
 Shader.prototype.update=(function(xcomponent){  
    this.use();
-    
+ 
    if(xcomponent ===null) return ;
      if(xcomponent.getMesh() !==null){
       xcomponent.getMesh().draw();

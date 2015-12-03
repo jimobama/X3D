@@ -71,6 +71,8 @@
        uwlgame = new XObject();
        controller = XController.createInstance("glcanvas", 600,400);
        var shader = new BasicShader();
+       var b= new AmbientLightShader();
+       b.setAmbientLight(new Vector3f(0.2,0.2,0.2));
        var model = new Model();
         model.load("cude.obj");
        var  texture = Texture.load(controller.getSystem().getDisplay().getContext(),"carpet.png");
@@ -84,8 +86,9 @@
        
         uwlgame.addComponent(mesh);
         uwlgame.setController(controller);
-        uwlgame.setShader(shader);
+        uwlgame.setShader(b);
         uwlgame.setTransform(new Transform3D(new Vector3f(1,2,0)));
+        controller.getRenderer().setObject(uwlgame);
          setInterval(draw, 15);
         
     });
@@ -96,7 +99,7 @@
         var delta = current-lasttime;
         Time.setDelta(delta );
         lasttime=current;
-        controller.getRenderer().render(uwlgame);
+        controller.getRenderer().render();
       
     }
   

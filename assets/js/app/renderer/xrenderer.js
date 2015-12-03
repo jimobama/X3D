@@ -5,6 +5,8 @@
 
 var XRenderer =(function(controller){
    this.controller =null;
+   this.__object;
+   this.meshShader=null;
    this.effects=null;
    this.__call__=(function(self,controller){       
        self.__construct(controller);
@@ -17,9 +19,22 @@ XRenderer.getInstance=(function(controller){
 
    return XRenderer.__instance;
 });
+
+XRenderer.prototype.setObject=(function(xobject){
+    
+    if(xobject instanceof XObject)
+        this.__object=xobject;
+});
+
+XRenderer.prototype.getObject=(function(){
+        return this.__object;
+});
 XRenderer.prototype.__construct=(function(controller){    
    this.controller=(controller instanceof XController)?controller:null;
    this.effects = new XObject();
+    this.__object=new XObject();
+    this.meshShader= new AmbientLightShader();
+    this.meshShader.setAmbientLight(new Vector3f(0.2,0.2,0.2));
 });
 XRenderer.prototype.getController=(function(){
     return  this.controller;
@@ -28,14 +43,14 @@ XRenderer.prototype.addEffect=(function(xobject){
     if(xobject instanceof XObject)
         this.effects.addObject(xobject);
 });
-XRenderer.prototype.render=(function(object){
+XRenderer.prototype.render=(function(){
    if(this.getController()===null){
         console.log("Could not render the model without an engine controller");
         return ;
    }
   var gl = window.gl;
   RenderUtils.clear(0.1,0.1,0.1,1);
-  object.renderAll();
+  this.getObject().renderAll();
   gl.enable(gl.BLEND);
   gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   //gl.blendFunc(gl.ONE, gl.ONE);
