@@ -8,6 +8,7 @@ var Input =(function(){
     this.in__mouse =null;
     this.in__keyboard=null;
     this.in__keys=null;
+    this.in_mouse_buttons_down;
     this.__call__=(function(self){
         
         self.__construct();
@@ -35,10 +36,10 @@ var Input =(function(){
  
  Input.prototype.__construct=(function(){
      this.in__keys= new Array(254);
-     
-    
+     this.in_mouse_buttons_down= new Array(254);
      for(var i=0; i< 254; i++){
          this.in__keys[i]=false;
+         this.in_mouse_buttons_down[i]=false;
      }
           this.in__mouse=    Display.getInstance().getMouse();
           this.in__keyboard =Display.getInstance().getKeyboard();
@@ -46,7 +47,11 @@ var Input =(function(){
      
  });
  
- 
+   Input.prototype.isMouseDown=(function(button){
+       
+       return this.in_mouse_buttons_down[button];
+       
+   });
  
   Input.prototype.__handle=(function()
   {
@@ -63,6 +68,13 @@ var Input =(function(){
                      
                 }
           }));
+      }
+      
+      //handle mouse 
+      
+      if(this.in__mouse instanceof Mouse)
+      {
+         
       }
   });
   Input.prototype.isKeyDown=(function(key){      

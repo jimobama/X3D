@@ -44,15 +44,7 @@ var Model =(function(){
       var position = this.__positions[positionIndex];
       var normals =  this.__normals[norIndex];
       var coords =   this.__coords[CoordIndex];
-      
-      if( positionIndex >= this.__vertices.length){
-          this.__vertices.push(new Vertex(position,normals,coords));
-       }else{
-           //update the vertices location with the normals
-          this.__vertices[positionIndex]= new Vertex(position,normals,coords);
-       }
-      //save the order of drawing
-      
+      this.__vertices[positionIndex]= new Vertex(position,normals,coords);
       this.__drawIndices.push(positionIndex);
    
  });
@@ -78,16 +70,19 @@ var Model =(function(){
         }
         else if(lookahead ==="v")//vertex
         {
+           
             //add the vertices indices positions
-            this.__positions.push(new Vector3f(parseFloat(tokenArray[1]),
-                                               parseFloat(tokenArray[2]),
-                                               parseFloat(tokenArray[3])));
+            var vface=new Vector3f(parseFloat(tokenArray[1]),parseFloat(tokenArray[2]), parseFloat(tokenArray[3]));
+            
+            this.__positions.push(vface);
+           
            
           
         }
        else if(lookahead ==="vn") // normal coordinates
        {
            //get the normals 
+            
            this.__normals.push(new Vector3f(parseFloat(tokenArray[1]),
                                             parseFloat(tokenArray[2]),
                                             parseFloat(tokenArray[3])));
@@ -95,6 +90,7 @@ var Model =(function(){
        }
         else if(lookahead ==="vt")//vertex texture coordinates
        {
+           
            this.__coords.push(new Vector2f(parseFloat(tokenArray[1]),
                                            parseFloat(tokenArray[2])));
           

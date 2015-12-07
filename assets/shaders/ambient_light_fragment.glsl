@@ -3,6 +3,12 @@ precision highp float;
 #else
 precision mediump float;
 #endif
+
+struct BaseLight{
+    vec3 color;
+	float intensity;   
+};
+
 struct Material
 {
     vec3 color;
@@ -12,11 +18,13 @@ struct Material
 
 varying  vec2 vTextureCoord;
 uniform  Material material;
+uniform BaseLight baseLight;
+
 uniform sampler2D tex;
-uniform vec3 ambientLight;
+
 
 void main() {
-     vec4 totalLight = vec4(ambientLight,1);
+     vec4 totalLight = vec4(baseLight.color * baseLight.intensity,1);
 	 
      vec4 textureMaterial =texture2D(tex,vTextureCoord);
 	 vec4  fragColor =  vec4(material.color,1);

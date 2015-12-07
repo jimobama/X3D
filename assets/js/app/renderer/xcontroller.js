@@ -54,7 +54,7 @@ XController.prototype.getSystem=(function(){
 
 XController.prototype.getRenderer=(function()
 {
-    return  XRenderer.getInstance(this) ;
+    return  XRenderer.getInstance() ;
 });
 
 XController.prototype.getCamera=(function(){

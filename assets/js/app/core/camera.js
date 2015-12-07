@@ -101,24 +101,19 @@ Camera.prototype.rotateX=(function(angle){
    Camera.prototype.mouseController=(function(){
        
        if(this.__input ===null) return ;
-       var mouse = this.__input.getMouse();
        
-       if(mouse!==null && this.IsMouseEnable)
+       if(this.__input.isMouseDown(Mouse.BUTTON1))
        {
-          mouse.setMouseEvent(function(button,action,xpos,ypos)
-          {
-              if(action==Mouse.KEY_PRESSED)
-                 mouse.isGrap(true);
-               else
-                   mouse.isGrap(false);
-              
-              
-          });
            
        }
+    
        
    });
-  
+   Camera.prototype.getForward=(function(){
+       
+    return  this.__forward; 
+       
+   });
   
  Camera.prototype.keyboardController=(function(){
      
@@ -128,11 +123,11 @@ Camera.prototype.rotateX=(function(angle){
               var amount =Camera.SPEED * Time.getDelta();
                if(this.__input.isKeyDown(Keyboard.Keys.K_W))
                 {
-                   this.move(this.getUp(), amount );
+                   this.move(this.getForward(), amount );
                 }
               if(this.__input.isKeyDown(Keyboard.Keys.K_S))
                {
-                this.move(this.getUp().negate(), amount );
+                this.move(this.getForward().negate(), amount );
                }
               if(this.__input.isKeyDown(Keyboard.Keys.K_A))
                {
@@ -144,14 +139,7 @@ Camera.prototype.rotateX=(function(angle){
 
                } 
                
-                if(this.__input.isKeyDown(Keyboard.Keys.K_Z)){
-                    this.move(this.__forward.negate(), amount );
-                 }
-
-                 if(this.__input.isKeyDown(Keyboard.Keys.K_X)){
-
-                       this.move(this.__forward, amount );
-                   }
+            
         }
    });
   

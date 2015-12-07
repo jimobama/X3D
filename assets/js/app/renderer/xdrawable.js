@@ -21,7 +21,7 @@ XDrawable.prototype.__construct=(function()
     this.__parent =null;
     this.__material=null;
  
-    this.__transform = new Transform3D();
+    this.__transform = new Transform3D(new Vector3f(0,0,0));
     
    
 });
@@ -50,7 +50,8 @@ XDrawable.prototype.getTransform=(function(){
     var parent= null;
     if(this.hasParent())
     {
-      this.__transform.setParentTranformMatrix4f(this.__parent.getTransform().getModel());
+       //console.log(this.__parent.getTransform().getModel().toString());
+      this.__transform.setParentTranformMatrix4f(this.getParent().getTransform().getModel());
     }
 
   return this.__transform;

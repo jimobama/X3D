@@ -27,7 +27,24 @@
 Shader.prototype.__construct=(function(){
   this.initGL();
 });
+Shader.prototype.addUniformBaseLight=(function(attribute){
+    
+        this.addUniform(attribute+".color");
+        this.addUniform(attribute+".intensity");
+});
 
+
+Shader.prototype.setUniformBaseLight=(function(attribute,baseLight){
+    
+    
+     if(baseLight instanceof BaseLight)
+     {
+        this.setUniformVector3f(attribute+".color",baseLight.getColor());
+        this.setUniform1f(attribute+".intensity",baseLight.getIntensity());
+     }
+ });
+ 
+ 
 Shader.prototype.initGL=(function(){
      var gl = this.getContext(); 
      this.__program= gl.createProgram();
@@ -151,7 +168,7 @@ Shader.prototype.setUniformVector2f=(function(name, value)
     if(value  instanceof Vector3f)
     {
       var gl = this.getContext();
-     gl.uniform3f(this.__uniforms[name], parseFloat(value.x), parseFloat(value.x), parseFloat(value.z));
+     gl.uniform3f(this.__uniforms[name], parseFloat(value.x), parseFloat(value.y), parseFloat(value.z));
     }
  });
  

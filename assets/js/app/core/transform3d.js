@@ -112,6 +112,7 @@ Transform3D.prototype.setParentTranformMatrix4f=(function(matrix4f){
     
     if(matrix4f instanceof Matrix4f)
     {
+      
         this.__parentMatrix=matrix4f;
     }
 });

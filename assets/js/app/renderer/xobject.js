@@ -38,7 +38,7 @@ XObject.prototype.addObject=(function(node){
     
     if(node instanceof XObject)
     {
-         node.setController(this.getController());
+        
          node.setParent(this);
          this.__nodes.push(node);
          
@@ -49,8 +49,7 @@ XObject.prototype.addObject=(function(node){
 XObject.prototype.addComponent=(function(comp){
     
     if(comp instanceof XDrawable)
-    {  
-       
+    {    
        comp.setParent(this);
        this.__components.push(comp);
     }
@@ -77,22 +76,18 @@ XObject.prototype.input=(function()
     
 });
 
-XObject.prototype.render=(function()
+XObject.prototype.render=(function(shader)
 {   
-   
+  
+    if(shader ===null) return ;
     if(this.getController() ===null) return;
-    
+  
     for(var i=0; i <  this.__components.length;i++)
     {     
       
         var comp =  this.__components[i];
-        if(comp.getShader()===null){
-            comp.setShader(this.getShader());
-             
-        }
-        if(comp.getShader()===null) continue;
-     
-        comp.render();
+        comp.setParent(this);
+        comp.render(shader);
     } 
 });
 
@@ -119,19 +114,16 @@ XObject.prototype.updateAll=(function(timeframe){
     }
 });
 
-XObject.prototype.renderAll=(function(){
- 
-  this.render();//render the its components
+XObject.prototype.renderAll=(function(shader){
+ if(shader ===null) return ;
+  this.render(shader);//render the its components
  
   for(var i=0; i < this.__nodes.length;i++)
     { 
-      
+       
         var obj = this.__nodes[i];       
-        obj.setController(this.getController());
-        if(!obj.hasShader()){
-            obj.setShader(this.getShader());
-        }
-        obj.renderAll();
+        obj.setController(this.getController());       
+        obj.renderAll(shader);
         
     }
 });

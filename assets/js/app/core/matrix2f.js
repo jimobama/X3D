@@ -128,6 +128,26 @@ Matrix2f.prototype.mul2fv2=(function(v2){
     return result;
     
 });
+Matrix2f.prototype.determinant=(function(){
+    
+    var det=  this.__mat[0][0]* this.__mat[1][1] -  this.__mat[0][1] * this.__mat[1][0];
+    return det;
+});
+
+Matrix2f.prototype.transpose=(function(){
+
+    var newX =new Vector2f(this.getX().x,this.getY().x);
+    var newY =new Vector2f(this.getX().y,this.getY().y); 
+    this.setX(newX);
+    this.setY(newY);
+    return this;
+});
+Matrix2f.prototype.inverse=(function(){
+    
+    var identity = (new Matrix2f()).identity();
+    return identity;
+    
+});
 
 Matrix2f.prototype.mul=(function(mat2f){
      var result =null;

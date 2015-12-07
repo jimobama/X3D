@@ -76,10 +76,10 @@ Mesh.prototype.calcNormals=(function(vertices, indices){
         var i2= indices[i + 2];
    
        var vec1 = vertices[i1].getPosition().minus(vertices[i0].getPosition());
-      
        var vec2 = vertices[i2].getPosition().minus(vertices[i0].getPosition());
-       var normal = (vec2.cross(vec1));
-       normal=normal.normalize();
+       var npcross= (vec2.cross(vec1)).normalize();
+       var normal =npcross.normalize().mul(1/npcross.length());
+       
        vertices[i0].setNormal(vertices[i0].getNormal().add(normal));
        vertices[i1].setNormal(vertices[i0].getNormal().add(normal));
        vertices[i2].setNormal(vertices[i0].getNormal().add(normal));

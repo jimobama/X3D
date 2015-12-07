@@ -24,7 +24,13 @@ var xgl =(function(){
     
     
 });
-
+xgl.inverse =(function(mat4f){
+    
+    var result =(new Matrix4f()).identity();
+    
+    
+    return result;
+});
  xgl.traslate =(function(axis){
      var mat4f=null;
     if(axis instanceof Vector3f){        

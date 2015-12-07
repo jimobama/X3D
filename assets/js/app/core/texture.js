@@ -12,10 +12,9 @@ var Texture = (function()
     
 });
 
-Texture.load=(function(gl,src){
+Texture.load=(function(src){
 
-   
-
+   var gl = window.gl;
    var img = new Image();
    var texId =gl.createTexture();  
    gl.bindTexture(gl.TEXTURE_2D,texId);
@@ -27,7 +26,7 @@ Texture.load=(function(gl,src){
         //problem with INVALID_OPERATION: generateMipmap: level 0 not power was solved with the first two line of codes below
        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      // gl.generateMipmap(gl.TEXTURE_2D);
+       gl.generateMipmap(gl.TEXTURE_2D);
        //gl.bindTexture(gl.TEXTURE_2D, null);
        
     });     
