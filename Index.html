@@ -77,7 +77,9 @@
        controller = XController.createInstance("glcanvas", 600,400);
       
        var model = new Model();
-       model.load("plane.obj");
+       model.load("grass.obj");
+       
+     
       
        var  texture = Texture.load("gpu1.png");
       
@@ -87,7 +89,7 @@
       controller.getCamera().setEnableMouse(true);
        var material = new Material(texture, new Vector3f(0,0,0));
        var mesh = new MeshComponent(new Mesh( model.getVertices(),model.getIndices(),false),material);
-       
+
        var  ground= new XObject();
        
         Camera.SPEED=0.05;
