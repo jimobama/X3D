@@ -62,7 +62,7 @@ DiffuseLightShader.prototype.update=(function(xdrawable)
      if(this.__directionLight!==null){
        this.setUniformDiffusedLight("diffusedLight",this.__light);     
    }
-     
+    
     this.__shader.update(xdrawable);
   
 });

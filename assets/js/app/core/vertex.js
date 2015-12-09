@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-var Vertex=(function(pos,norm,coord)
+var Vertex=(function(pos,coord,norm)
 {
   
      this.__position = (pos instanceof Vector3f)? (pos) :(new Vector3f());  

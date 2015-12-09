@@ -8,7 +8,7 @@
  * 
  * Load the vertex 
  */
-var Mesh=(function(vertices, indices,allowCalNormals)
+var Mesh=(function(vertices, indices,allowNormal)
 {
      
     this.__vertices   ;
@@ -25,7 +25,7 @@ var Mesh=(function(vertices, indices,allowCalNormals)
        
      self.__construct(avertices, aindices,allow);
        
-   })(this,vertices, indices,allowCalNormals);
+   })(this,vertices, indices,allowNormal);
     
     
 });

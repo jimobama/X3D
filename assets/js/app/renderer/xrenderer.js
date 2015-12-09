@@ -37,7 +37,7 @@ XRenderer.prototype.__construct=(function(){
     this.meshShader.setAmbientLight(new BaseLight(new Vector3f(0.1,0.1,0.1),0.2));
     var light=new DiffuseLight(new BaseLight(new Vector3f(0.0, 1.0,0.5),0.8), new Vector3f(4,2,-6));
     var diffusedShader= new DiffuseLightShader(light);
-    this.addRendererShader(diffusedShader);
+   this.addRendererShader(diffusedShader);
 });
 
 XRenderer.prototype.addRendererShader=(function(xobject){

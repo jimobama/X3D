@@ -44,7 +44,7 @@ var Model =(function(){
       var position = this.__positions[positionIndex];
       var normals =  this.__normals[norIndex];
       var coords =   this.__coords[CoordIndex];
-      this.__vertices[positionIndex]= new Vertex(position,normals,coords);
+      this.__vertices[positionIndex]= new Vertex(position,coords,normals);
       this.__drawIndices.push(positionIndex);
    
  });
