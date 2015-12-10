@@ -10,8 +10,9 @@ var Camera=(function(position,forward, up){
    this.__position;
    this.__forward;
    this.__up;
+   
    this.__target;
-   this.__input;
+
    this.__call__ = (function(self,position,forward, up){
       
         self.__construct(position,forward, up);
@@ -35,8 +36,8 @@ Camera.prototype.__construct=(function(position,forward, up){
         this.__target= new Vector3f(0,0,0);
         this.__forward.normalize();
         this.__up.normalize();
-         this.__input=null;
-        
+       
+       
         
     });
     
@@ -50,10 +51,7 @@ Camera.prototype.setPersp=(function(fov,width,height, near, far){
 });
 
 
-Camera.prototype.setInput=(function(sysInput)
-{ 
-    this.__input =sysInput;
-});
+
 Camera.prototype.getUp=(function(){       
     return  this.__up;
 });
@@ -76,7 +74,6 @@ Camera.prototype.rotateX=(function(angle){
        this.__forward.normalize();
       //let se c__forward.rotateX(angle, xAxis);t our __up vector since we have rotate the vector already
        this.__up = this.__forward.cross(xAxis);
-     
        this.__up.normalize();
       
   });
@@ -97,18 +94,17 @@ Camera.prototype.rotateX=(function(angle){
   
   Camera.prototype.IsMouseEnable=false;
   Camera.prototype.IsKeyboardEnable=false;
+  Camera.__mouseLastPos=new Vector2f();
   
-   Camera.prototype.mouseController=(function(){
+  
+   Camera.prototype.mouseHandle=(function(){
+      
        
-       if(this.__input ===null) return ;
        
-       if(this.__input.isMouseDown(Mouse.BUTTON1))
-       {
-           
-       }
     
-       
    });
+   
+   
    Camera.prototype.getForward=(function(){
        
     return  this.__forward; 
@@ -117,23 +113,23 @@ Camera.prototype.rotateX=(function(angle){
   
  Camera.prototype.keyboardController=(function(){
      
-         if(this.__input === null)return ;
+       
         if(this.IsKeyboardEnable)
         { 
               var amount =Camera.SPEED * Time.getDelta();
-               if(this.__input.isKeyDown(Keyboard.Keys.K_W))
+               if(Keyboard.isKeyPress(Keyboard.Keys.K_W))
                 {
                    this.move(this.getForward(), amount );
                 }
-              if(this.__input.isKeyDown(Keyboard.Keys.K_S))
+              if(Keyboard.isKeyPress(Keyboard.Keys.K_S))
                {
                 this.move(this.getForward().negate(), amount );
                }
-              if(this.__input.isKeyDown(Keyboard.Keys.K_A))
+              if(Keyboard.isKeyPress(Keyboard.Keys.K_A))
                {
                    this.move(this.getRight(), amount );
                } 
-              if(this.__input.isKeyDown(Keyboard.Keys.K_D))
+              if(Keyboard.isKeyPress(Keyboard.Keys.K_D))
                {
                  this.move(this.getRight().negate(), amount );
 
@@ -164,7 +160,8 @@ Camera.prototype.rotateX=(function(angle){
  
  Camera.prototype.getTransform=(function(){
       this.keyboardController();
-      this.mouseController();
+     
+     this.mouseHandle();
       var pos = this.getPosition();
       var view=  xgl.lookAt( pos,pos.add(this.__forward),this.getUp());
       return view;

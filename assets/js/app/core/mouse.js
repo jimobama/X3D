@@ -3,78 +3,104 @@
 
  var Mouse =(function(view){
   
-     var  m__view ;
-     var m__grap;
-     var  m__position;
-     var  m_mouse_events;
-     var m_mouse_move;
-     var  m__isLocked;
-  
-    
-     this.__call__=(function(self,view){         
+     var __grap;
+     var __isLocked;
+      this.__call__=(function(self,view){  
+        
         self.__construct(view);
-        self.__super =this;
-        return self;
      })(this,view);
  
 
-  
-  
  });
- 
- Mouse.prototype.__construct =(function(view){
-     
-     m__position= new Vector2f();
-     m__view =view;
-     m_mouse_events=(function(button, action, x,y){}); 
-     m_mouse_move=(function(x,y){});
-      m__isLocked=false;
-      m__grap=false;
-     this.__initialMouseEvents();
-     
- });
- 
-  Mouse.prototype.getGrap=(function(){
-      return m__grap;
-  });
- Mouse.prototype.isGrap=(function(abool){
-     m__grap =abool;
-  });
-  
-  
- Mouse.prototype.__initialMouseEvents=(function(){
+  Mouse.__instance=null;
+ Mouse.createInstance=(function(view)
+ {
+     if(  Mouse.__instance===null)
+           Mouse.__instance = new Mouse(view);
     
-     if(m__view!== null)
-     {
-         
-         //initialised all the mouse listeners
-         
-          
-          
-          m__view.addEventListener("mousedown", (function(event){ 
-          m_mouse_events(event.button,Mouse.KEY_PRESSED,event.offsetX,event.offsetY);
+ });
+ Mouse.IsMouseDown=false;
+ Mouse.__position= new Vector2f();
+ Mouse.prototype.__construct =(function(view){
+    
+     if(view ===null)return ;
+       Mouse.__position= new Vector2f(Display.getInstance().getWidth()/2, Display.getInstance().getHeight()/2);
+      __isLocked=false;
+      __grap=false;
+      
+        if(view!== null)
+            view.addEventListener("mousedown", (function(event){
+             Mouse.IsMouseDown=true;
+            
+             Mouse.onMouseEvent(event.button,Mouse.KEY_PRESSED,new Vector2f(event.clientX,event.clientY));
           
           }));
           
           //mouse move
-          m__view.addEventListener("mousemove", (function(event)
+        document.addEventListener("mousemove", (function(event)
           {
-                m__position.x=event.offsetX;
-                m__position.y=event.offsetY;                
-                m_mouse_move(event.offsetX, event.offsetY);
+          
+             Mouse.onMouseMoveEvent(new Vector2f(event.clientX,event.clientY));
+             
           }));
           
           //mouse up
           
-           m__view.addEventListener("mouseup",(function(event)
+        document.addEventListener("mouseup",(function(event)
            { 
-               m_mouse_events(event.button,Mouse.KEY_RELEASED, event.offsetX,event.offsetY);
+              Mouse.IsMouseDown = false;
+             
+              Mouse.onMouseEvent(event.button,Mouse.KEY_RELEASED,new Vector2f(event.clientX,event.clientY));
+             
            }));
-          
-     }
-      
-  });
+           
+           
  
+ });
+
+  Mouse.getGrap=(function(){
+      return __grap;
+  });
+ Mouse.isGrap=(function(abool){
+    __grap =abool;
+  });
+
+  
+
+
+ Mouse.onMouseEvent=(function(button,action,vec2f){ 
+     
+       Mouse.__position=vec2f;
+ });
+Mouse.onMouseMoveEvent=(function(vec2f){
+   Mouse.__position=vec2f;
+});
+Mouse.getPosition=(function(){
+      return Mouse.__position;
+  });
+
+Mouse.lock =(function(){
+    
+    Display.getInstance().getView().style.cursor="none";
+     document.body.style.cursor="none";
+     this.__isLocked=true;
+
+ });
+ 
+ Mouse.isLock=(function(){
+      
+      return  __isLocked;
+  });
+     
+  
+ Mouse.unlock =(function(){
+     
+  Display.getInstance().getView().style.cursor="default";
+  document.body.style.cursor="default";
+  __isLocked=false;
+
+ });
+  
  Mouse.BUTTON1 = 0;
  Mouse.BUTTON2 = 1;
  Mouse.BUTTON3 = 2;
@@ -84,33 +110,3 @@
   Mouse.KEY_NONE=-1;
   Mouse.KEY_RELEASED =0;
  Mouse.KEY_PRESSED   = 1;
- Mouse.prototype.setMouseEvent=(function(callback){ 
-     m_mouse_events = callback;     
- });
-Mouse.prototype.setMouseMove=(function(mouseMove){
-    m_mouse_move=mouseMove;    
-});
-
- Mouse.prototype.getPosition=(function(){
-     return m__position;
- });
-  Mouse.prototype.lock =(function(){
-    
-       m__view.style.cursor="none";       
-       m__isLocked=true;
-
- });
- 
-  Mouse.prototype.isLock=(function(){
-      
-      return  m__isLocked;
-  });
-     
-  
- Mouse.prototype.unlock =(function(){
-     
-   m__view.style.cursor="default";
-   m__isLocked=false;
-
- });
- 

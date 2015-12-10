@@ -10,8 +10,6 @@ var Transform3D =(function(position,rotation,scale){
     this.__rotation ;
     this.__scale ;
     this.__parentMatrix;
- 
-    
     
     this.__call__=(function(self,position,rotation,scale){
         
@@ -22,29 +20,6 @@ var Transform3D =(function(position,rotation,scale){
     
 });
 
-
-/*check if the parents transformation has changes
-Transform3D.prototype.hasChange=(function(){
-       var trigger =false;
-       if(this.__parentT===null) return trigger;
-       
-        if(this.__oldPos===null)
-        {
-           this.__oldPos=new Vector3f();
-           this.__oldRotation=new Vector3f();
-           this.__oldScale =new Vector3f();
-        }
-        
-        if(!this.__position.equals(this.__parentT.getPosition())
-          || !this.__rotation.equals(this.__parentT.getRotation())
-          || !this.__scale.equals(this.__parentT.getScale()))
-        {
-           trigger=true;
-        }
-    return trigger ;
-    });
-    
-   */ 
 
 Transform3D.prototype.__construct=(function(position,rotation,scale){
 
@@ -97,9 +72,6 @@ Transform3D.prototype.getScale=(function(){
       return this.__scale;
   
 });
-
-
-
 Transform3D.prototype.getModel=(function(){
     
       var translationMatrix =xgl.traslate(this.__position);

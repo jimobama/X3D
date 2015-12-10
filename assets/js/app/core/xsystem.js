@@ -17,20 +17,21 @@ var XSystem =(function(canvasId){
 
 
 XSystem.prototype.__construct =(function(canvasId){
-    if(canvasId===null){console.log("Canvas id not found");return ;};
-    Display.Id=canvasId;
+    
+    var view = document.getElementById(canvasId);
+  
+   if(view !==null){
+        
+       Display.createInstance(view);
+       Mouse.createInstance(view);
+       Keyboard.createInstance();
+   }
+
    
 });
 
-XSystem.prototype.getDisplay=(function()
-{
-     return Display.getInstance();
-});
 
-XSystem.prototype.getInput=(function()
-{
-     return Input.getInstance();
-});
+
 
 
 

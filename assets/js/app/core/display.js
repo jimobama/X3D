@@ -1,46 +1,46 @@
 
 
 
-var Display =(function(canvasID){  
+var Display =(function(view){  
     
-    
-    this.__view;
-    this.__mouse;
-    this.__keyboard;
+   
     this.__call__=(function(self, canvasId){        
         self.__construct(canvasId);
-    })(this,canvasID);
+    })(this,view);
   
 });
-Display.Id="";
+Display.view=null;
 Display.__instance=null;
 Display.getInstance=(function(){
     
     if(Display.__instance===null){
-        Display.__instance= Display.create(Display.Id);
+       Display.createInstance(Display.view);
     }
   return Display.__instance;
     
 });
 
-Display.create=(function(canvas){
-    Display.__instance=new Display(canvas);
-    return Display.__instance;
+Display.createInstance=(function(view){
+
+    if(Display.__instance===null && view !==null){            
+        Display.view=view;
+        Display.__instance=new Display(view);        
+    }
+  
 });
 
 
 
 
-Display.prototype.__construct=(function(canvasId){
+Display.prototype.__construct=(function(view){
+  
+    if(view===null)return ;
+        Display.view=view;
+     
+    this.__createContext();
     
   
-    this.__mouse=null;
-    this.__keyboard=null;
-    this.__view= document.getElementById(canvasId); 
-   this.__createContext();
-   this.__mouse = new  Mouse(this.getView());
-   this.__keyboard= new Keyboard(this.getView());
-    this.setViewPort(this.getView().width,this.getView().height);
+   this.setViewPort(this.getView().width,this.getView().height);
 });
 
 Display.prototype.getContext=(function(){
@@ -50,15 +50,7 @@ Display.prototype.getContext=(function(){
 
 
 Display.prototype.getView=(function(){
-    return this.__view;    
-});
- Display.prototype.getKeyboard=(function(){
-    
-    return this.__keyboard;
-});
-
-Display.prototype.getMouse=(function(){
-  return   this.__mouse;
+    return Display.view;    
 });
 
 
@@ -92,26 +84,30 @@ Display.prototype.setViewPort=function(width, height)
  
  Display.prototype.getHeight=(function(){
      
-      var view = this.getView();      
+      var view = this.getView();    
+      if(view===0)return 0.0;
       return view.height;
      
  });
  
   Display.prototype.getWidth=(function(){
      
-      var view = this.getView();      
+      var view = this.getView();  
+      
+      if(view===0)return 0.0;
       return view.width;
      
  });
-
+ Display.gl=null;
  Display.prototype.__createContext=function(){
      var view = this.getView();
+     
      if(view !=null){
             try {
                 
               // Try to grab the standard context. If it fails, fallback to experimental.
             window.gl = view.getContext("webgl") || view.getContext("experimental-webgl");
-            
+            Display.gl=  window.gl;
             }
             catch(e) {}
 

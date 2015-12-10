@@ -329,7 +329,7 @@ Shader.prototype.setProgram=(function(program){
 
 
 Shader.prototype.use=(function(){
-    var gl = XController.getInstance().getSystem().getDisplay().getContext();
+    var gl = Display.getInstance().getContext();
      gl.useProgram(this.getProgram());
 });
 Shader.prototype.update=(function(xcomponent){  

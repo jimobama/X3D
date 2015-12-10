@@ -126,10 +126,11 @@ Vector3f.prototype.negate=(function()
 
 
 
-Vector3f.prototype.rotateX=(function(angle){
-    var v2d = new Vector2f(this.y,this.z);
-    var rotation2d = v2d.rotate(angle);
-    var result= new Vector3f(rotation2d,rotation2d.getAngle());
+Vector3f.prototype.rotateX=(function(angle, axis){
+  
+    var result= null;
+    
+    
     return result;
 });
 

@@ -35,8 +35,8 @@ XController.prototype.__construct=(function(canvasid,w,h){
      this.__xsystem= new XSystem(canvasid);
      this.__camera= new Camera();
    
-     this.getCamera().setInput(this.getSystem().getInput());
-     this.getSystem().getDisplay().resize(new Vector2f(w,h));
+  
+     Display.getInstance().resize(new Vector2f(w,h));
      RenderUtils.initialize();  
      RenderUtils.clear(0,0,0,1);
      XRenderer.getInstance(this);

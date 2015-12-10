@@ -5,33 +5,31 @@
  */
 
 
-var Keyboard=(function(view){
+var Keyboard=(function(){
     
-    var k__view ;
-    var k_onkeyListener;
-    this.__call__=(function(self, view){        
-        self.__construct(view);
-    })(this,view);
+    var __keydown=[];
+    this.__call__=(function(self){        
+        self.__construct();
+    })(this);
     
 });
 
 Keyboard.KEY_DOWN=0;
 Keyboard.KEY_UP=1;
 
-Keyboard.prototype.__construct=(function(view)
+Keyboard.prototype.__construct=(function()
 {
-
-    k__view=view;
-    k_onkeyListener =(function(action,key,code,character){});
-    
-    if( k__view !==null)
-    {   
+          __keydown = new Array(254);
+          for(var i=0; i< 504; i++){
+            __keydown[i]=false;
+           }
+     
          window.addEventListener("keydown",(function(event){
                 var charCode = event.charCode || event.keyCode ;
                 var character= String.fromCharCode(charCode); 
                 var key=    character.toUpperCase().charCodeAt(); 
                
-                k_onkeyListener(Keyboard.KEY_DOWN, key,charCode,character);
+                Keyboard.onKeyListener(Keyboard.KEY_DOWN, key,charCode,character);
          }));
          
           window.addEventListener("keyup",(function(event){          
@@ -39,18 +37,31 @@ Keyboard.prototype.__construct=(function(view)
                 var charCode = event.charCode || event.keyCode ;
                 var character= String.fromCharCode(charCode); 
                 var key=    character.toUpperCase().charCodeAt();
-                k_onkeyListener(Keyboard.KEY_UP, key,charCode,character);
+                 Keyboard.onKeyListener(Keyboard.KEY_UP, key,charCode,character);
           }));
-    }
+    
     
 });
+Keyboard.__instance=null;
 
-Keyboard.prototype.setKeyboardListener =(function(callBack){
+Keyboard.createInstance=(function(){
     
-   k_onkeyListener= callBack;
-    
+    if(Keyboard.__instance===null)
+        Keyboard.__instance= new Keyboard();
+   
 });
-
+Keyboard.onKeyListener =(function(action, key,charCode,character){
+     if(action===Keyboard.KEY_DOWN){
+        __keydown[key]=true;
+                    
+      }else if(action===Keyboard.KEY_UP){
+        __keydown [key]=false;
+      }
+});
+Keyboard.isKeyPress=(function(key)
+{
+    return __keydown[key];
+});
 Keyboard.Keys=(function(){
     
     this.NUM_0=0x0000;
