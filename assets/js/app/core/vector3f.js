@@ -151,9 +151,9 @@ Vector3f.prototype.cross=(function(vec3f){
    
     if(vec3f instanceof Vector3f)
     {
-        var xR = this.y * vec3f.z + this.z * vec3f.y;
-        var yR = this.z *vec3f.x + this.x * vec3f.z;
-        var zR = this.x * vec3f.y + this.y * vec3f.x;
+        var xR = this.y * vec3f.z - this.z * vec3f.y;
+        var yR = this.z *vec3f.x - this.x * vec3f.z;
+        var zR = this.x * vec3f.y - this.y * vec3f.x;
         result= new Vector3f(xR,yR,zR);
         
     }

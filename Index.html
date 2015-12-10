@@ -5,7 +5,7 @@
     <!-- Core Engine folder files -->
 <script  src='assets/js/app/core/vector2f.js' type="text/javascript"></script>
 <script  src='assets/js/app/core/vector3f.js' type="text/javascript"></script>
-<script  src='assets/js/app/core/quaterion.js' type="text/javascript"></script>
+<script  src='assets/js/app/core/quaternion.js' type="text/javascript"></script>
 <script  src='assets/js/app/core/matrix2f.js' type="text/javascript"></script>
 <script  src='assets/js/app/core/matrix3f.js' type="text/javascript"></script>
 <script  src='assets/js/app/core/matrix4f.js' type="text/javascript"></script>
@@ -109,13 +109,14 @@
         controller.getRenderer().setObject(uwlgame);
         draw();
         
-        
-        var mat= new Matrix2f();
-        mat.setX(5,4);
-        mat.setY(2,3);
-      //  alert(mat.inverse());
+           
+      var q1= new Quaternion(12,-5,4,-4);
+
+    
+      console.log(q1.norm());
         
     });
+    
     
     var speed=0.01;
     function draw(){
@@ -126,7 +127,6 @@
         uwlgame.getTransform().setRotation(new Vector3f(0, Math.sin(speed)* 360,0));
         controller.getRenderer().render();
         speed+=0.001;
-      
        requestAnimationFrame(draw);
     }
   

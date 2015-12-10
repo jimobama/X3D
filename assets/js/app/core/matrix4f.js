@@ -49,22 +49,22 @@ Matrix4f.prototype.get1f=(function(row,col){
 
 
 Matrix4f.prototype.getX=(function(){    
-    var result = new Quaterion(this.__mat[0][0],this.__mat[0][1],this.__mat[0][2],this.__mat[0][3] );
+    var result = new Quaternion(this.__mat[0][0],this.__mat[0][1],this.__mat[0][2],this.__mat[0][3] );
     return result;
 });
 
 Matrix4f.prototype.getY=(function(){    
-    var result = new Quaterion(this.__mat[1][0],this.__mat[1][1],this.__mat[1][2], this.__mat[1][4]);
+    var result = new Quaternion(this.__mat[1][0],this.__mat[1][1],this.__mat[1][2], this.__mat[1][4]);
     return result;
 });
 
 Matrix4f.prototype.getZ=(function(){    
-    var result = new Quaterion(this.__mat[2][0],this.__mat[2][1],this.__mat[2][2],this.__mat[2][3] );
+    var result = new Quaternion(this.__mat[2][0],this.__mat[2][1],this.__mat[2][2],this.__mat[2][3] );
     return result;
 });
 
 Matrix4f.prototype.getW=(function(){    
-    var result = new Quaterion(this.__mat[3][0],this.__mat[3][1],this.__mat[3][2],this.__mat[3][3] );
+    var result = new Quaternion(this.__mat[3][0],this.__mat[3][1],this.__mat[3][2],this.__mat[3][3] );
     return result;
 });
 
@@ -73,7 +73,7 @@ Matrix4f.prototype.getW=(function(){
 
 Matrix4f.prototype.setX=(function(x,y,z,w){ 
      
-    if(x instanceof Quaterion)
+    if(x instanceof Quaternion)
     {
       
         this.__mat[0][0]=x.x; this.__mat[0][1]=x.y; this.__mat[0][2]=x.z;  this.__mat[0][3]=x.w  ;
@@ -85,7 +85,7 @@ Matrix4f.prototype.setX=(function(x,y,z,w){
 });
 
 Matrix4f.prototype.setY=(function(x,y,z,w){    
-     if(x instanceof Quaterion)
+     if(x instanceof Quaternion)
     {
         this.__mat[1][0]=x.x;this.__mat[1][1]=x.y;this.__mat[1][2]=x.z;   this.__mat[1][3]=x.w ;
     }else{
@@ -96,7 +96,7 @@ Matrix4f.prototype.setY=(function(x,y,z,w){
 });
 
 Matrix4f.prototype.setZ=(function(x,y,z,w){    
-    if(x instanceof Quaterion)
+    if(x instanceof Quaternion)
     {
         this.__mat[2][0]=x.x;this.__mat[2][1]=x.y;this.__mat[2][2]=x.z;   this.__mat[2][3]=x.w;  
     }else{
@@ -108,7 +108,7 @@ Matrix4f.prototype.setZ=(function(x,y,z,w){
 
 
 Matrix4f.prototype.setW=(function(x,y,z,w){    
-    if(x instanceof Quaterion)
+    if(x instanceof Quaternion)
     {
        //alert("Qu\n"+ x.toString())
         this.__mat[3][0]=x.x;this.__mat[3][1]=x.y;this.__mat[3][2]=x.z;   this.__mat[3][3]=x.w;  
@@ -179,10 +179,10 @@ Matrix4f.prototype.mul=(function(mat4f){
 
 Matrix4f.prototype.transpose=(function(){
     
-   var newX = new Quaterion(this.get1f(0,0),this.get1f(1,0),this.get1f(2,0),this.get1f(3,0));
-   var newY = new Quaterion(this.get1f(0,1),this.get1f(1,1),this.get1f(2,1),this.get1f(3,1));
-   var newZ = new Quaterion(this.get1f(0,2),this.get1f(1,2),this.get1f(2,2),this.get1f(3,2));
-   var newW = new Quaterion(this.get1f(0,3),this.get1f(1,3),this.get1f(2,3),this.get1f(3,3));
+   var newX = new Quaternion(this.get1f(0,0),this.get1f(1,0),this.get1f(2,0),this.get1f(3,0));
+   var newY = new Quaternion(this.get1f(0,1),this.get1f(1,1),this.get1f(2,1),this.get1f(3,1));
+   var newZ = new Quaternion(this.get1f(0,2),this.get1f(1,2),this.get1f(2,2),this.get1f(3,2));
+   var newW = new Quaternion(this.get1f(0,3),this.get1f(1,3),this.get1f(2,3),this.get1f(3,3));
    this.setX(newX);
    this.setY(newY);
    this.setZ(newZ);

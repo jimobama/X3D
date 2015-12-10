@@ -15,8 +15,16 @@ var Vector2f=(function(x, y){
     
  });
 Vector2f.prototype.__construct=(function(x,y){
+    if(x instanceof Vector3f){
+        this.x=x.x;
+        this.y =x.y;
+    }else if(x instanceof Quaternion){
+       this.x=x.x;
+      this.y =x.y;  
+    }else{
     this.x=(typeof x !== 'undefined')?x:0;
     this.y=(typeof y !== 'undefined')?y:0;
+  }
     
 });
 Vector2f.prototype.length=(function(){     
@@ -59,6 +67,31 @@ Vector2f.prototype.minus=(function(vec){
      var y = this.y * vec.y;
      return x+y;     
      
+ });
+ 
+  Vector2f.prototype.cross=(function(vec){    
+      
+     var x = this.x * vec.x - this.y * vec.y;
+     var y = this.x *vec.y + this.y * vec.x;
+     return (new Vector2f(x,y)); 
+ });
+ 
+   Vector2f.prototype.conjugate=(function(){
+       return new  Vector2f(this.x, - this.y);
+   });
+ 
+  Vector2f.prototype.div=(function(vec){    
+      
+     var status= (vec instanceof Vector2f);
+     if(!status)return null;
+     
+     var conjugate = vec.conjugate();
+     var numerator = this.cross(conjugate);
+     var demonumerator= vec.cross(conjugate);
+   
+     var x = numerator.x / (demonumerator.x + demonumerator.y);
+     var y = numerator.y / (demonumerator.x + demonumerator.y);
+     return (new Vector2f(x,y)); 
  });
  /*
   * 

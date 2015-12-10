@@ -99,7 +99,12 @@ Camera.prototype.rotateX=(function(angle){
   
    Camera.prototype.mouseHandle=(function(){
       
-       
+       if(Mouse.IsMouseDown){
+           
+          Mouse.lock(); 
+       }else{
+           Mouse.unlock();
+       }
        
     
    });
@@ -143,6 +148,7 @@ Camera.prototype.rotateX=(function(angle){
  {
      if(axis instanceof Vector3f)
      {
+       
        
      }
  });

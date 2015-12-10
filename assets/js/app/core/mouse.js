@@ -43,9 +43,7 @@
              Mouse.onMouseMoveEvent(new Vector2f(event.clientX,event.clientY));
              
           }));
-          
           //mouse up
-          
         document.addEventListener("mouseup",(function(event)
            { 
               Mouse.IsMouseDown = false;
