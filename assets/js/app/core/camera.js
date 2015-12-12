@@ -103,8 +103,6 @@ Camera.prototype.rotateX=(function(angle){
       
         var pos =  Mouse.getPosition().minus(Display.getInstance().getPosition());
        if(Mouse.IsMouseDown && Mouse.getGrap()){
-       
-     
           var deltaX = pos.x - Mouse.getLastPosition().x ;
           var deltaY =  Mouse.getLastPosition().y-pos.y; 
           this.rotateX(deltaX * Camera.SPEED* Time.getDelta());
@@ -172,7 +170,7 @@ Camera.prototype.rotateX=(function(angle){
      this.mouseHandle();
     
       var pos = this.getPosition();
-      var view=  xgl.lookAt( pos,pos.add(this.getForward()),this.getUp());
+      var view=  xgl.lookAt(pos,pos.add(this.getForward()),this.getUp());
       return view;
   });
   

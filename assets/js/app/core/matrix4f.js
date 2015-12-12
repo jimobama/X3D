@@ -168,13 +168,19 @@ Matrix4f.prototype.mul=(function(mat4f){
     return result;
 });
 
+Matrix4f.initRotationMatrix=(function(vec3){
+    
+     if(vec3 instanceof Vector3f)
+         return (new Matrix4f()).identity().mul(new Quaternion(vec3,1));
+     
+     return (new Matrix4f()).identity();
+});
 
-
-
-
-
-
-
+Matrix4f.prototype.mulByQuaternion=(function(q){
+    
+    
+    
+});
 
 
 Matrix4f.prototype.transpose=(function(){

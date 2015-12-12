@@ -154,8 +154,6 @@ xgl.rotation3fv=(function(vec){
     
     var rotation= new Matrix4f();
     rotation.identity();
-      
-      
     if(vec instanceof Vector3f){       
       var zrot = xgl.rotationZ(vec.z);
       var xrot = xgl.rotationX(vec.x);

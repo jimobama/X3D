@@ -81,7 +81,7 @@
        controller = XController.createInstance("glcanvas", 600,400);
       
        var model = new Model();
-       model.load("grass.obj");
+       model.load("plane.obj");
        
      
       
@@ -115,10 +115,11 @@
     
     var speed=0.01;
     function draw(){
-        var current=Time.getTime();
-        var delta = current-lasttime;
-        Time.setDelta(delta );
+         var current=Time.getTime();
+         var delta = current-lasttime;
+         Time.setDelta(delta );
         lasttime=current;
+         uwlgame.getTransform().setRotation(new Vector3f(0,Math.sin(speed)* 360,0));
         controller.getRenderer().render();
         speed+=0.001;
        requestAnimationFrame(draw);
