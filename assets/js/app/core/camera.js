@@ -67,15 +67,17 @@ Camera.prototype.getUp=(function(){
  
 Camera.prototype.rotateX=(function(angle){
       
-      var xAxis = Camera.yAxis.cross(this.__forward);
-       xAxis.normalize();
-      //rotate arround the ambitious xAxis
-       this.__forward.rotateX(angle, xAxis);
-       this.__forward.normalize();
-      //let se c__forward.rotateX(angle, xAxis);t our __up vector since we have rotate the vector already
-       this.__up = this.__forward.cross(xAxis);
-       this.__up.normalize();
+      var xAxis = Camera.yAxis.cross(this.__forward).normalize();
+      this.__forward= this.getForward().rotate(Camera.yAxis,-angle).normalize();
+      this.__up = this.__forward.cross(xAxis).normalize();
       
+  });
+  
+  Camera.prototype.rotateY=(function(angle){
+       var xAxis = Camera.yAxis.cross(this.__forward).normalize();
+       this.__forward= this.getForward().rotate(xAxis,-angle).normalize();
+       this.__up = this.__forward.cross(xAxis).normalize();
+    
   });
   
   Camera.prototype.getRight=(function(){
@@ -99,20 +101,27 @@ Camera.prototype.rotateX=(function(angle){
   
    Camera.prototype.mouseHandle=(function(){
       
-       if(Mouse.IsMouseDown){
-           
+        var pos =  Mouse.getPosition().minus(Display.getInstance().getPosition());
+       if(Mouse.IsMouseDown && Mouse.getGrap()){
+       
+     
+          var deltaX = pos.x - Mouse.getLastPosition().x ;
+          var deltaY =  Mouse.getLastPosition().y-pos.y; 
+          this.rotateX(deltaX * Camera.SPEED* Time.getDelta());
+          this.rotateY(deltaY * Camera.SPEED* Time.getDelta());
           Mouse.lock(); 
        }else{
+           Mouse.isGrap(false);
            Mouse.unlock();
        }
        
-    
+      Mouse.setLastPosition(pos);
    });
    
    
    Camera.prototype.getForward=(function(){
        
-    return  this.__forward; 
+     return  this.__forward; 
        
    });
   
@@ -144,14 +153,7 @@ Camera.prototype.rotateX=(function(angle){
         }
    });
   
- Camera.prototype.setRotation=(function(axis)
- {
-     if(axis instanceof Vector3f)
-     {
-       
-       
-     }
- });
+
    
  Camera.prototype.getTarget=(function(){
        
@@ -168,8 +170,9 @@ Camera.prototype.rotateX=(function(angle){
       this.keyboardController();
      
      this.mouseHandle();
+    
       var pos = this.getPosition();
-      var view=  xgl.lookAt( pos,pos.add(this.__forward),this.getUp());
+      var view=  xgl.lookAt( pos,pos.add(this.getForward()),this.getUp());
       return view;
   });
   
