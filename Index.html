@@ -108,12 +108,7 @@
     
         controller.getRenderer().setObject(uwlgame);
         draw();
-        
-           
-      var q1= new Quaternion(12,-5,4,-4);
 
-    
-      console.log(q1.norm());
         
     });
     
@@ -124,7 +119,6 @@
         var delta = current-lasttime;
         Time.setDelta(delta );
         lasttime=current;
-        uwlgame.getTransform().setRotation(new Vector3f(0, Math.sin(speed)* 360,0));
         controller.getRenderer().render();
         speed+=0.001;
        requestAnimationFrame(draw);

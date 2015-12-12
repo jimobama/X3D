@@ -126,13 +126,7 @@ Vector3f.prototype.negate=(function()
 
 
 
-Vector3f.prototype.rotateX=(function(angle, axis){
-  
-    var result= null;
-    
-    
-    return result;
-});
+
 
 
 Vector3f.unitX=(function(){    
@@ -162,6 +156,15 @@ Vector3f.prototype.cross=(function(vec3f){
     
 });
 
+Vector3f.prototype.rotate=(function(axis,angle)
+{
+  if(!(axis instanceof Vector3f)) return null;
+  var  sinAngle = Math.sin(Vector2f.toRadian(angle));
+  var cosAngle =  Math.cos(Vector2f.toRadian(angle));
+  return this.cross(axis.mul(sinAngle)).add(                   //Rotation on local X
+		 (this.mul(cosAngle)).add(                     //Rotation on local Z
+		  axis.mul(this.dot(axis.mul(1 - cosAngle))))); //Rotation on local Y
+});
 /*
  * 
  */

@@ -89,7 +89,16 @@ Display.prototype.setViewPort=function(width, height)
       return view.height;
      
  });
- 
+ Display.prototype.getPosition=(function(){
+     var view = this.getView();  
+     var pos = new Vector2f();
+    
+     pos.x= (view.getBoundingClientRect().x!==null)?view.getBoundingClientRect().x:view.getBoundingClientRect().left;
+     pos.y =(view.getBoundingClientRect().y!==null)?view.getBoundingClientRect().y:view.getBoundingClientRect().top;
+    
+     return pos;
+     
+ });
   Display.prototype.getWidth=(function(){
      
       var view = this.getView();  

@@ -37,7 +37,7 @@ Quaternion.prototype.__construct=(function(x,y,z,w){
 });
 
 
-Quaternion.prototype.length=(function(){    
+Quaternion.prototype.norm=(function(){    
     return (Math.sqrt(this.x*this.x + this.y *this.y + this.z *this.z + this.w *this.w));
     
 });
@@ -122,9 +122,7 @@ Quaternion.prototype.dot=(function(quat){
 
 });
 
-Quaternion.prototype.norm=(function(){
-  return this.cross(this.conjugate()).length();
-});
+
 Quaternion.prototype.inverse=(function(){
    
     var conjugate = this.conjugate();

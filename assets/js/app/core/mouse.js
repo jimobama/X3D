@@ -2,7 +2,7 @@
 
 
  var Mouse =(function(view){
-  
+    var __lastPosition;
      var __grap;
      var __isLocked;
       this.__call__=(function(self,view){  
@@ -26,12 +26,14 @@
      if(view ===null)return ;
        Mouse.__position= new Vector2f(Display.getInstance().getWidth()/2, Display.getInstance().getHeight()/2);
       __isLocked=false;
+        var  xCenter=Display.getInstance().getWidth()/2;
+        var  yCenter=Display.getInstance().getHeight()/2;
+      __lastPosition=new Vector2f( xCenter, yCenter);
       __grap=false;
       
         if(view!== null)
             view.addEventListener("mousedown", (function(event){
              Mouse.IsMouseDown=true;
-            
              Mouse.onMouseEvent(event.button,Mouse.KEY_PRESSED,new Vector2f(event.clientX,event.clientY));
           
           }));
@@ -39,7 +41,7 @@
           //mouse move
         document.addEventListener("mousemove", (function(event)
           {
-          
+             Mouse.isGrap(Mouse.IsMouseDown);
              Mouse.onMouseMoveEvent(new Vector2f(event.clientX,event.clientY));
              
           }));
@@ -47,7 +49,7 @@
         document.addEventListener("mouseup",(function(event)
            { 
               Mouse.IsMouseDown = false;
-             
+              Mouse.isGrap(Mouse.IsMouseDown);
               Mouse.onMouseEvent(event.button,Mouse.KEY_RELEASED,new Vector2f(event.clientX,event.clientY));
              
            }));
@@ -55,7 +57,13 @@
            
  
  });
-
+   Mouse.setLastPosition=(function(pos){  
+       if(pos instanceof Vector2f)
+       __lastPosition=pos;
+  });
+  Mouse.getLastPosition=(function(){      
+      return __lastPosition;
+  });
   Mouse.getGrap=(function(){
       return __grap;
   });
