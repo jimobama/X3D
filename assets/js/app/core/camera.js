@@ -101,22 +101,42 @@ Camera.prototype.rotateX=(function(angle){
   
    Camera.prototype.mouseHandle=(function(){
       
-        var pos =  Mouse.getPosition().minus(Display.getInstance().getPosition());
-       if(Mouse.IsMouseDown && Mouse.getGrap()){
+      var pos =  Mouse.getPosition().minus(Display.getInstance().getPosition());
+      if(Mouse.isKeyPress(Mouse.BUTTON1)&& Mouse.getGrap()){
           var deltaX = pos.x - Mouse.getLastPosition().x ;
           var deltaY =  Mouse.getLastPosition().y-pos.y; 
           this.rotateX(deltaX * Camera.SPEED* Time.getDelta());
           this.rotateY(deltaY * Camera.SPEED* Time.getDelta());
           Mouse.lock(); 
-       }else{
+        }else{
            Mouse.isGrap(false);
            Mouse.unlock();
-       }
-       
+        }
+        
+        Mouse.onWheelScroll=(function(offset){
+            
+           Camera.zoom(offset * Camera.SPEED * Time.getDelta());
+            
+             
+          }); 
+    
       Mouse.setLastPosition(pos);
    });
    
-   
+ 
+
+     
+ 
+    Camera.zoom=(function(amount){
+        
+          Camera.FOV -= amount;
+           if(Camera.FOV <= 0.1){
+               Camera.FOV=0.1; 
+           }
+           if(Camera.FOV>=178.9){
+              Camera.FOV=178.9; 
+           }
+    });
    Camera.prototype.getForward=(function(){
        
      return  this.__forward; 

@@ -1,10 +1,16 @@
+
 #ifdef GL_FRAGMENT_PRECISION_HIGH
 precision highp float;
 #else
 precision mediump float;
 #endif
 
-
+struct Attenuation
+{
+	float constant;
+	float linear;
+	float exponent;
+};
 
 struct Material
 {   vec3 ambient;
@@ -29,9 +35,10 @@ struct SpecularLight{
 	vec3 direction;
 };
 
-struct DirectionLight
+struct SpotLight
 {
-   vec3 direction;
+  vec3 position;
+  Attenuation attenu;
   BaseLight baseLight;
 };
 
@@ -58,10 +65,9 @@ vec4 calDiffuseLight(Material material,DiffuseLight light, vec3 fragPos, vec3 no
 }
 
 
-vec4 calDirectionLight (Material material,DirectionLight light, vec3 viewPos, vec3 fragPos, vec3 normal){
+vec4 calSpotLight (Material material,SpotLight light, vec3 viewPos, vec3 fragPos, vec3 normal){
 
-
- 
+	float dist =dot(fragPos,light.position);
 
   //calculate for the diffused
   DiffuseLight diffuseLight;
@@ -86,12 +92,12 @@ uniform vec3 camPosition;
 
 uniform  Material material;
 uniform sampler2D tex;
-uniform DirectionLight directionalLight;
+uniform SpotLight spotLight;
 void main() {
 	 
      vec4 totalLight = vec4(0,0,0,0) ;
 	  vec4  fragment_color =  texture2D(tex,vTextureCoord) * vec4(material.ambient,1);
-	 totalLight =  calDirectionLight(material,directionalLight, camPosition, worldPos0,Normal0) ;//calDiffuseLight(material,diffusedLight,worldPos0,Normal0);
+	 totalLight =  calSpotLight(material,spotLight, camPosition, worldPos0,Normal0) ;//calDiffuseLight(material,diffusedLight,worldPos0,Normal0);
 	 if(fragment_color != vec4(0,0,0,1)){
 	    totalLight += fragment_color;
 	   }

@@ -2,8 +2,9 @@
 
 
  var Mouse =(function(view){
-    var __lastPosition;
-     var __grap;
+     var __lastPosition;
+     var __button__press;
+      var __grap;
      var __isLocked;
       this.__call__=(function(self,view){  
         
@@ -22,7 +23,7 @@
  Mouse.IsMouseDown=false;
  Mouse.__position= new Vector2f();
  Mouse.prototype.__construct =(function(view){
-    
+    __button__press=new Array();
      if(view ===null)return ;
        Mouse.__position= new Vector2f(Display.getInstance().getWidth()/2, Display.getInstance().getHeight()/2);
       __isLocked=false;
@@ -54,7 +55,11 @@
              
            }));
            
-           
+      //adding the event listerner for Mozilla
+    if(window.addEventListener)
+        document.addEventListener('DOMMouseScroll', Mouse.onWheelScrollEvent, false);
+    else   //for IE/OPERA etc
+      document.onmousewheel =  Mouse.onWheelScroll;        
  
  });
    Mouse.setLastPosition=(function(pos){  
@@ -71,12 +76,33 @@
     __grap =abool;
   });
 
+Mouse.onWheelScrollEvent=(function(event){
+ 
+   event =(!event)?window.event:event; 
+  var delta =(!event.wheelDelta)?(-event.detail/2):(event.wheelDelta/60);
   
+  if( delta>0){
+       delta=1;
+  }else{
+       delta=-1;
+  }
+ Mouse.onWheelScroll(delta);
+});
+ Mouse.onWheelScroll=(function(offset){
+   
+ });
 
+ Mouse.isKeyPress=(function(button)
+ {
+   return   __button__press[button];
+ });
 
- Mouse.onMouseEvent=(function(button,action,vec2f){ 
-     
+ Mouse.onMouseEvent=(function(button,action,vec2f){      
        Mouse.__position=vec2f;
+       if(action===Mouse.KEY_PRESSED)
+        __button__press[button]=true;
+      else if(action===Mouse.KEY_RELEASED)
+         __button__press[button]=false;
  });
 Mouse.onMouseMoveEvent=(function(vec2f){
    Mouse.__position=vec2f;
@@ -88,8 +114,8 @@ Mouse.getPosition=(function(){
 Mouse.lock =(function(){
     
     Display.getInstance().getView().style.cursor="none";
-     document.body.style.cursor="none";
-     this.__isLocked=true;
+    document.body.style.cursor="none";
+    this.__isLocked=true;
 
  });
  

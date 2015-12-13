@@ -51,14 +51,27 @@ Shader.prototype.initGL=(function(){
        this.__listShader= new Array();
     this.__uniforms = new  Array(); 
 });
+/*vec3 ambient;
+	vec3 specular;
+	vec3  diffuse;
+	float shiness;
+*/
  Shader.prototype.addUniformMaterial=(function(attr){
        this.addUniform("tex");
-       this.addUniform(attr+".color");
+       this.addUniform(attr+".ambient");
+        this.addUniform(attr+".specular");
+        this.addUniform(attr+".diffuse");
+        this.addUniform(attr+".shiness");
  });
  Shader.prototype.setUniformMaterial=(function(attr,material){
         if(material instanceof Material)
         {
-           this.setUniformVector3f(attr+".color",material.getColor());
+           this.setUniformVector3f(attr+".ambient",material.getAmbient());
+           this.setUniformVector3f(attr+".specular",material.getSpecular());
+           this.setUniformVector3f(attr+".diffuse",material.getDiffuse());
+           this.setUniform1f(attr+".shiness",material.getShiness());
+           
+           
             var texture = material.getTexture();
             if(texture !==null){
              this.setUniform1i("tex",texture.getIndex());

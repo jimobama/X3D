@@ -10,9 +10,11 @@ struct BaseLight{
 };
 
 struct Material
-{
-    vec3 color;
-	
+{   vec3 ambient;
+	vec3 specular;
+	vec3  diffuse;
+	float shiness;
+	sampler2D am;
 };
 
 
@@ -24,15 +26,13 @@ uniform sampler2D tex;
 
 
 void main() {
-     vec4 totalLight = vec4(baseLight.color * baseLight.intensity,1);
+     vec4 totalLight = vec4(baseLight.color * material.ambient ,1) ;
 	 
      vec4 textureMaterial =texture2D(tex,vTextureCoord);
-	 vec4  fragColor =  vec4(material.color,1);
-	 if(textureMaterial !=vec4(0,0,0,1)){
-	   
-	   fragColor += textureMaterial;
+	 if(textureMaterial !=vec4(0,0,0,1)){	   
+	   totalLight += textureMaterial;
      }	 
-	 gl_FragColor = fragColor * totalLight  ;	
+	 gl_FragColor =totalLight  * baseLight.intensity;	
 	
    
   }

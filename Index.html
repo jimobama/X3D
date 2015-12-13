@@ -34,7 +34,7 @@
 <script  src='assets/js/app/renderer/xrenderer.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/meshcomponent.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/diffuselightshader.js' type="text/javascript"></script>
-
+<script  src='assets/js/app/renderer/directionlightshader.js' type="text/javascript"></script>
 <script  src='assets/js/app/renderer/ambientlightshader.js' type="text/javascript"></script> 
 <script  src='assets/js/app/renderer/model.js' type="text/javascript"></script>
 
@@ -85,24 +85,30 @@
        
      
       
-       var  texture = Texture.load("gpu1.png");
+       var  texture = Texture.load("carpet.png");
       
       controller.getCamera().setPersp(70.0,Display.getInstance().getWidth(),
       Display.getInstance().getHeight(), 0.01, 1000.0);
       controller.getCamera().setEnableKeyboard(true);
       controller.getCamera().setEnableMouse(true);
-       var material = new Material(texture, new Vector3f(0,0,0));
+      var material = new Material(texture, new Vector3f(0,0,0));
+       material.setSpecular(new Vector3f(0.5,1,1));
+       material.setDiffuse(new Vector3f(1,1,1));
        var mesh = new MeshComponent(new Mesh( model.getVertices(),model.getIndices(),false),material);
-
+       
+      var mesh = new MeshComponent(new Mesh( model.getVertices(),model.getIndices(),false),material);
+    
        var  ground= new XObject();
        
         Camera.SPEED=0.05;
         ground.addComponent(mesh);
         ground.setTransform(new Transform3D(new Vector3f(0,-2,-7)));
      
-        uwlgame.addObject(ground);
-       
-         
+       uwlgame.addObject(ground);
+         var smallObject= new XObject();
+        smallObject.addComponent(mesh);
+       smallObject.setTransform(new Transform3D(new Vector3f(2,-4,-4)));
+          uwlgame.addObject(smallObject);
         uwlgame.setController(controller);
         controller.getRenderer().setObject(uwlgame);
     

@@ -21,6 +21,12 @@ struct  Transform
   mat4  viewMatrix;
 };
 
+mat4 getInverse(mat4 mat)
+{
+  mat4 result;
+  
+  return result;
+}
 
 uniform  Transform transform;
 

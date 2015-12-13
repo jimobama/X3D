@@ -35,14 +35,24 @@ XRenderer.prototype.__construct=(function(){
     this.__object=new XObject();
     this.meshShader= new AmbientLightShader();
     this.meshShader.setAmbientLight(new BaseLight(new Vector3f(0.1,0.1,0.1),0.2));
-    var light=new DiffuseLight(new BaseLight(new Vector3f(0.0, 1.0,0.5),0.8), new Vector3f(4,2,-6));
-    var diffusedShader= new DiffuseLightShader(light);
-   this.addRendererShader(diffusedShader);
+     var light=new DirectionLight(new BaseLight(new Vector3f(0.1,0.5,1),0.8), new Vector3f(-1,-1,-1));
+     var newShader= new DirectionLightShader(light);
+     this.addRendererShader(newShader);
+   
 });
 
 XRenderer.prototype.addRendererShader=(function(xobject){
-    if(xobject!==null && xobject.update)
+    if(xobject!==null && xobject.update){
          this.blenderShaders.push(xobject);
+     
+ }
+});
+
+XRenderer.prototype.onBlender=(function(self){
+     for(var i=0; i < self.blenderShaders.length; i++){
+     self.getObject().renderAll(self.blenderShaders[i]);
+    
+    }
 });
 
 XRenderer.prototype.render=(function(){
@@ -52,12 +62,10 @@ XRenderer.prototype.render=(function(){
   this.getObject().renderAll(this.meshShader);
   gl.enable(gl.BLEND);
  // gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
- gl.blendFunc(gl.ONE, gl.ONE);
+  gl.blendFunc(gl.ONE, gl.ONE);
   gl.depthMask(false);
   gl.depthFunc(gl.EQUAL);
-  for(var i=0; i < this.blenderShaders.length; i++){
-     this.getObject().renderAll(this.blenderShaders[i]);
-  }
+  this.onBlender(this);
   gl.depthFunc(gl.LESS);
   gl.depthMask(true);
   gl.disable(gl.BLEND);
