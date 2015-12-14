@@ -67,7 +67,9 @@ vec4 calDiffuseLight(Material material,DiffuseLight light, vec3 fragPos, vec3 no
 
 vec4 calSpotLight (Material material,SpotLight light, vec3 viewPos, vec3 fragPos, vec3 normal){
 
-	float dist =dot(fragPos,light.position);
+	float dist =  distance(fragPos - light.position);
+	
+	float reduce =   light.baseLight.intensity 
 
   //calculate for the diffused
   DiffuseLight diffuseLight;
